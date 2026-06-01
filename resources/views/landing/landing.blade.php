@@ -184,7 +184,7 @@
     </div>
 </div>
 <!-- Services End -->
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" id="regulasi">
     <div class="container">
 
         <div class="text-center mb-5">

@@ -27,6 +27,12 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('assets/landing/css/style.css') }}" rel="stylesheet">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}">
+
+        <!-- Apple Icon -->
+        <link rel="apple-touch-icon" href="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}">
     </head>
 
     <body>
