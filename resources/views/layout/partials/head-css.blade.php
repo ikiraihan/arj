@@ -1,8 +1,8 @@
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{URL::asset('build/img/favicon.png')}}">
+    <link rel="shortcut icon" href="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}">
 
     <!-- Apple Icon -->
-    <link rel="apple-touch-icon" href="{{URL::asset('build/img/apple-icon.png')}}">
+    <link rel="apple-touch-icon" href="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 

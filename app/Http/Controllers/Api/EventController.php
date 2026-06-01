@@ -384,7 +384,7 @@ class EventController extends Controller
                 'is_active' => $validated['is_active'] ?? false,
 
                 'link_documentation' => $validated['link_documentation'] ?? null,
-                'link_documentation_active' => $validated['link_documentation_active'] ?? null,
+                'link_documentation_active' => $validated['link_documentation_active'] ?? false,
             ]);
 
             /*

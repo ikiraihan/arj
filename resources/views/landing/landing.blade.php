@@ -99,7 +99,7 @@
             @empty
 
                 <div class="col-12">
-                    <div class="alert alert-info">
+                    <div class="alert alert-danger">
                         Belum ada event tersedia.
                     </div>
                 </div>
@@ -171,8 +171,8 @@
 
                 <div class="col-12">
 
-                    <div class="alert alert-info text-center">
-                        Belum ada regulasi yang tersedia.
+                    <div class="alert alert-danger text-center">
+                        Belum ada dokumentasi yang tersedia.
                     </div>
 
                 </div>
@@ -251,8 +251,8 @@
 
                 <div class="col-12">
 
-                    <div class="alert alert-info text-center">
-                        Belum ada regulasi yang tersedia.
+                    <div class="alert alert-danger text-center">
+                        Belum ada dokumentasi yang tersedia.
                     </div>
 
                 </div>

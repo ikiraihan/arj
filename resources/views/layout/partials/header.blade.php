@@ -8,8 +8,8 @@
 
                 <!-- Logo Normal -->
                 <span class="logo-light">
-                    <span class="logo-lg"><img src="{{URL::asset('build/img/logo.svg')}}" alt="logo"></span>
-                    <span class="logo-sm"><img src="{{URL::asset('build/img/logo-small.svg')}}" alt="small logo"></span>
+                    <span class="logo-lg"><img src="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}" alt="logo"></span>
+                    <span class="logo-sm"><img src="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}" alt="small logo"></span>
                 </span>
 
                 <!-- Logo Dark -->
@@ -36,14 +36,14 @@
             @endif
 
             <!-- Search -->
-            <div class="me-auto d-flex align-items-center header-search d-lg-flex d-none">
+            {{-- <div class="me-auto d-flex align-items-center header-search d-lg-flex d-none">
                 <!-- Search -->
                 <div class="input-icon position-relative me-2">
                     <input type="text" class="form-control" placeholder="Search Keyword">
                     <span class="input-icon-addon d-inline-flex p-0 header-search-icon"><i class="ti ti-command"></i></span>
                 </div>
                 <!-- /Search -->
-            </div>
+            </div> --}}
 
         </div>
 
@@ -74,90 +74,20 @@
             </div>
             @endif
 
-            <!-- pages -->
-            <div class="header-item d-none d-sm-flex">
-                <div class="dropdown me-2">
-                    <a href="javascript:void(0);" class="btn topbar-link topbar-teal-link" data-bs-toggle="dropdown">
-                        <i class="ti ti-layout-grid-add"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-2">
-
-                        <!-- Item-->
-                        <a href="{{url('contacts')}}" class="dropdown-item">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <span class="d-flex mb-1 fw-semibold text-dark">Contacts</span>
-                                    <span class="fs-13">View All the Contacts</span>
-                                </div>
-                                <i class="ti ti-chevron-right-pipe text-dark"></i>
-                            </div>
-                        </a>
-
-                        <!-- Item-->
-                        <a href="{{url('pipeline')}}" class="dropdown-item">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <span class="d-flex mb-1 fw-semibold text-dark">Pipeline</span>
-                                    <span class="fs-13">View All the Pipeline</span>
-                                </div>
-                                <i class="ti ti-chevron-right-pipe text-dark"></i>
-                            </div>
-                        </a>
-
-                        <!-- Item-->
-                        <a href="{{url('activities')}}" class="dropdown-item">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <span class="d-flex mb-1 fw-semibold text-dark">Activities</span>
-                                    <span class="fs-13">Activities</span>
-                                </div>
-                                <i class="ti ti-chevron-right-pipe text-dark"></i>
-                            </div>
-                        </a>
-
-                        <!-- Item-->
-                        <a href="{{url('analytics')}}" class="dropdown-item">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <span class="d-flex mb-1 fw-semibold text-dark">Analytics</span>
-                                    <span class="fs-13">Analytics</span>
-                                </div>
-                                <i class="ti ti-chevron-right-pipe text-dark"></i>
-                            </div>
-                        </a>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- faq -->
-            <div class="header-item d-none d-sm-flex">
-                <div class="dropdown me-2">
-                    <a href="{{url('faq')}}" class="btn topbar-link topbar-indigo-link"><i class="ti ti-help-hexagon"></i></a>
-                </div>
-            </div>
-
-            <!-- report -->
-            <div class="header-item d-none d-sm-flex">
-                <div class="dropdown me-2">
-                    <a href="{{url('lead-reports')}}" class="btn topbar-link topbar-warning-link"><i class="ti ti-chart-pie"></i></a>
-                </div>
-            </div>
-
             <div class="header-line"></div>
 
                 <!-- message -->
-            <div class="header-item">
+            {{-- <div class="header-item">
                 <div class="dropdown me-2">
                     <a href="{{url('chat')}}" class="btn topbar-link">
                         <i class="ti ti-message-circle-exclamation"></i>
                         <span class="badge rounded-pill">14</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Notification Dropdown -->
-            <div class="header-item">
+            {{-- <div class="header-item">
                 <div class="dropdown me-2">
 
                     <button class="topbar-link btn topbar-link dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown" data-bs-offset="0,24" type="button" aria-haspopup="false" aria-expanded="false">
@@ -285,13 +215,18 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- User Dropdown -->
             <div class="dropdown profile-dropdown d-flex align-items-center justify-content-center">
-                <a href="javascript:void(0);" class="topbar-link dropdown-toggle drop-arrow-none position-relative" data-bs-toggle="dropdown" data-bs-offset="0,22" aria-haspopup="false" aria-expanded="false">
-                    <img src="{{URL::asset('build/img/users/user-40.jpg')}}" width="38" class="rounded-1 d-flex" alt="user-image">
-                    <span class="online text-success"><i class="ti ti-circle-filled d-flex bg-white rounded-circle border border-1 border-white"></i></span>
+                <a href="javascript:void(0);" class="topbar-link dropdown-toggle drop-arrow-none position-relative"
+                data-bs-toggle="dropdown" data-bs-offset="0,22">
+
+                    <i class="ti ti-user-circle fs-1"></i>
+
+                    <span class="online text-success">
+                        <i class="ti ti-circle-filled d-flex bg-white rounded-circle border border-1 border-white"></i>
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-2">
 
