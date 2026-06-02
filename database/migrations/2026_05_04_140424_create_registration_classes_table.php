@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id')->nullable();
             $table->unsignedBigInteger('class_id')->nullable();
             $table->integer('invoice_number')->nullable();
-            // $table->integer('racer_number')->nullable();
+            $table->integer('racer_number')->nullable();
             $table->string('vehicle')->nullable();
             $table->integer('vehicle_number')->nullable();
             $table->integer('rangka_number')->nullable();
