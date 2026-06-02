@@ -105,7 +105,7 @@ class EventClassController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-        
+
             $validated = $request->validate([
                 'event_id' => 'required|exists:events,id',
                 'name' => 'required|string|max:255',
@@ -186,7 +186,7 @@ class EventClassController extends Controller
                 'quota' => 'nullable|integer',
                 'price' => 'required|integer',
                 'price_fine' => 'required|integer',
-                'notes' => 'nullable|text',
+                'notes' => 'nullable|string',
 
 
             ], [
