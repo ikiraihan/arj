@@ -984,7 +984,7 @@ class EventController extends Controller
         // update registration
         $registration->update([
             'status' => $status,
-            'race_status' => in_array($registration->status,['paid']) ? 'approved' : $registration->race_status,
+            'race_status' => in_array($status,['paid']) ? 'approved' : $registration->race_status,
         ]);
 
         return response()->json([
