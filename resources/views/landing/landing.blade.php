@@ -13,7 +13,7 @@
             <div class="carousel-caption-inner text-center p-3">
                 <h1 class="display-3 text-capitalize text-white mb-4">Ayah Racing Jaya</h1>
                 <p class="mb-5 fs-5">
-                    Ayah Racing Jaya (ARJ) merupakan race organizer yang bergerak di bidang penyelenggaraan event balap motor. ARJ hadir untuk menyediakan kompetisi yang profesional, sportif, dan berkualitas sebagai wadah bagi para pembalap untuk mengembangkan bakat serta meraih prestasi.
+                    Ayah Racing Jaya (ARJ) merupakan Racing Organizer yang bergerak di bidang penyelenggaraan event otomotif. ARJ hadir untuk menyediakan kompetisi yang profesional, sportif, dan berkualitas sebagai wadah bagi para pembalap untuk mengembangkan bakat serta meraih prestasi.
                 </p>
                 {{-- <a class="btn btn-primary rounded-pill py-3 px-5 mb-4 me-4" href="#">Apply Now</a> --}}
                 <a class="btn btn-dark rounded-pill py-3 px-5 mb-4" href="/login">Daftar Sekarang!</a>

@@ -207,7 +207,7 @@
                             <h4 class="text-white mb-4">Ayah Racing Jaya</h4>
 
                             <p class="mb-4">
-                                Ayah Racing Jaya (ARJ) merupakan race organizer yang bergerak di bidang penyelenggaraan event balap motor. ARJ hadir untuk menyediakan kompetisi yang profesional, sportif, dan berkualitas sebagai wadah bagi para pembalap untuk mengembangkan bakat serta meraih prestasi.
+                                Ayah Racing Jaya (ARJ) merupakan Racing Organizer yang bergerak di bidang penyelenggaraan event otomotif. ARJ hadir untuk menyediakan kompetisi yang profesional, sportif, dan berkualitas sebagai wadah bagi para pembalap untuk mengembangkan bakat serta meraih prestasi.
                             </p>
 
                             {{-- <div class="d-flex">
