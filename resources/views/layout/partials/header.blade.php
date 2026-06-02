@@ -4,7 +4,7 @@
         <div class="d-flex align-items-center gap-2">
 
             <!-- Logo -->
-            <a href="{{url('index')}}" class="logo">
+            <a href="{{url('/')}}" class="logo">
 
                 <!-- Logo Normal -->
                 <span class="logo-light">

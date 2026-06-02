@@ -20,19 +20,19 @@
         <div class="sidebar-logo">
             <div>
                 <!-- Logo Normal -->
-                <a href="{{ url('index') }}" class="logo logo-normal">
+                <a href="{{ url('/') }}" class="logo logo-normal">
                     <img src="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}" alt="Logo" style="height: 50px;">
                     Ayah Racing Jaya
                 </a>
 
                 <!-- Logo Small -->
-                <a href="{{url('index')}}" class="logo-small">
+                <a href="{{url('/')}}" class="logo-small">
                      <img src="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}" alt="Logo" style="height: 50px;">
                      Ayah Racing Jaya
                 </a>
 
                 <!-- Logo Dark -->
-                <a href="{{url('index')}}" class="dark-logo">
+                <a href="{{url('/')}}" class="dark-logo">
                      <img src="{{ URL::asset('assets/landing/img/logo_arj.jpeg') }}" alt="Logo" style="height: 50px;">
                      Ayah Racing Jaya
                 </a>

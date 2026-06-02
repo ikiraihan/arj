@@ -17,7 +17,7 @@
                     <h4 class="mb-1">Pembayaran</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{ url('index') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Event</li>
                         </ol>
                     </nav>
@@ -133,7 +133,7 @@
                                                                 <input class="form-check-input m-0 me-2 filter-status"
                                                                     type="checkbox"
                                                                     value="rejected"
-                                                                    
+
                                                                     {{ in_array('rejected', $checked) ? 'checked' : '' }}>
 
                                                                 Ditolak

@@ -14,11 +14,11 @@
             <!-- Page Header -->
             <div class="d-flex align-items-center justify-content-between gap-2 mb-4 flex-wrap">
                 <div>
-                    <h4 class="mb-1">Manage Users<span class="badge badge-soft-primary ms-2">152</span></h4>
+                    <h4 class="mb-1">Users</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{url('index')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Users</li>
                         </ol>
                     </nav>
                 </div>

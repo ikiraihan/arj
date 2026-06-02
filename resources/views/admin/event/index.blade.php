@@ -17,7 +17,7 @@
                     <h4 class="mb-1">Events</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{ url('index')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url('/')}}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Event</li>
                         </ol>
                     </nav>
