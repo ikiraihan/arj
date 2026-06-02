@@ -109,7 +109,7 @@ class EventClassController extends Controller
             $validated = $request->validate([
                 'event_id' => 'required|exists:events,id',
                 'name' => 'required|string|max:255',
-                'quota' => 'nullable|integer',
+                // 'quota' => 'nullable|integer',
                 'price' => 'required|integer',
                 'price_fine' => 'required|integer',
                 'notes' => 'nullable|string',
@@ -126,7 +126,7 @@ class EventClassController extends Controller
                 'name' => $validated['name'],
                 'price' => $validated['price'],
                 'price_fine' => $validated['price_fine'],
-                'quota' => $validated['quota'] ?? null,
+                // 'quota' => $validated['quota'] ?? null,
                 'notes' => $validated['notes'] ?? null,
             ]);
 
@@ -183,7 +183,7 @@ class EventClassController extends Controller
 
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'quota' => 'nullable|integer',
+                // 'quota' => 'nullable|integer',
                 'price' => 'required|integer',
                 'price_fine' => 'required|integer',
                 'notes' => 'nullable|string',
@@ -200,7 +200,7 @@ class EventClassController extends Controller
                 'name' => $validated['name'],
                 'price' => $validated['price'],
                 'price_fine' => $validated['price_fine'],
-                'quota' => $validated['quota'],
+                // 'quota' => $validated['quota'],
                 'notes' => $validated['notes'],
             ]);
 
