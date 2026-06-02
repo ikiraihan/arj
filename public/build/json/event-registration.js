@@ -40,7 +40,7 @@ $(document).ready(function () {
 
             $.ajax({
 
-                url: `/api/events?start=${start}&length=${length}`,
+                url: `/api/events?type=grid&start=${start}&length=${length}`,
 
                 type: "GET",
 

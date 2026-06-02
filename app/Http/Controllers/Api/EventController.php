@@ -55,6 +55,10 @@ class EventController extends Controller
             'photos'
         ]);
 
+        if ($request->type == 'grid') {
+            $query->where('is_active', true);
+        }
+
         // SEARCH
         if ($request->search_event) {
 
