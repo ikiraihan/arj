@@ -304,6 +304,12 @@
                                     {{-- RIGHT --}}
                                     <div class="d-flex align-items-center gap-2">
 
+                                        <a href="{{ route('export-race', $eventId) }}"
+                                            class="btn btn-success">
+                                            <i class="ti ti-file-export me-1"></i>
+                                            Export
+                                        </a>
+
                                         <a href="javascript:void(0);"
                                             id="refresh-race-register"
                                             class="btn btn-icon btn-outline-light shadow"

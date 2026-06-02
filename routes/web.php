@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RacerController;
@@ -32,6 +33,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
             ->name('events');
 
         Route::get('/registration/{id}/pdf', [RegistrationController::class, 'generatePdf']);
+
     });
 
     Route::middleware(['auth', 'role:superadmin,admin'])->group(function () {
@@ -47,7 +49,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/regulations', [RegulationController::class, 'index'])->name('regulations');
     Route::post('/regulations/store', [RegulationController::class, 'store'])->name('regulations.store');
 
-
+    Route::get('/race/{event}/export', [ExportController::class, 'exportRace'])->name('export-race');
     });
 
     Route::middleware(['auth', 'role:user'])->group(function () {
