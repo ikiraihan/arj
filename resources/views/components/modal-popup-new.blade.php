@@ -85,10 +85,10 @@
                                     Superadmin
                                 </option>
 
-                                <option value="admin"
+                                {{-- <option value="admin"
                                     {{ old('role') == 'admin' ? 'selected' : '' }}>
                                     Admin
-                                </option>
+                                </option> --}}
 
                                 <option value="user"
                                     {{ old('role') == 'user' ? 'selected' : '' }}>
@@ -240,7 +240,7 @@
                             <select name="role" id="edit-role" class="form-select">
                                 <option value="">Pilih Role</option>
                                 <option value="superadmin">Super Admin</option>
-                                <option value="admin">Admin</option>
+                                {{-- <option value="admin">Admin</option> --}}
                                 <option value="user">User</option>
                             </select>
                         </div>
@@ -2317,6 +2317,261 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="modal_filter_pendaftar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Filter Pendaftar
+                    </h5>
+
+                    <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Pendaftaran</label>
+                            <input type="text"
+                                id="pendaftar_filter_registration_number"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Pembalap</label>
+                            <input type="text"
+                                id="pendaftar_filter_racer_name"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tim</label>
+                            <input type="text"
+                                id="pendaftar_filter_team_name"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status Balap</label>
+                            <select id="pendaftar_filter_race_status" class="form-select">
+                                <option value="">Semua</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status Pembayaran</label>
+                            <select id="pendaftar_filter_payment_status" class="form-select">
+                                <option value="">Semua</option>
+                                <option value="pending">Pending</option>
+                                <option value="paid">Lunas</option>
+                                <option value="unpaid">Belum Bayar</option>
+                                <option value="menunggu-pembayaran">Menunggu Pembayaran</option>
+                                <option value="menunggu-approval">Menunggu Approval</option>
+                                <option value="rejected">Ditolak</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Metode Pembayaran</label>
+                            <select id="pendaftar_filter_payment_method" class="form-select">
+                                <option value="">Semua</option>
+                                <option value="transfer">Transfer</option>
+                                <option value="tunai">Tunai</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tanggal Mulai</label>
+                            <input type="date"
+                                id="pendaftar_filter_start_date"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tanggal Akhir</label>
+                            <input type="date"
+                                id="pendaftar_filter_end_date"
+                                class="form-control">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                        id="reset-filter-pendaftar"
+                        class="btn btn-light">
+                        Reset
+                    </button>
+
+                    <button type="button"
+                        id="apply-filter-pendaftar"
+                        class="btn btn-primary">
+                        Terapkan
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_filter_race" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Filter Data Race
+                    </h5>
+
+                    <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Kwitansi</label>
+                            <input type="text"
+                                id="race_filter_receipt_number"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Pembalap</label>
+                            <input type="text"
+                                id="race_filter_racer_name"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">NIK</label>
+                            <input type="text"
+                                id="race_filter_nik"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Start</label>
+                            <input type="text"
+                                id="race_filter_racer_number"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status No. Start</label>
+                            <select id="race_filter_racer_number_duplicate"
+                                class="form-select">
+
+                                <option value="">Semua Data</option>
+                                <option value="duplicate">Duplikat</option>
+                                <option value="unique">Tidak Duplikat</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Team</label>
+                            <input type="text"
+                                id="race_filter_team_name"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kota</label>
+                            <input type="text"
+                                id="race_filter_city"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kelas</label>
+                            <input type="text"
+                                id="race_filter_class_name"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kendaraan</label>
+                            <input type="text"
+                                id="race_filter_vehicle"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Rangka</label>
+                            <input type="text"
+                                id="race_filter_chassis_number"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Mesin</label>
+                            <input type="text"
+                                id="race_filter_engine_number"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Foto Diri</label>
+                            <select id="race_filter_has_photo"
+                                class="form-select">
+                                <option value="">Semua</option>
+                                <option value="1">Ada</option>
+                                <option value="0">Tidak Ada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">KIS</label>
+                            <select id="race_filter_has_kis"
+                                class="form-select">
+                                <option value="">Semua</option>
+                                <option value="1">Ada</option>
+                                <option value="0">Tidak Ada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">KTA</label>
+                            <select id="race_filter_has_kta"
+                                class="form-select">
+                                <option value="">Semua</option>
+                                <option value="1">Ada</option>
+                                <option value="0">Tidak Ada</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                        id="reset-filter-race"
+                        class="btn btn-light">
+
+                        Reset
+
+                    </button>
+
+                    <button type="button"
+                        id="apply-filter-race"
+                        class="btn btn-primary">
+
+                        Terapkan
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 @endif
 @if (Route::is(['events-payment']))

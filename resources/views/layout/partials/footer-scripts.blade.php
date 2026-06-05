@@ -9,6 +9,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 @if (Route::is(['racers', 'regulations','activities', 'activity-calls', 'activity-mail', 'activity-meeting', 'activity-task', 'analytics', 'blog-categories', 'blog-comments', 'blog-tags', 'calls', 'campaign-archieve', 'campaign-complete', 'campaign', 'cities', 'events', 'events-list', 'event-details','events-payment','companies-list', 'company-reports', 'company', 'contact-messages', 'contact-reports', 'contact-stage', 'contacts-list', 'contracts-list', 'countries', 'data-tables', 'deal-reports', 'deals-list', 'delete-request', 'domain', 'estimations-list', 'faq', 'index', 'industry', 'language-settings', 'language-web-edit', 'language-web', 'layout-dark', 'layout-fullwidth', 'layout-hidden', 'layout-hoverview', 'layout-mini', 'layout-rtl', 'lead-reports', 'leads-dashboard', 'leads-list', 'leads', 'lost-reason', 'manage-users', 'membership-transactions', 'packages',('events')]))
     <!-- Datatable JS -->
     <script src="{{URL::asset('build/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>

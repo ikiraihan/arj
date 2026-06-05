@@ -837,12 +837,77 @@ class EventController extends Controller
 
             $query->where(function ($q) use ($search) {
 
-                $q->where('name', 'like', "%{$search}%")
-                ->orWhere('venue', 'like', "%{$search}%")
-                ->orWhere('kota', 'like', "%{$search}%");
+            $q->where('registration_number', 'like', "%{$search}%")
+                ->orWhere('team_name', 'like', "%{$search}%")
+                ->orWhere('name_register', 'like', "%{$search}%")
+                ->orWhere('phone_number_register', 'like', "%{$search}%")
+                ->orWhereHas('racer', function ($racer) use ($search) {
+                    $racer->where('full_name', 'like', "%{$search}%")
+                        ->orWhere('short_name', 'like', "%{$search}%");
+                });
 
             });
         }
+
+        // FILTER NO PENDAFTARAN
+        $query->when($request->pendaftar_registration_number, function ($q) use ($request) {
+            $q->where('registration_number', 'like', '%' . $request->pendaftar_registration_number . '%');
+        });
+
+        // FILTER NAMA PEMBALAP
+        $query->when($request->pendaftar_racer_name, function ($q) use ($request) {
+            $q->whereHas('racer', function ($racer) use ($request) {
+                $racer->where('full_name', 'like', '%' . $request->pendaftar_racer_name . '%')
+                    ->orWhere('short_name', 'like', '%' . $request->pendaftar_racer_name . '%');
+            });
+        });
+
+        // FILTER TIM
+        $query->when($request->pendaftar_team_name, function ($q) use ($request) {
+            $q->where('team_name', 'like', '%' . $request->pendaftar_team_name . '%');
+        });
+
+        // FILTER KONTAK
+        $query->when($request->pendaftar_contact, function ($q) use ($request) {
+            $q->where(function ($sub) use ($request) {
+
+                $sub->where('phone_number_register', 'like', '%' . $request->pendaftar_contact . '%')
+
+                    ->orWhereHas('racer', function ($racer) use ($request) {
+                        $racer->where('phone_number', 'like', '%' . $request->pendaftar_contact . '%');
+                    })
+
+                    ->orWhereHas('user', function ($user) use ($request) {
+                        $user->where('phone_number', 'like', '%' . $request->pendaftar_contact . '%');
+                    });
+
+            });
+        });
+
+        // FILTER STATUS BALAP
+        $query->when($request->pendaftar_race_status, function ($q) use ($request) {
+            $q->where('race_status', $request->pendaftar_race_status);
+        });
+
+        // FILTER METODE PEMBAYARAN
+        $query->when($request->pendaftar_payment_method, function ($q) use ($request) {
+            $q->where('payment_method', $request->pendaftar_payment_method);
+        });
+
+        // FILTER STATUS PEMBAYARAN
+        $query->when($request->pendaftar_payment_status, function ($q) use ($request) {
+            $q->where('status', $request->pendaftar_payment_status);
+        });
+
+        // FILTER TANGGAL DAFTAR DARI
+        $query->when($request->pendaftar_start_date, function ($q) use ($request) {
+            $q->whereDate('created_at', '>=', $request->pendaftar_start_date);
+        });
+
+        // FILTER TANGGAL DAFTAR SAMPAI
+        $query->when($request->pendaftar_end_date, function ($q) use ($request) {
+            $q->whereDate('created_at', '<=', $request->pendaftar_end_date);
+        });
         // SORT
         $orderColumnIndex = $request->input('order.0.column');
         $orderDirection   = $request->input('order.0.dir', 'desc');

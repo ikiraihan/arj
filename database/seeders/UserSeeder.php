@@ -23,15 +23,15 @@ class UserSeeder extends Seeder
             'role' => 'superadmin',
         ]);
 
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@arj.com',
-            'team_name' => 'Ayah Racing Jaya',
-            'phone_number' => null,
-            'password' => Hash::make('ayahracingjaya'),
-            'verified_data' => true,
-            'role' => 'admin',
-        ]);
+        // User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@arj.com',
+        //     'team_name' => 'Ayah Racing Jaya',
+        //     'phone_number' => null,
+        //     'password' => Hash::make('ayahracingjaya'),
+        //     'verified_data' => true,
+        //     'role' => 'admin',
+        // ]);
 
         User::create([
             'name' => 'User',
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             'team_name' => 'Ayah Racing Jaya',
             'phone_number' => null,
             'password' => Hash::make('ayahracingjaya'),
-            'verified_data' => true,    
+            'verified_data' => true,
             'role' => 'user',
         ]);
     }

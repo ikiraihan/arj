@@ -133,7 +133,7 @@
                                                 name="password_confirmation"
                                                 class="form-control @error('password_confirmation') is-invalid @enderror"
                                                 placeholder="Konfirmasi password">
-                                            <span class="input-group-text toggle-password ">
+                                            <span class="input-group-text toggle-password">
                                                 <i class="ti ti-eye-off"></i>
                                             </span>
                                         </div>

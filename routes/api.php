@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/registration-classes/{eventId}', [RegistrationClassController::class, 'index']);
     Route::put('/registration-classes/{id}/edit', [RegistrationClassController::class, 'update']);
+    Route::get('/registration-classes/{id}/report-income', [RegistrationClassController::class, 'summary']);
+    Route::get('/registration-classes/{id}/report-income-payment', [RegistrationClassController::class, 'reportIncomePayment']);
 
     Route::get('/registration-original/{eventId}', [RegistrationClassController::class, 'indexOriginal']);
 

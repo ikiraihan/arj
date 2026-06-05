@@ -244,4 +244,5 @@ class EventClassController extends Controller
             'message' => 'Kelas berhasil dihapus'
         ]);
     }
+    
 }

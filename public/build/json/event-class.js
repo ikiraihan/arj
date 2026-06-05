@@ -196,7 +196,21 @@ $(document).ready(function () {
                     type: 'GET',
 
                     data: function (d) {
-                        d.search_event = $('#search-event-register').val();
+
+                        d.search_pendaftar = $('#search-event-register').val();
+
+                        d.pendaftar_registration_number = $('#pendaftar_filter_registration_number').val();
+                        d.pendaftar_racer_name = $('#pendaftar_filter_racer_name').val();
+                        d.pendaftar_team_name = $('#pendaftar_filter_team_name').val();
+                        d.pendaftar_contact = $('#pendaftar_filter_contact').val();
+
+                        d.pendaftar_race_status = $('#pendaftar_filter_race_status').val();
+
+                        d.pendaftar_payment_method = $('#pendaftar_filter_payment_method').val();
+                        d.pendaftar_payment_status = $('#pendaftar_filter_payment_status').val();
+
+                        d.pendaftar_start_date = $('#pendaftar_filter_start_date').val();
+                        d.pendaftar_end_date = $('#pendaftar_filter_end_date').val();
                     }
                 },
 
@@ -671,6 +685,33 @@ $(document).ready(function () {
         }
     }
 
+    $(document).on('click', '#apply-filter-pendaftar', function () {
+
+        $('#event-register-table')
+            .DataTable()
+            .ajax
+            .reload();
+
+        $('#modal_filter_pendaftar').modal('hide');
+    });
+
+    $(document).on('click', '#reset-filter-pendaftar', function () {
+
+        $('#pendaftar_filter_registration_number').val('');
+        $('#pendaftar_filter_racer_name').val('');
+        $('#pendaftar_filter_team_name').val('');
+        $('#pendaftar_filter_race_status').val('');
+        $('#pendaftar_filter_payment_status').val('');
+        $('#pendaftar_filter_payment_method').val('');
+        $('#pendaftar_filter_start_date').val('');
+        $('#pendaftar_filter_end_date').val('');
+
+        $('#event-register-table')
+            .DataTable()
+            .ajax
+            .reload();
+    });
+
     function initRaceTable() {
 
         if ($.fn.DataTable.isDataTable('#event-race-table')) {
@@ -691,7 +732,23 @@ $(document).ready(function () {
                     type: 'GET',
 
                     data: function (d) {
-                        d.search_event = $('#search-event-race').val();
+
+                        d.search_race = $('#search-event-race').val();
+
+                        d.race_receipt_number = $('#race_filter_receipt_number').val();
+                        d.race_racer_name = $('#race_filter_racer_name').val();
+                        d.race_nik = $('#race_filter_nik').val();
+                        d.race_racer_number = $('#race_filter_racer_number').val();
+                        d.race_racer_number_duplicate = $('#race_filter_racer_number_duplicate').val();
+                        d.race_team_name = $('#race_filter_team_name').val();
+                        d.race_city = $('#race_filter_city').val();
+                        d.race_class_name = $('#race_filter_class_name').val();
+                        d.race_vehicle = $('#race_filter_vehicle').val();
+                        d.race_chassis_number = $('#race_filter_chassis_number').val();
+                        d.race_engine_number = $('#race_filter_engine_number').val();
+                        d.race_has_photo = $('#race_filter_has_photo').val();
+                        d.race_has_kis = $('#race_filter_has_kis').val();
+                        d.race_has_kta = $('#race_filter_has_kta').val();
                     }
                 },
 
@@ -1024,14 +1081,65 @@ $(document).ready(function () {
             });
 
             // REFRESH
-            $('#refresh-race-register').on('click', function () {
-
-                table.ajax.reload(null, false);
-
+            $(document).on('click', '#refresh-race-register', function () {
+                $('#event-race-table').DataTable().ajax.reload(null, false);
             });
-
         }
     }
+
+    $(document).on('click', '#apply-filter-race', function () {
+
+        $('#event-race-table')
+            .DataTable()
+            .ajax
+            .reload();
+
+        $('#modal_filter_race').modal('hide');
+    });
+
+    $(document).on('click', '#reset-filter-race', function () {
+
+        $('#modal_filter_race')
+            .find('input')
+            .val('');
+
+        $('#modal_filter_race')
+            .find('select')
+            .val('');
+
+        $('#event-race-table')
+            .DataTable()
+            .ajax
+            .reload();
+    });
+
+    $(document).on('click', '#export-race', function () {
+
+        const eventId = $(this).data('event-id');
+
+        const params = new URLSearchParams({
+
+            search: $('#search-event-race').val(),
+
+            race_receipt_number: $('#race_filter_receipt_number').val(),
+            race_racer_name: $('#race_filter_racer_name').val(),
+            race_nik: $('#race_filter_nik').val(),
+            race_racer_number: $('#race_filter_racer_number').val(),
+            race_racer_number_duplicate: $('#race_filter_racer_number_duplicate').val(),
+            race_team_name: $('#race_filter_team_name').val(),
+            race_city: $('#race_filter_city').val(),
+            race_class_name: $('#race_filter_class_name').val(),
+            race_vehicle: $('#race_filter_vehicle').val(),
+            race_chassis_number: $('#race_filter_chassis_number').val(),
+            race_engine_number: $('#race_filter_engine_number').val(),
+            race_has_photo: $('#race_filter_has_photo').val(),
+            race_has_kis: $('#race_filter_has_kis').val(),
+            race_has_kta: $('#race_filter_has_kta').val(),
+        });
+
+        window.location.href =
+            `/race/${eventId}/export?${params.toString()}`;
+    });
 
     function initRaceOriginalTable() {
 
@@ -1304,6 +1412,256 @@ $(document).ready(function () {
         }
     }
 
+    function initEventReportIncomeClassTable() {
+
+        if ($.fn.DataTable.isDataTable('#event-report-income-class')) {
+            return;
+        }
+
+        if ($('#event-report-income-class').length > 0) {
+
+            const eventId = $('#event-report-income-class').data('event-id');
+
+            const table = $('#event-report-income-class').DataTable({
+
+                processing: true,
+                serverSide: false,
+
+                ajax: {
+                    url: `/api/registration-classes/${eventId}/report-income`,
+                    type: 'GET',
+                    data: function (d) {
+                        d.search_event = $('#search-event-race-original').val();
+                        d.payment_status = $('#filter-payment-status').val();
+                    },
+                    dataSrc: function (json) {
+
+                        $('#total-participants').text(
+                            json.summary?.total_participants ?? 0
+                        );
+
+                        $('#total-fines').text(
+                            json.summary?.total_fines ?? 0
+                        );
+
+                        $('#total-without-fines').text(
+                            formatRupiah(json.summary?.total_without_fines ?? 0)
+                        );
+
+                        $('#total-fine-amount').text(
+                            formatRupiah(json.summary?.total_fine_amount ?? 0)
+                        );
+
+                        $('#grand-total').text(
+                            formatRupiah(json.summary?.grand_total ?? 0)
+                        );
+
+                        return json.data;
+                    }
+                },
+
+                bFilter: false,
+                bInfo: false,
+                ordering: false,
+                autoWidth: false,
+                paging: false,
+
+                language: {
+                    emptyTable: "Belum ada data"
+                },
+
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+
+                    {
+                        data: 'class_name',
+                        render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${data ?? '-'}
+                                </span>
+                            `;
+                        }
+                    },
+
+                    {
+                        data: 'participant_count',
+                        render: function (data) {
+                            return `
+                                <span class="badge bg-info">
+                                    ${data}
+                                </span>
+                            `;
+                        }
+                    },
+
+                    {
+                        data: 'price',
+                        render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${formatRupiah(data)}
+                                </span>
+                            `;                        }
+                    },
+
+                    {
+                        data: 'price_fine',
+                        render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${formatRupiah(data)}
+                                </span>
+                            `;
+                        }
+                    },
+
+                    {
+                        data: 'fine_count',
+                        render: function (data) {
+                            return `
+                                <span class="badge bg-warning text-dark">
+                                    ${data}
+                                </span>
+                            `;
+                        }
+                    },
+
+                    {
+                        data: 'total_without_fines',
+                        render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${formatRupiah(data)}
+                                </span>
+                            `;
+                        }
+                    },
+
+                    {
+                        data: 'total_income',
+                        render: function (data, type, row) {
+                            return `
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold text-success">
+                                        ${formatRupiah(data)}
+                                    </span>
+                                </div>
+                            `;
+                        }
+                    }
+                ]
+            });
+
+            $('#refresh-report-income').on('click', function () {
+                table.ajax.reload(null, false);
+            });
+
+            // $(document).on('change', '#filter-payment-status', function () {
+            //     table.ajax.reload();
+            // });
+
+            // $(document).on('keyup', '#search-event-race-original', function () {
+            //     table.ajax.reload();
+            // });
+        }
+    }
+
+    function initEventReportIncomePaymentTable() {
+
+        const eventId = $('#event-report-income-payment').data('event-id');
+
+        $('#event-report-income-payment').DataTable({
+
+            processing: true,
+            serverSide: false,
+
+            ajax: {
+                url: `/api/registration-classes/${eventId}/report-income-payment`,
+                type: 'GET',
+
+                data: function (d) {
+                    d.payment_status =
+                        $('#filter-payment-status').val();
+                },
+
+                dataSrc: function (json) {
+
+                    $('#payment-total-transaction')
+                        .text(json.summary.transaction_count);
+
+                    $('#payment-grand-total')
+                        .text(formatRupiah(json.summary.grand_total));
+
+                    return json.data;
+                }
+            },
+
+            paging: false,
+            searching: false,
+            ordering: false,
+
+            columns: [
+                {
+                    data: null,
+                    render: (d,t,r,m) => m.row + 1
+                },
+                {
+                    data: 'payment_method'
+                },
+                {
+                    data: 'total_income',
+                    render: data => formatRupiah(data)
+                }
+            ]
+
+        });
+
+        $('#refresh-report-income-payment').on('click', function () {
+            table.ajax.reload(null, false);
+        });
+
+        // $(document).on('change', '#filter-payment-status', function () {
+        //     table.ajax.reload();
+        // });
+
+        // $(document).on('keyup', '#search-event-race-original', function () {
+        //     table.ajax.reload();
+        // });
+    }
+
+    $(document).on('change', '#filter-payment-status', function () {
+
+        if ($('#report-income-class-wrapper').is(':visible')) {
+
+            $('#event-report-income-class')
+                .DataTable()
+                .ajax
+                .reload();
+
+        } else {
+
+            $('#event-report-income-payment')
+                .DataTable()
+                .ajax
+                .reload();
+        }
+    });
+
+    function formatRupiah(value) {
+
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(value || 0);
+    }
+
     $(document).ready(function () {
 
         const hash = window.location.hash;
@@ -1326,6 +1684,12 @@ $(document).ready(function () {
             $('.nav-tabs a[href="#race-original"]').tab('show');
 
             initRaceOriginalTable();
+
+        } else if (hash === '#report-income') {
+
+            $('.nav-tabs a[href="#report-income"]').tab('show');
+
+            initEventReportIncomeClassTable();
 
         } else {
 
@@ -1367,6 +1731,13 @@ $(document).ready(function () {
 
                 setTimeout(() => {
                     initRaceOriginalTable();
+                }, 100);
+            }
+
+            if (target === '#report-income') {
+
+                setTimeout(() => {
+                    initEventReportIncomeClassTable();
                 }, 100);
             }
 
@@ -1482,7 +1853,7 @@ $(document).ready(function () {
 
                 $('#edit-name-class').val(data.name);
                 $('#edit-price').val(data.price);
-                $('#edit-price_fine').val(data.price);
+                $('#edit-price_fine').val(data.price_fine);
                 $('#edit-quota').val(data.quota);
                 $('#edit-notes').val(data.notes);
 
@@ -2003,5 +2374,50 @@ $(document).ready(function () {
             // }
 
         });
+    });
+
+    $(document).on('click', '#export-report-income', function () {
+
+        let table;
+
+        if ($('#report-income-class-wrapper').is(':visible')) {
+
+            table = document.getElementById('event-report-income-class');
+
+        } else {
+
+            table = document.getElementById('event-report-income-payment');
+        }
+
+        const clonedTable = table.cloneNode(true);
+
+        const wb = XLSX.utils.table_to_book(clonedTable, {
+            sheet: "Laporan Pendapatan"
+        });
+
+        XLSX.writeFile(
+            wb,
+            `Laporan-Pendapatan-${new Date().toISOString().slice(0, 10)}.xlsx`
+        );
+    });
+
+    $(document).on('change', '#report-type', function () {
+
+        const type = $(this).val();
+
+        if (type === 'class') {
+
+            $('#report-income-class-wrapper').show();
+            $('#report-income-payment-wrapper').hide();
+
+        } else {
+
+            $('#report-income-class-wrapper').hide();
+            $('#report-income-payment-wrapper').show();
+
+            if (!$.fn.DataTable.isDataTable('#event-report-income-payment')) {
+                initEventReportIncomePaymentTable();
+            }
+        }
     });
 });

@@ -124,8 +124,8 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item" role="report">
-                                    <a href="#report"
+                                <li class="nav-item" role="report-income">
+                                    <a href="#report-income"
                                         data-bs-toggle="tab"
                                         class="nav-link border-3"
                                         role="tab">
@@ -215,7 +215,7 @@
                         <!-- /Activities -->
 
                         <!-- Register -->
-                            <div class="tab-pane fade" id="pendaftar">
+                        <div class="tab-pane fade" id="pendaftar">
                             <div class="card">
                                  <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
 
@@ -229,10 +229,20 @@
                                             id="search-event-register"
                                             class="form-control"
                                             placeholder="Search">
+
                                     </div>
 
                                     {{-- RIGHT --}}
                                     <div class="d-flex align-items-center gap-2">
+
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-outline-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal_filter_pendaftar">
+
+                                            <i class="ti ti-filter me-1"></i>
+                                            Filter
+                                        </a>
 
                                         <a href="javascript:void(0);"
                                             id="refresh-event-register"
@@ -304,8 +314,20 @@
                                     {{-- RIGHT --}}
                                     <div class="d-flex align-items-center gap-2">
 
-                                        <a href="{{ route('export-race', $eventId) }}"
+                                        <a href="javascript:void(0);"
+                                            class="btn btn-outline-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modal_filter_race">
+
+                                            <i class="ti ti-filter me-1"></i>
+                                            Filter
+                                        </a>
+
+                                        <a href="javascript:void(0)"
+                                            id="export-race"
+                                            data-event-id="{{ $eventId }}"
                                             class="btn btn-success">
+
                                             <i class="ti ti-file-export me-1"></i>
                                             Export
                                         </a>
@@ -414,55 +436,121 @@
                         <!-- /Race -->
 
                         <!-- Race -->
-                        <div class="tab-pane fade" id="report">
+                        <div class="tab-pane fade" id="report-income">
                             <div class="card">
-                                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+                                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-                                    {{-- LEFT --}}
-                                    <div class="input-icon input-icon-start position-relative">
-                                        <span class="input-icon-addon text-dark">
-                                            <i class="ti ti-search"></i>
-                                        </span>
+                                    <!-- LEFT -->
+                                    <div class="d-flex align-items-center gap-2">
+                                        {{-- <div class="input-icon input-icon-start position-relative" style="width: 300px;">
+                                            <span class="input-icon-addon text-dark">
+                                                <i class="ti ti-search"></i>
+                                            </span>
 
-                                        <input type="text"
-                                            id="search-event-race-original"
-                                            class="form-control"
-                                            placeholder="Search">
+                                            <input type="text"
+                                                id="search-event-race-original"
+                                                class="form-control"
+                                                placeholder="Search">
+                                        </div> --}}
+                                        <!-- Jenis Laporan -->
+                                        <select id="report-type"
+                                            class="form-select"
+                                            style="width: 240px;">
+                                            <option value="class">Pendapatan Per Kelas</option>
+                                            <option value="payment-method">Pendapatan Per Metode Pembayaran</option>
+                                        </select>
+
+                                        <!-- Status Pembayaran -->
+                                        <select id="filter-payment-status"
+                                            class="form-select"
+                                            style="width: 180px;">
+                                            <option value="">Semua Status</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="unpaid">Unpaid</option>
+                                        </select>
+
                                     </div>
 
-                                    {{-- RIGHT --}}
+                                    <!-- RIGHT -->
                                     <div class="d-flex align-items-center gap-2">
-
+                                        <button
+                                            type="button"
+                                            id="export-report-income"
+                                            class="btn btn-success">
+                                            <i class="ti ti-file-export me-1"></i>
+                                            Export
+                                        </button>
                                         <a href="javascript:void(0);"
-                                            id="refresh-race-original-register"
-                                            class="btn btn-icon btn-outline-light shadow"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            title="Refresh">
-
+                                            id="refresh-report-income"
+                                            class="btn btn-icon btn-outline-light shadow">
                                             <i class="ti ti-refresh"></i>
                                         </a>
-
                                     </div>
 
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive custom-table">
-                                        <table class="table table-nowrap" id="event-report-income-class" data-event-id="{{ $eventId }}">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>Nama Kelas</th>
-                                                    <th>Peserta</th>
-                                                    <th>Harga</th>
-                                                    <th>Total Pendapatan</th>
-                                                    {{-- <th>Foto Diri</th>
-                                                    <th>KIS</th>
-                                                    <th>KTA</th> --}}
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+
+                                        <!-- TABLE PER KELAS -->
+                                        <div id="report-income-class-wrapper">
+                                            <table class="table table-nowrap"
+                                                id="event-report-income-class"
+                                                data-event-id="{{ $eventId }}">
+
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Nama Kelas</th>
+                                                        <th>Peserta</th>
+                                                        <th>Harga</th>
+                                                        <th>Harga Denda</th>
+                                                        <th>Jumlah Denda</th>
+                                                        <th>Total Tanpa Denda</th>
+                                                        <th>Total Pendapatan</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody></tbody>
+
+                                                <tfoot>
+                                                    <tr class="table-light fw-bold">
+                                                        <td colspan="2" class="text-end text-dark">TOTAL</td>
+                                                        <td colspan="3" class="text-dark" id="total-participants">0</td>
+                                                        <td class="text-dark" id="total-fines">0</td>
+                                                        <td class="text-dark" id="total-without-fines">Rp 0</td>
+                                                        <td class="text-dark" id="grand-total">Rp 0</td>
+                                                    </tr>
+                                                </tfoot>
+
+                                            </table>
+                                        </div>
+
+                                        <!-- TABLE PER METODE PEMBAYARAN -->
+                                        <div id="report-income-payment-wrapper" style="display:none;">
+                                            <table class="table table-nowrap"
+                                                id="event-report-income-payment"
+                                                data-event-id="{{ $eventId }}">
+
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Metode Pembayaran</th>
+                                                        <th>Total Pendapatan</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody></tbody>
+
+                                                <tfoot>
+                                                    <tr class="table-light fw-bold">
+                                                        <td colspan="2" class="text-end">TOTAL</td>
+                                                        <td id="payment-grand-total">Rp 0</td>
+                                                    </tr>
+                                                </tfoot>
+
+                                            </table>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
