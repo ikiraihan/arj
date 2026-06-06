@@ -103,7 +103,11 @@
 
                                             <input type="text"
                                                 name="racer_nik"
-                                                class="form-control">
+                                                class="form-control"
+                                                maxlength="16"
+                                                inputmode="numeric"
+                                                pattern="[0-9]{16}"
+                                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,16)">
                                         </div>
 
                                         {{-- Phone --}}
