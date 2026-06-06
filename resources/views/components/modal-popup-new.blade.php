@@ -2683,7 +2683,7 @@
 
                             <small class="text-dark d-block mt-2">
                                 *Maksimal besar file
-                                <strong class="text-dar fw-bold"> 2MB</strong>
+                                <strong class="text-dar fw-bold"> 10MB</strong>
                             </small>
 
                         </div>
@@ -2725,7 +2725,7 @@
         aria-labelledby="event-detailLabel"
         aria-hidden="true">
 
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-md modal-dialog-centered">
 
             <div class="modal-content">
 
@@ -2746,205 +2746,90 @@
                 <!-- BODY -->
                 <div class="modal-body">
 
-                    <div class="row">
-
-                        <!-- LEFT -->
-                        <div class="col-lg-8">
-
-                            <div class="mb-3">
-
-                                <h3 class="fw-bold mb-1" id="detail_event_name">
-                                    -
-                                </h3>
-
-                                <p class="text-muted mb-0">
-                                    <i class="ti ti-map-pin me-1"></i>
-
-                                    <span id="detail_event_location">
-                                        -
-                                    </span>
-                                </p>
-
-                            </div>
-
-                            <div class="border rounded p-3 mb-3 bg-light">
-
-                                <h6 class="fw-semibold mb-2">
-                                    Deskripsi Event
-                                </h6>
-
-                                <div id="detail_event_description"
-                                    class="text-muted">
-
-                                    -
-
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-md-6">
-
-                                    <div class="border rounded p-3 mb-3">
-
-                                        <h6 class="fw-semibold mb-2">
-                                            Tanggal Registrasi
-                                        </h6>
-
-                                        <div class="text-muted">
-
-                                            <div>
-                                                <i class="ti ti-calendar me-1"></i>
-
-                                                <span id="detail_registration_date">
-                                                    -
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <div class="border rounded p-3 mb-3">
-
-                                        <h6 class="fw-semibold mb-2">
-                                            Tanggal Event
-                                        </h6>
-
-                                        <div class="text-muted">
-
-                                            <div>
-                                                <i class="ti ti-flag-3 me-1"></i>
-
-                                                <span id="detail_event_date">
-                                                    -
-                                                </span>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- RIGHT -->
-                        <div class="col-lg-4">
-
-                            <!-- PAYMENT -->
-                            <div class="border rounded p-3 mb-3">
-
-                                <h6 class="fw-bold mb-3">
-                                    Rekening Pembayaran
-                                </h6>
-
-                                <div class="mb-2">
-
-                                    <small class="text-muted d-block">
-                                        Bank
-                                    </small>
-
-                                    <span id="detail_bank_name"
-                                        class="fw-semibold">
-                                        -
-                                    </span>
-
-                                </div>
-
-                                <div class="mb-2">
-
-                                    <small class="text-muted d-block">
-                                        Nomor Rekening
-                                    </small>
-
-                                    <span id="detail_account_number"
-                                        class="fw-semibold">
-                                        -
-                                    </span>
-
-                                </div>
-
-                                <div>
-
-                                    <small class="text-muted d-block">
-                                        Atas Nama
-                                    </small>
-
-                                    <span id="detail_account_holder"
-                                        class="fw-semibold">
-                                        -
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                            <!-- CONTACT PERSON -->
-                            <div class="border rounded p-3">
-
-                                <h6 class="fw-bold mb-3">
-                                    Contact Person
-                                </h6>
-
-                                <div class="mb-2">
-
-                                    <small class="text-muted d-block">
-                                        Nama
-                                    </small>
-
-                                    <span id="detail_cp_name"
-                                        class="fw-semibold">
-                                        -
-                                    </span>
-
-                                </div>
-
-                                <div class="mb-2">
-
-                                    <small class="text-muted d-block">
-                                        Nomor HP
-                                    </small>
-
-                                    <span id="detail_cp_phone"
-                                        class="fw-semibold">
-                                        -
-                                    </span>
-
-                                </div>
-
-                                <div>
-
-                                    <small class="text-muted d-block">
-                                        Whatsapp
-                                    </small>
-
-                                    <a href="#"
-                                        target="_blank"
-                                        id="detail_cp_whatsapp"
-                                        class="btn btn-success btn-sm mt-1">
-
-                                        <i class="ti ti-brand-whatsapp me-1"></i>
-                                        Hubungi
-
-                                    </a>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                    <div class="mb-3">
+                        <h3 class="fw-bold mb-1 text-reset" id="detail_event_name">-</h3>
+                        <a href="#"
+                            id="detail_event_link_maps"
+                            target="_blank"
+                            class="text-decoration-none text-primary">
+
+                            <p class="mb-0">
+                                <i class="ti ti-map-pin me-1"></i>
+                                <span id="detail_event_location">-</span>
+                            </p>
+                        </a>
                     </div>
+
+                    <!-- TANGGAL REGISTRASI -->
+                    <div class="border rounded p-3 mb-3">
+                        <h6 class="fw-semibold mb-2">
+                            Tanggal Registrasi
+                        </h6>
+
+                        <div class="text-muted">
+                            <i class="ti ti-calendar me-1"></i>
+                            <span id="detail_registration_date">-</span>
+                        </div>
+                    </div>
+
+                    <!-- TANGGAL EVENT -->
+                    <div class="border rounded p-3 mb-3">
+                        <h6 class="fw-semibold mb-2">
+                            Tanggal Event
+                        </h6>
+
+                        <div class="text-muted">
+                            <i class="ti ti-flag-3 me-1"></i>
+                            <span id="detail_event_date">-</span>
+                        </div>
+                    </div>
+
+                    <!-- REKENING -->
+                    <div class="border rounded p-3 mb-3">
+                        <h6 class="fw-bold mb-3">
+                            Rekening Pembayaran
+                        </h6>
+
+                        <div class="mb-2">
+                            <small class="text-muted d-block">Bank</small>
+                            <span id="detail_bank_name" class="fw-semibold">-</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <small class="text-muted d-block">Nomor Rekening</small>
+                            <span id="detail_account_number" class="fw-semibold">-</span>
+                        </div>
+
+                        <div>
+                            <small class="text-muted d-block">Atas Nama</small>
+                            <span id="detail_account_holder" class="fw-semibold">-</span>
+                        </div>
+                    </div>
+
+                    <!-- CONTACT PERSON -->
+                    <div class="border rounded p-3">
+                        <h6 class="fw-bold mb-3">
+                            Contact Person
+                        </h6>
+
+                        <div id="contact-person-list">
+                            <div class="text-muted">
+                                Contact person tidak tersedia
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESKRIPSI -->
+                    <div class="border rounded p-3 mb-3 bg-light">
+                        <h6 class="fw-semibold mb-2">
+                            Deskripsi Event
+                        </h6>
+
+                        <div id="detail_event_description" class="text-muted">
+                            -
+                        </div>
+                    </div>
+
 
                 </div>
 

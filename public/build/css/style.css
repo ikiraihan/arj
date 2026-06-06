@@ -14207,3 +14207,15 @@ th.fc-day-header {
     height: 100%;
     object-fit: contain;
 }
+
+.event-location-link {
+    transition: color 0.2s ease;
+}
+
+.event-location-link:hover {
+    color: var(--primary) !important;
+}
+
+.event-location-link:hover strong {
+    text-decoration: underline;
+}

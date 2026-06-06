@@ -342,6 +342,7 @@
                                     data-name="${row.event?.name ?? '-'}"
                                     data-description="${row.event?.description ?? '-'}"
                                     data-location="${row.event?.venue ?? '-'}"
+                                    data-link-maps="${row.event?.link_maps ?? '-'}"
                                     data-registration="${new Date(row.event?.registration_start_date).toLocaleDateString('id-ID', {
                                         day: '2-digit',
                                         month: 'short',
@@ -366,9 +367,10 @@
                                     data-account="${row.event?.payment_account?.account_number ?? '-'}"
                                     data-holder="${row.event?.payment_account?.account_holder_name ?? '-'}"
 
-                                    data-cp-name="${row.event?.contact_person?.name ?? '-'}"
-                                    data-cp-phone="${row.event?.contact_person?.phone_number ?? '-'}"
-                                    data-cp-wa="${row.event?.contact_person?.phone_number ?? ''}">
+                                    data-contact-persons='${encodeURIComponent(
+                                        JSON.stringify(row.event?.contact_persons ?? [])
+                                    )}'
+                                    >
 
                                     <span class="event-title">
                                         ${row.event?.name ?? '-'}
@@ -438,8 +440,15 @@
 
     $(document).on('click', '.btn-event-detail', function () {
 
+        const contactPersons = JSON.parse(
+            decodeURIComponent(
+                $(this).attr('data-contact-persons') || '[]'
+            )
+        );
+
         $('#detail_event_name').text($(this).data('name'));
         $('#detail_event_location').text($(this).data('location'));
+        $('#detail_event_link_maps').attr('href', $(this).data('link-maps'));
         $('#detail_event_description').text($(this).data('description'));
 
         $('#detail_registration_date').text($(this).data('registration'));
@@ -449,15 +458,61 @@
         $('#detail_account_number').text($(this).data('account'));
         $('#detail_account_holder').text($(this).data('holder'));
 
-        $('#detail_cp_name').text($(this).data('cp-name'));
-        $('#detail_cp_phone').text($(this).data('cp-phone'));
+        let cpHtml = '';
 
-        const phone = $(this).data('cp-wa');
+        if (contactPersons.length) {
 
-        $('#detail_cp_whatsapp').attr(
-            'href',
-            `https://wa.me/${phone}`
-        );
+            contactPersons.forEach(cp => {
+
+                cpHtml += `
+                    <div class="border rounded p-2 mb-2">
+
+                        <div>
+                            <small class="text-muted d-block">
+                                Nama
+                            </small>
+
+                            <span class="fw-semibold">
+                                ${cp.name ?? '-'}
+                            </span>
+                        </div>
+
+                        <div class="mt-2">
+                            <small class="text-muted d-block">
+                                Nomor HP
+                            </small>
+
+                            <span class="fw-semibold">
+                                ${cp.phone_number ?? '-'}
+                            </span>
+                        </div>
+
+                        <a href="https://wa.me/${cp.phone_number ?? ''}"
+                            target="_blank"
+                            class="btn btn-success btn-sm mt-2">
+
+                            <i class="ti ti-brand-whatsapp me-1"></i>
+                            Hubungi
+
+                        </a>
+
+                    </div>
+                `;
+
+            });
+
+        } else {
+
+            cpHtml = `
+                <div class="text-muted">
+                    Contact person tidak tersedia
+                </div>
+            `;
+
+        }
+
+        $('#contact-person-list').html(cpHtml);
+
     });
 
     /* =========================

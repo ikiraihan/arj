@@ -23,6 +23,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
@@ -572,6 +573,8 @@ class EventController extends Controller
         try {
             $user = User::find(Auth::id());
             $event = Event::findOrFail($request->event_id);
+            $requiredRaceNewRacer = $event->type === 'race' && $request->racer_id === 'new';
+            $requiredNewRacer = $request->racer_id === 'new';
 
             $validated = $request->validate([
 
@@ -583,12 +586,25 @@ class EventController extends Controller
                 'racer_phone_number' => 'nullable|string|max:20',
                 //'racer_number' => 'required_if:racer_id,new|max:20',
                 'racer_number' => [
-                    Rule::requiredIf(
-                        $event->type === 'race'
-                        && $request->racer_id === 'new'
-                    ),
+                    Rule::requiredIf($requiredRaceNewRacer),
                     'nullable',
                     'max:20',
+                ],
+
+                'racer_photo' => [
+                    Rule::requiredIf($requiredNewRacer),
+                    'nullable',
+                    'image',
+                    'mimes:jpg,jpeg,png,webp',
+                    'max:10240',
+                ],
+
+                'racer_kis' => [
+                    Rule::requiredIf($requiredNewRacer),
+                    'nullable',
+                    'file',
+                    'mimes:jpg,jpeg,png',
+                    'max:10240',
                 ],
                 'racer_birth_location' => 'required_if:racer_id,new|nullable|string|max:255',
                 'racer_birth_date' => 'required_if:racer_id,new|nullable|date',
@@ -599,10 +615,10 @@ class EventController extends Controller
                 'event_class_id.*' => 'required|exists:event_classes,id',
 
                 'class_detail' => 'required|array',
-                'class_detail.*.start_number' => 'nullable|string',
-                'class_detail.*.vehicle' => 'nullable|string|max:255',
-                'class_detail.*.engine_number' => 'nullable|string|max:100',
-                'class_detail.*.frame_number' => 'nullable|string|max:100',
+                // 'class_detail.*.start_number' => 'nullable|string',
+                // 'class_detail.*.vehicle' => 'required_with:class_detail.*.class_id|string|max:255',
+                // 'class_detail.*.engine_number' => 'required_with:class_detail.*.class_id|string|max:100',
+                // 'class_detail.*.frame_number' => 'required_with:class_detail.*.class_id|string|max:100',
 
                 'payment_method' => 'required|in:tunai,transfer',
                 'team_name' => 'required',
@@ -643,9 +659,9 @@ class EventController extends Controller
                 'racer_hometown.string' => 'Asal kota pembalap harus berupa teks',
                 'racer_hometown.max' => 'Asal kota pembalap maksimal 255 karakter',
 
-                'racer_photo' => 'required_if:racer_id,new|nullable|image|mimes:jpg,jpeg,png,webp|max:10240',
-                'racer_kta' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
-                'racer_kis' => 'required_if:racer_id,new|nullable|file|mimes:jpg,jpeg,png,pdf|max:10240',
+                'racer_photo.required_if' => 'Foto Diri wajib diisi jika menambah pembalap baru',
+                'racer_kta.required_if' => 'KTA wajib diisi jika menambah pembalap baru',
+                'racer_kis.required_if' => 'KIS wajib diisi jika menambah pembalap baru',
 
                 'phone_number.required' => 'Nomor telepon wajib diisi',
                 'phone_number.string' => 'Nomor telepon harus berupa teks',
@@ -659,14 +675,19 @@ class EventController extends Controller
 
                 'class_detail.required' => 'Detail kelas wajib diisi',
                 'class_detail.array' => 'Format detail kelas tidak valid',
-                'class_detail.*.start_number.string' => 'Nomor start harus berupa teks',
-                'class_detail.*.start_number.max' => 'Nomor start maksimal 20 karakter',
-                'class_detail.*.vehicle.string' => 'Nama kendaraan harus berupa teks',
-                'class_detail.*.vehicle.max' => 'Nama kendaraan maksimal 255 karakter',
-                'class_detail.*.engine_number.string' => 'Nomor mesin harus berupa teks',
-                'class_detail.*.engine_number.max' => 'Nomor mesin maksimal 100 karakter',
-                'class_detail.*.frame_number.string' => 'Nomor rangka harus berupa teks',
-                'class_detail.*.frame_number.max' => 'Nomor rangka maksimal 100 karakter',
+
+                // 'class_detail.*.vehicle.required_if' => 'Nama kendaraan harus diisi',
+                // 'class_detail.*.engine_number.required_if' => 'Nomor mesin harus diisi',
+                // 'class_detail.*.frame_number.required_if' => 'Nomor rangka harus diisi',
+
+                // 'class_detail.*.start_number.string' => 'Nomor start harus berupa teks',
+                // 'class_detail.*.start_number.max' => 'Nomor start maksimal 20 karakter',
+                // 'class_detail.*.vehicle.string' => 'Nama kendaraan harus berupa teks',
+                // 'class_detail.*.vehicle.max' => 'Nama kendaraan maksimal 255 karakter',
+                // 'class_detail.*.engine_number.string' => 'Nomor mesin harus berupa teks',
+                // 'class_detail.*.engine_number.max' => 'Nomor mesin maksimal 100 karakter',
+                // 'class_detail.*.frame_number.string' => 'Nomor rangka harus berupa teks',
+                // 'class_detail.*.frame_number.max' => 'Nomor rangka maksimal 100 karakter',
 
                 'payment_method.required' => 'Metode pembayaran wajib dipilih',
                 'payment_method.in' => 'Metode pembayaran tidak valid',
@@ -777,8 +798,20 @@ class EventController extends Controller
              */
             $countRegistration = RegistrationClass::where('event_id', $request->event_id)->withTrashed()->count();
 
-            foreach ($request->event_class_id as $classId) {
+            foreach ($request->event_class_id as $index => $classId) {
+
                 $detail = $request->class_detail[$classId] ?? [];
+
+                if (
+                    empty($detail['vehicle']) ||
+                    empty($detail['engine_number']) ||
+                    empty($detail['frame_number'])
+                ) {
+
+                    throw ValidationException::withMessages([
+                        "class_detail.$index.vehicle" => 'Data kendaraan wajib diisi lengkap.',
+                    ]);
+                }
 
                 // 1. Ambil nomor invoice untuk baris kelas ini
                 $currentInvoiceNumber = $countRegistration + 1;
@@ -819,7 +852,7 @@ class EventController extends Controller
 
                 $countRegistration++;
             }
-
+            // dd(1);
             DB::commit();
 
             return response()->json([

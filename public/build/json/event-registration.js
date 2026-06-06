@@ -108,17 +108,25 @@ $(document).ready(function () {
                                                     </strong>
                                                 </span>
                                             </p>
-                                            <p class="mb-1 d-flex align-items-start">
-                                                <i class="ti ti-map-pin me-2 mt-1 text-danger"></i>
-                                                <span>
-                                                    <small class="text-muted d-block">
-                                                        Lokasi
-                                                    </small>
-                                                    <strong>
-                                                        ${event.location ?? '-'}
-                                                    </strong>
-                                                </span>
-                                            </p>
+                                            <a href="${event.link_maps ?? '#'}"
+                                                target="_blank"
+                                                class="event-location-link text-muted text-decoration-none">
+
+                                                <p class="mb-1 d-flex align-items-start">
+                                                    <i class="ti ti-map-pin me-2 mt-1"></i>
+
+                                                    <span>
+                                                        <small class="text-muted d-block">
+                                                            Lokasi
+                                                        </small>
+
+                                                        <strong>
+                                                            ${event.location ?? '-'}
+                                                        </strong>
+                                                    </span>
+                                                </p>
+
+                                            </a>
 
                                             <!-- REGISTRATION -->
                                             <p class="mb-1 d-flex align-items-start">
@@ -374,42 +382,49 @@ $(document).ready(function () {
 
                     $.each(errors, function (field, messages) {
 
-                        // field array support
-                        let input = form.find(`[name="${field}"]`);
+                        let fieldName = field.replace(/\.(\w+)$/g, '][$1]');
+
+                        fieldName = fieldName.replace(/^([^.]+)\.(\d+)/, '$1[$2');
+
+                        fieldName += ']';
+
+                        let input = form.find(`[name="${fieldName}"]`);
 
                         if (!input.length) {
+                            input = form.find(`[name="${field}"]`);
+                        }
 
+                        if (!input.length) {
                             input = form.find(`[name="${field}[]"]`);
-
                         }
 
                         input.addClass('is-invalid');
 
-                        // checkbox special
-                        if (input.hasClass('form-check-input')) {
-
-                            input
-                                .last()
-                                .closest('.col-lg-9')
-                                .append(`
-                                    <div class="invalid-feedback d-block">
-                                        ${messages[0]}
-                                    </div>
-                                `);
-
-                        } else {
-
-                            input.last().after(`
-                                <div class="invalid-feedback d-block">
-                                    ${messages[0]}
-                                </div>
-                            `);
-
-                        }
+                        input.last().after(`
+                            <div class="invalid-feedback d-block">
+                                ${messages[0]}
+                            </div>
+                        `);
 
                     });
 
                 } else {
+
+                    if (xhr.status === 422) {
+
+                        const errors = xhr.responseJSON.errors;
+
+                        const firstMessage = Object.values(errors)[0][0];
+
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Validasi Gagal',
+                            text: firstMessage,
+                            showCloseButton: true
+                        });
+
+                        return;
+                    }
 
                     Swal.fire({
                         icon: 'error',

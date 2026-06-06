@@ -35,7 +35,7 @@ class PaymentController extends Controller
             'event',
             'racer',
             'event.paymentAccount',
-            'event.contactPerson'
+            'event.contactPersons'
         ]);
         // ->withCount('registrations')
 
@@ -117,6 +117,7 @@ class PaymentController extends Controller
                     'event' => $register->event,
                     'racer' => $register->racer,
                     'payment_account' => $register->event?->paymentAccount,
+                    'contact_persons' => $register->event?->contactPersons,
                     'classes' => $register->registrationClasses->map(function ($registrationClass) {
                         return [
                             'id' => $registrationClass->id,
@@ -151,7 +152,7 @@ class PaymentController extends Controller
             'payment_proof.required' => 'Bukti pembayaran wajib diupload',
             'payment_proof.image' => 'File harus berupa gambar',
             'payment_proof.mimes' => 'Format harus JPG, JPEG, atau PNG',
-            'payment_proof.max' => 'Ukuran maksimal 2MB',
+            'payment_proof.max' => 'Ukuran maksimal 10MB',
         ]);
 
         $registration = Registration::findOrFail($registrationId);

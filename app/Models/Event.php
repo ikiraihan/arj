@@ -64,6 +64,11 @@ class Event extends Model
         return $this->hasOne(EventContactPerson::class);
     }
 
+     public function contactPersons()
+    {
+        return $this->hasMany(EventContactPerson::class);
+    }
+
     public function photos()
     {
         return $this->hasMany(EventPhoto::class);
