@@ -22,6 +22,7 @@ use App\Models\RegistrationOriginal;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class EventController extends Controller
 {
@@ -570,6 +571,7 @@ class EventController extends Controller
 
         try {
             $user = User::find(Auth::id());
+            $event = Event::findOrFail($request->event_id);
 
             $validated = $request->validate([
 
@@ -579,7 +581,15 @@ class EventController extends Controller
                 'racer_short_name' => 'required_if:racer_id,new|nullable|string|max:255',
                 'racer_nik' => 'required_if:racer_id,new|nullable|string|max:50',
                 'racer_phone_number' => 'nullable|string|max:20',
-                'racer_number' => 'required_if:racer_id,new|max:20',
+                //'racer_number' => 'required_if:racer_id,new|max:20',
+                'racer_number' => [
+                    Rule::requiredIf(
+                        $event->type === 'race'
+                        && $request->racer_id === 'new'
+                    ),
+                    'nullable',
+                    'max:20',
+                ],
                 'racer_birth_location' => 'required_if:racer_id,new|nullable|string|max:255',
                 'racer_birth_date' => 'required_if:racer_id,new|nullable|date',
                 'racer_hometown' => 'required_if:racer_id,new|nullable|string|max:255',
@@ -682,7 +692,7 @@ class EventController extends Controller
                     'birth_location' => $request->racer_birth_location,
                     'birth_date' => $request->racer_birth_date,
                     'hometown' => $request->racer_hometown,
-                    'racer_number' => $request->racer_number,
+                    'racer_number' => $request->racer_number ?? 0,
 
                 ]);
 
@@ -728,8 +738,6 @@ class EventController extends Controller
              * ======================================
              */
             $countRegist = Registration::where('event_id', $request->event_id)->withTrashed()->count();
-
-            $event = Event::findOrFail($request->event_id);
 
             $isFined = false;
 
