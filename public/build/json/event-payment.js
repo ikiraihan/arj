@@ -119,13 +119,13 @@
                             return `
                                 <div class="d-flex justify-content-center">
 
-                                        <button type="button" class="btn btn-sm btn-success btn-open-invoice-register d-flex align-items-center justify-content-center"
+                                        <button type="button" class="btn btn-sm btn-primary btn-open-invoice-info d-flex align-items-center justify-content-center"
                                             href="javascript:void(0);"
                                             data-id="${row.id}"
                                             data-classes="${encodeURIComponent(JSON.stringify( row.classes ?? []))}"                                            data-bs-toggle="modal"
-                                            data-bs-target="#modal_invoice_race">
+                                            data-bs-target="#modal_invoice_info">
 
-                                                <i class="ti ti-download fs-16"></i>
+                                                <i class="ti ti-eye fs-16"></i>
 
                                         </button>
 
@@ -155,8 +155,8 @@
                                     ${row.racer?.full_name ?? '-'}
                                 </span>
 
-                                <small class="text-muted">
-                                    No. Pendaftaran : ${row.registration_number ?? '-'}
+                                <small class="text-dark">
+                                    ${row.racer?.short_name ?? '-'}
                                 </small>
 
                             </div>
@@ -191,11 +191,11 @@
                                     ${row.payment_account?.bank_name ?? '-'}
                                 </span>
 
-                                <small class="text-muted">
+                                <small class="text-dark">
                                     ${row.payment_account?.account_number ?? '-'}
                                 </small>
 
-                                <small class="text-muted">
+                                <small class="text-dark">
                                     ${row.payment_account?.account_holder_name ?? '-'}
                                 </small>
 
@@ -267,7 +267,7 @@
                         // WAITING VERIFICATION
                         else if (row.status === 'menunggu-pembayaran') {
                             badgeClass = 'bg-danger';
-                            label = 'Belum Bayar';
+                            label = 'Menunggu Pembayaran';
                         }
 
                         else if (row.status === 'menunggu-approval') {
@@ -598,6 +598,53 @@
                 $('.btn-upload-payment').prop('disabled', false);
 
             }
+
+        });
+
+    });
+
+    $(document).on('click', '.btn-open-invoice-info', function () {
+
+        const classes = JSON.parse(
+            decodeURIComponent($(this).data('classes'))
+        );
+
+        const container = $('#invoice-class-list');
+
+        container.empty();
+
+        if (!classes.length) {
+
+            container.html(`
+                <div class="alert alert-light border mb-0">
+                    Tidak ada data kelas.
+                </div>
+            `);
+
+            return;
+        }
+
+        classes.forEach(item => {
+
+            container.append(`
+                <div class="border rounded p-3 mb-2">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <div class="fw-semibold">
+                                ${item.class_name ?? '-'}
+                            </div>
+                        </div>
+
+                        <span class="badge bg-info">
+                            ${item.invoice_number ?? '-'}
+                        </span>
+
+                    </div>
+
+                </div>
+            `);
 
         });
 

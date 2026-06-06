@@ -18,6 +18,10 @@
 
                 <div class="col-md-10 mx-auto">
 
+                    <div class="mb-3">
+                        <a href="{{ route('landing') }}"><i class="ti ti-arrow-narrow-left me-1"></i>Kembali ke Halaman Awal</a>
+                    </div>
+
                     <form action="{{ route('login.post') }}" method="POST"
                         class="vh-100 d-flex justify-content-between flex-column p-4 pb-0">
 

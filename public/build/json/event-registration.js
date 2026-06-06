@@ -66,7 +66,7 @@ $(document).ready(function () {
                     res.data.forEach(event => {
 
                         html += `
-                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6">
+                            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 mb-4">
 
                                 <div class="card border shadow h-100 overflow-hidden">
 
@@ -125,9 +125,9 @@ $(document).ready(function () {
                                                 <i class="ti ti-clock-hour-4 me-2 mt-1 text-warning"></i>
 
                                                 <span>
-                                                    Pendaftaran dibuka hingga<br>
+                                                    Pendaftaran dengan Harga Normal hingga<br>
                                                     <strong>
-                                                        ${event.registration_end_date ?? '-'}
+                                                        ${event.registration_end_date_formatted ?? '-'} WIB
                                                     </strong>
                                                 </span>
 
@@ -191,7 +191,7 @@ $(document).ready(function () {
                             .prop("disabled", false)
                             .html(`
                                 <i class="ti ti-plus me-1"></i>
-                                Load More
+                                Tampilkan Lainnya
                             `);
                     }
                 }

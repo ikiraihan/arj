@@ -167,7 +167,7 @@
                                                                 </label>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:void(0);" class="link-primary text-decoration-underline p-2 d-flex">Load More</a>
+                                                                <a href="javascript:void(0);" class="link-primary text-decoration-underline p-2 d-flex">Tampilkan Lainnya</a>
                                                             </li>
                                                         </ul>
                                                     </div>

@@ -104,6 +104,16 @@ $(document).ready(function () {
                                             Hapus
                                         </a>
 
+                                         <a class="dropdown-item text-danger btn-open-delete-payment"
+                                        href="#"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#delete_payment"
+                                        data-id="${row.id}">
+
+                                            <i class="ti ti-currency-dollar"></i>
+                                            Hapus Bukti Pembayaran
+                                        </a>
+
                                     </div>
                                 </div>
 
@@ -861,12 +871,53 @@ $(document).ready(function () {
         deleteEventId = $(this).data('id');
     });
 
+    $(document).on('click', '.btn-open-delete-payment', function () {
+        deleteEventId = $(this).data('id');
+    });
+
     $(document).on('click', '.btn-confirm-delete', function () {
 
         if (!deleteEventId) return;
 
         $.ajax({
             url: `/api/events/${deleteEventId}`,
+            type: 'DELETE',
+
+            success: function (res) {
+
+                $('#event-list-table').DataTable().ajax.reload(null, false);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: res.message || 'Event berhasil dihapus',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                deleteEventId = null;
+
+            },
+
+            error: function () {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Tidak bisa menghapus event'
+                });
+
+            }
+
+        });
+    });
+
+    $(document).on('click', '.btn-confirm-delete-payment', function () {
+
+        if (!deleteEventId) return;
+
+        $.ajax({
+            url: `/api/events/${deleteEventId}/delete-payment-proof`,
             type: 'DELETE',
 
             success: function (res) {

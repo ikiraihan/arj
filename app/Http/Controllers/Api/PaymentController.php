@@ -122,6 +122,7 @@ class PaymentController extends Controller
                             'id' => $registrationClass->id,
                             'class_id' => $registrationClass->class_id,
                             'class_name' => $registrationClass->eventClass->name ?? null,
+                            'invoice_number' => $registrationClass->invoice_number,
                             // 'price' => $registrationClass->eventClass->price ?? 0,
                             // 'price_fine' => $registrationClass->eventClass->price_fine ?? 0,
                             // 'racer_number' => $registrationClass->racer_number,

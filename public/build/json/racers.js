@@ -130,14 +130,18 @@ $(document).ready(function () {
                 },
 
                 {
-                    data: 'racer_number'
+                    data: 'racer_number',
+
+                    render: function (data, type, row) {
+                        return `<span class="fw-medium text-dark">${row.racer_number ?? '-'}</span>`;
+                    }
                 },
 
                 {
                     data: 'ttl',
 
                     render: function (data, type, row) {
-                        return `<span >${row.birth_location ?? '-'} , ${row.birth_date_formatted ?? '-'}</span>`;
+                        return `<span class="fw-medium text-dark">${row.birth_location ?? '-'} , ${row.birth_date_formatted ?? '-'}</span>`;
                     }
                 },
 
@@ -145,7 +149,7 @@ $(document).ready(function () {
                     data: 'hometown',
 
                     render: function (data, type, row) {
-                        return `<span >${row.hometown ?? '-'}</span>`;
+                        return `<span class="fw-medium text-dark">${row.hometown ?? '-'}</span>`;
                     }
                 },
 
@@ -153,7 +157,7 @@ $(document).ready(function () {
                     data: 'phone_number',
 
                     render: function (data, type, row) {
-                        return `<span >${row.phone_number ?? '-'}</span>`;
+                        return `<span class="fw-medium text-dark">${row.phone_number ?? '-'}</span>`;
                     }
                 },
 

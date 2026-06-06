@@ -17,7 +17,7 @@
                     <h4 class="mb-1">Users<span class="badge badge-soft-primary ms-2">152</span></h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="{{url('index')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Manage Users</li>
                         </ol>
                     </nav>

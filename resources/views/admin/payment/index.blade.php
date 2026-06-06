@@ -35,7 +35,9 @@
                 </div>
             </div>
             <!-- End Page Header -->
-
+            <div class="mb-3">
+                <a href="{{ route('events') }}"><i class="ti ti-arrow-narrow-left me-1"></i>Kembali ke Menu Event</a>
+            </div>
             <!-- card start -->
             <div class="card border-0 rounded-0">
                 <div class="card-header d-flex align-items-center justify-content-between gap-2 flex-wrap">

@@ -101,7 +101,7 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-white py-3 px-4">
-                    <a href="index.html" class="navbar-brand p-0">
+                    <a href="/" class="navbar-brand p-0">
                         <h1 class="text-primary m-0">
                             <img src="{{ asset('assets/landing/img/logo_arj.jpeg') }}" class="img-fluid w-12" alt="Image">
                             Ayah Racing Jaya

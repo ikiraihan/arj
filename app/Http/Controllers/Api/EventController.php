@@ -120,15 +120,19 @@ class EventController extends Controller
                     // 'event_date' =>    Carbon::parse($event->start_date)->format('Y-m-d')    . ' - ' .    Carbon::parse($event->end_date)->format('Y-m-d'),
                     'event_date_formatted' =>
                         ($event->start_date && $event->end_date)
-                            ? Carbon::parse($event->start_date)->translatedFormat('d F Y')
-                                . ' - ' .
-                            Carbon::parse($event->end_date)->translatedFormat('d F Y')
+                            ? (
+                                Carbon::parse($event->start_date)->toDateString() === Carbon::parse($event->end_date)->toDateString()
+                                    ? Carbon::parse($event->start_date)->translatedFormat('d F Y')
+                                    : Carbon::parse($event->start_date)->translatedFormat('d F Y')
+                                        . ' - ' .
+                                    Carbon::parse($event->end_date)->translatedFormat('d F Y')
+                            )
                             : null,
                     'created_at' => $event->created_at?->format('Y-m-d H:i'),
                     'registrants' => $event->registrations_count,
 
                     'registration_start_date' => $event->registration_start_date ? Carbon::parse($event->registration_start_date)->format('Y-m-d\TH:i') : null,
-            'registration_end_date' =>  $event->registration_end_date ?  Carbon::parse($event->registration_end_date)->format('Y-m-d\TH:i') : null,
+                    'registration_end_date' =>  $event->registration_end_date ?  Carbon::parse($event->registration_end_date)->format('Y-m-d\TH:i') : null,
                     'start_date' =>  $event->start_date ?  Carbon::parse($event->start_date)->format('Y-m-d') : null,
                     'end_date' =>  $event->end_date ?  Carbon::parse($event->end_date)->format('Y-m-d') : null,
 

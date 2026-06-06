@@ -20,14 +20,17 @@
             width: 710px;
             border: 2px solid #000000;
             padding: 8px 12px; /* Padding atas-bawah dikurangi dari 12px ke 8px */
-            margin-bottom: 10px; /* Jarak antar kotak dikurangi dari 15px ke 10px */
+            margin-bottom: 8px; /* Jarak antar kotak dikurangi dari 15px ke 10px */
             box-sizing: border-box;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         /* --- HEADER TABLES --- */
         .table-header {
             width: 100%;
             border-collapse: collapse;
+            border: 2px solid #000;
             margin-bottom: 10px; /* Diperkecil */
         }
         .table-header td {
@@ -176,12 +179,16 @@
 
         <table class="table-content">
             <tr>
-                <td style="width: 110px;">Nama</td>
+                <td>Nama Pembalap</td>
                 <td style="width: 15px;">:</td>
                 <td style="width: 300px;">{{ $registClass->registration->racer->full_name ?? '-' }}</td>
                 <td style="width: 50px; text-align: right; padding-right: 10px;">NIK</td>
                 <td style="width: 15px;">:</td>
                 <td>{{ $registClass->registration->racer->nik ?? '-' }}</td>
+            </tr>
+             <tr>
+                <td>Nama Pendaftar</td><td>:</td>
+                <td colspan="4">{{ $registClass->registration->name_register ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Team</td><td>:</td>
@@ -242,8 +249,12 @@
                 <td colspan="3" style="font-weight: normal; font-size: 11px; padding: 2px 0; text-transform: none; font-style: italic;">Telah Terima dari</td>
             </tr>
             <tr>
-                <td>Nama</td><td>:</td>
+                <td>Nama Pembalap</td><td>:</td>
                 <td>{{ $registClass->registration->racer->full_name ?? '-' }}</td>
+            </tr>
+                         <tr>
+                <td>Nama Pendaftar</td><td>:</td>
+                <td colspan="4">{{ $registClass->registration->name_register ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Team</td><td>:</td>
@@ -304,9 +315,13 @@
 
         <table class="table-content">
             <tr>
-                <td style="width: 110px;">Nama</td>
+                <td >Nama Pembalap</td>
                 <td style="width: 15px;">:</td>
                 <td colspan="4">{{ $registClass->registration->racer->full_name ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Nama Pendaftar</td><td>:</td>
+                <td colspan="4">{{ $registClass->registration->name_register ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Team</td><td>:</td>

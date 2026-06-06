@@ -2967,44 +2967,72 @@
 
     </div>
 @endif
+
 @if (Route::is(['events-payment', 'event-details']))
-<div class="modal fade" id="modal_invoice_race" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content border-0 shadow-sm rounded-3">
+    <div class="modal fade" id="modal_invoice_race" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content border-0 shadow-sm rounded-3">
 
-            <div class="modal-header py-3 px-4 border-bottom">
-                <div>
-                    <h5 class="modal-title fw-semibold mb-0">Cetak Kwitansi</h5>
+                <div class="modal-header py-3 px-4 border-bottom">
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0">Cetak Kwitansi</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
 
-            <form id="form-print-invoice">
-                <div class="modal-body px-4 py-3">
+                <form id="form-print-invoice">
+                    <div class="modal-body px-4 py-3">
 
-                    <div class="mb-0">
-                        <label class="form-label fw-semibold mb-2">Pilih Kelas Balap</label>
-                        <select class="form-select" id="select_invoice_class" name="registration_class_id" required>
-                            <option value="">-- Pilih Kelas --</option>
-                        </select>
-                        <div class="form-text text-muted mt-1">
-                            Silakan pilih salah satu kelas untuk mencetak formulir, kwitansi, dan lembar scrutineering.
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold mb-2">Pilih Kelas Balap</label>
+                            <select class="form-select" id="select_invoice_class" name="registration_class_id" required>
+                                <option value="">-- Pilih Kelas --</option>
+                            </select>
+                            <div class="form-text text-muted mt-1">
+                                Silakan pilih salah satu kelas untuk mencetak formulir, kwitansi, dan lembar scrutineering.
+                            </div>
                         </div>
+
                     </div>
 
-                </div>
+                    <div class="modal-footer py-3 px-4 border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-printer me-1"></i> Cetak
+                        </button>
+                    </div>
+                </form>
 
-                <div class="modal-footer py-3 px-4 border-top">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="ti ti-printer me-1"></i> Cetak
-                    </button>
-                </div>
-            </form>
-
+            </div>
         </div>
     </div>
-</div>
+    <div class="modal fade" id="modal_invoice_info" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content border-0 shadow-sm rounded-3">
+
+                <div class="modal-header py-3 px-4 border-bottom">
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0">Daftar Kelas & Nomor Invoice</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body px-4 py-3">
+
+                        <div class="mb-0">
+
+                            <div id="invoice-class-list"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer py-3 px-4 border-top">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    </div>
+
+            </div>
+        </div>
+    </div>
 @endif
 
 @if (Route::is(['racers']))
@@ -3069,7 +3097,11 @@
                         <input type="text"
                             name="nik"
                             class="form-control @error('nik') is-invalid @enderror"
-                            value="{{ old('nik') }}">
+                            value="{{ old('nik') }}"
+                            maxlength="16"
+                            inputmode="numeric"
+                            pattern="[0-9]{16}"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,16)">
 
                         @error('nik')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -3084,7 +3116,10 @@
                         <input type="text"
                             name="phone_number"
                             class="form-control @error('phone_number') is-invalid @enderror"
-                            value="{{ old('phone_number') }}">
+                            value="{{ old('phone_number') }}"
+                            maxlength="20"
+                            inputmode="numeric"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,20)">
 
                         @error('phone_number')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -3112,6 +3147,10 @@
                             No. Start
                             <span class="text-danger">*</span>
                         </label>
+
+                        <small class="form-text text-primary">
+                            (Isikan 0 jika hanya mengikuti dragrace)
+                        </small>
 
                         <input type="number"
                             name="racer_number"
@@ -3284,6 +3323,7 @@
 
                         <label class="form-label">
                             Nama Lengkap
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
@@ -3299,6 +3339,7 @@
 
                         <label class="form-label">
                             Nama Alias
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
@@ -3314,12 +3355,17 @@
 
                         <label class="form-label">
                             NIK
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
                             id="edit_nik"
                             name="nik"
-                            class="form-control">
+                            class="form-control"
+                            maxlength="16"
+                            inputmode="numeric"
+                            pattern="[0-9]{16}"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,16)">
 
                         <div class="invalid-feedback error-nik"></div>
                     </div>
@@ -3329,12 +3375,16 @@
 
                         <label class="form-label">
                             No HP
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
                             id="edit_phone_number"
                             name="phone_number"
-                            class="form-control">
+                            class="form-control"
+                            maxlength="20"
+                            inputmode="numeric"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,20)">
 
                         <div class="invalid-feedback error-phone_number"></div>
                     </div>
@@ -3344,6 +3394,7 @@
 
                         <label class="form-label">
                             Asal Kota
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
@@ -3359,7 +3410,12 @@
 
                         <label class="form-label">
                             No Start
+                            <span class="text-danger">*</span>
                         </label>
+
+                        <small class="form-text text-primary">
+                            (Isikan 0 jika hanya mengikuti dragrace)
+                        </small>
 
                         <input type="number"
                             id="edit_racer_number"
@@ -3374,6 +3430,7 @@
 
                         <label class="form-label">
                             Tempat Lahir
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="text"
@@ -3389,6 +3446,7 @@
 
                         <label class="form-label">
                             Tanggal Lahir
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="date"
@@ -3404,6 +3462,7 @@
 
                         <label class="form-label">
                             Foto
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="file"
@@ -3423,6 +3482,7 @@
 
                         <label class="form-label">
                             KIS
+                            <span class="text-danger">*</span>
                         </label>
 
                         <input type="file"

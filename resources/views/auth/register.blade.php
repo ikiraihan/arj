@@ -17,6 +17,9 @@
                     <div class="row">
 
                         <div class="col-md-10 mx-auto">
+                            <div class="mb-3">
+                                <a href="{{ route('landing') }}"><i class="ti ti-arrow-narrow-left me-1"></i>Kembali ke Halaman Awal</a>
+                            </div>
                             <form action="{{ route('register.post') }}" method="POST" class="vh-100 d-flex justify-content-between flex-column p-4 pb-0">
                                 {{-- <div class="text-center mb-3 auth-logo">
                                     <img src="{{ asset('assets/landing/img/logo_arj.jpeg') }}" class="img-fluid" alt="Logo">
@@ -53,7 +56,9 @@
                                         </div>
                                     @endif
                                     <div class="mb-3">
-                                        <label class="form-label">Name</label>
+                                        <label class="form-label">Name
+                                             <span class="text-danger">*</span>
+                                        </label>
                                         <div class="input-group input-group-flat">
                                             <input type="text"
                                                 name="name"
@@ -71,7 +76,9 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">Email
+                                             <span class="text-danger">*</span>
+                                        </label>
 
                                         <div class="input-group input-group-flat">
 
@@ -94,28 +101,35 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">No. WA</label>
+                                        <label class="form-label">No. WA
+                                             <span class="text-danger">*</span>
+                                        </label>
                                         <div class="input-group input-group-flat">
                                             <input type="text"
                                                 name="phone_number"
                                                 class="form-control @error('phone_number') is-invalid @enderror"
                                                 value="{{ old('phone_number') }}"
                                                 placeholder="Masukkan nomor WhatsApp"
+                                                maxlength="20"
+                                                inputmode="numeric"
+                                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,20)"
                                                 required>
-                                            <span class="input-group-text">
+                                            {{-- <span class="input-group-text">
                                                 <i class="ti ti-user"></i>
-                                            </span>
+                                            </span> --}}
                                         </div>
                                         @error('phone_number')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label">Password
+                                             <span class="text-danger">*</span>
+                                        </label>
                                         <div class="input-group input-group-flat pass-group">
                                             <input type="password"
                                                 name="password"
-                                                class="form-control @error('password') is-invalid @enderror"
+                                                class="form-control pass-input @error('password') is-invalid @enderror"
                                                 placeholder="Masukkan password">
 
                                             <span class="input-group-text toggle-password ">
@@ -127,11 +141,13 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Confirm Password</label>
+                                        <label class="form-label">Confirm Password
+                                             <span class="text-danger">*</span>
+                                        </label>
                                         <div class="input-group input-group-flat pass-group">
                                             <input type="password"
                                                 name="password_confirmation"
-                                                class="form-control @error('password_confirmation') is-invalid @enderror"
+                                                class="form-control pass-input @error('password_confirmation') is-invalid @enderror"
                                                 placeholder="Konfirmasi password">
                                             <span class="input-group-text toggle-password">
                                                 <i class="ti ti-eye-off"></i>

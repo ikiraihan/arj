@@ -270,73 +270,73 @@
             <h2 class="text-primary fw-bold">Disupport Oleh</h2>
         </div>
         <div class="row g-4 justify-content-center">
-        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="team-item rounded">
-                <div class="team-img">
-                    <img src="{{ asset('assets/landing/img/KONI_JATIM.jpeg') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
-                </div>
-            </div>
-        </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/FIM.jpeg') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/FIM.jpeg') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/FIA.jpeg') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/FIA.jpeg') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/imi.jpg') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/KONI_JATIM.jpeg') }}" class="img-fluid" alt="support ayah racing jaya">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="team-item rounded">
+                    <div class="team-img">
+                        <img src="{{ asset('assets/landing/img/imi.jpg') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/imi_jatim.jpg') }}" class="img-fluid w-100 rounded-top" alt="Team Member 2">
+                        <img src="{{ asset('assets/landing/img/imi_jatim.jpg') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/LOGO BASIC.png') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/LOGO BOLS.png') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/LOGO BOLS.png') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/LOGO BASIC.png') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/LOGO SUPER STAR.png') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/LOGO GRACIA.png') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="team-item rounded">
                     <div class="team-img">
-                        <img src="{{ asset('assets/landing/img/LOGO GRACIA.png') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                        <img src="{{ asset('assets/landing/img/LOGO SUPER STAR.png') }}" class="img-fluid" alt="support ayah racing jaya">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
             <div class="team-item rounded">
                 <div class="team-img">
-                    <img src="{{ asset('assets/landing/img/BPJS_TK.jpeg') }}" class="img-fluid w-100 rounded-top" alt="ikatan motor indonesia">
+                    <img src="{{ asset('assets/landing/img/BPJS_TK.jpeg') }}" class="img-fluid" alt="support ayah racing jaya">
                 </div>
             </div>
         </div>

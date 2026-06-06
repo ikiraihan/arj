@@ -82,7 +82,7 @@ class RacerController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('racers')
+                ->route('racers', ['userId' => auth()->id()])
                 ->with('success', 'Data pembalap berhasil ditambahkan');
 
         } catch (\Exception $e) {

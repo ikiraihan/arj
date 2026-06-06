@@ -126,6 +126,7 @@
                                                 class="form-control">
                                         </div>
 
+                                        @if ($event->type == 'race')
                                         {{-- No. Start --}}
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">No. Start
@@ -136,6 +137,7 @@
                                                 name="racer_number"
                                                 class="form-control">
                                         </div>
+                                        @endif
 
                                         {{-- Birth Location --}}
                                         <div class="col-md-6 mb-3">
@@ -370,7 +372,11 @@
                                                             <input type="text"
                                                                 name="class_detail[{{ $item->id }}][engine_number]"
                                                                 class="form-control form-control-sm"
-                                                                placeholder="4 Angka Terakhir">
+                                                                placeholder="4 Angka Terakhir"
+                                                                maxlength="4"
+                                                                inputmode="numeric"
+                                                                pattern="[0-9]{4}"
+                                                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
                                                             <div class="invalid-feedback d-block"></div>
                                                         </div>
 
@@ -384,7 +390,11 @@
                                                             <input type="text"
                                                                 name="class_detail[{{ $item->id }}][frame_number]"
                                                                 class="form-control form-control-sm"
-                                                                placeholder="4 Angka Terakhir">
+                                                                placeholder="4 Angka Terakhir"
+                                                                maxlength="4"
+                                                                inputmode="numeric"
+                                                                pattern="[0-9]{4}"
+                                                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
                                                             <div class="invalid-feedback d-block"></div>
                                                         </div>
 

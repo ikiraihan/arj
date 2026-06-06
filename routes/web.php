@@ -32,8 +32,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/event', [EventController::class, 'index'])
             ->name('events');
 
-        Route::get('/registration/{id}/pdf', [RegistrationController::class, 'generatePdf']);
-
     });
 
     Route::middleware(['auth', 'role:superadmin,admin'])->group(function () {
@@ -50,6 +48,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/regulations/store', [RegulationController::class, 'store'])->name('regulations.store');
 
     Route::get('/race/{event}/export', [ExportController::class, 'exportRace'])->name('export-race');
+
+    Route::get('/registration/{id}/pdf', [RegistrationController::class, 'generatePdf']);
+
     });
 
     Route::middleware(['auth', 'role:user'])->group(function () {

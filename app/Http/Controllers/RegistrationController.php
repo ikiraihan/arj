@@ -25,6 +25,10 @@ class RegistrationController extends Controller
     {
         $event = Event::findOrFail($eventId);
 
+        if (!$event->is_active) {
+            return redirect()->route('events');
+        }
+
         $rekening = $event->paymentAccount;
 
         $isLate = $event->registration_end_date
