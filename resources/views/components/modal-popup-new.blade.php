@@ -1355,6 +1355,28 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="delete_payment">
+        <div class="modal-dialog modal-dialog-centered modal-sm rounded-0">
+            <div class="modal-content rounded-0">
+                <div class="modal-body p-4 text-center position-relative">
+                    <div class="mb-3 position-relative z-1">
+                        <span class="avatar avatar-xl badge-soft-danger border-0 text-danger rounded-circle"><i class="ti ti-trash fs-24"></i></span>
+                    </div>
+                    <h5 class="mb-1">Hapus semua bukti pembayaran</h5>
+                    <p class="mb-3">File dan data bukti pembayaran akan dihapus permanen.</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-light position-relative z-1 me-2 w-100" data-bs-dismiss="modal">Batal</a>
+                        <a href="#"
+                        class="btn btn-primary position-relative z-1 w-100 btn-confirm-delete-payment"
+                        data-bs-dismiss="modal">
+                            Ya, Hapus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- delete modal -->
 @endif
 

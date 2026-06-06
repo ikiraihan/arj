@@ -513,6 +513,50 @@ class EventController extends Controller
         ]);
     }
 
+    public function deleteAllPaymentProof($eventId)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $registrations = Registration::where('event_id', $eventId)
+                ->whereNotNull('payment_proof')
+                ->get();
+
+            foreach ($registrations as $registration) {
+
+                if (
+                    $registration->payment_proof &&
+                    Storage::disk('public')->exists($registration->payment_proof)
+                ) {
+                    Storage::disk('public')
+                        ->delete($registration->payment_proof);
+                }
+            }
+
+            Registration::where('event_id', $eventId)
+                ->update([
+                    'payment_proof' => null,
+                ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Semua bukti pembayaran berhasil dihapus.'
+            ]);
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Store Registration Event
      */
