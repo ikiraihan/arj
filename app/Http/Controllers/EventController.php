@@ -43,7 +43,9 @@ class EventController extends Controller
     public function store(Request $request)
     {
         try {
-
+            $request->merge([
+                'is_active' => filter_var($request->is_active, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
+            ]);
             $validated = $request->validate([
 
                 // EVENT
@@ -205,7 +207,7 @@ class EventController extends Controller
                 ->with('success', 'Event berhasil ditambahkan');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-
+            dd($e->errors());
             return redirect()
                 ->back()
                 ->withErrors($e->validator)
@@ -213,11 +215,11 @@ class EventController extends Controller
                 ->with('open_offcanvas', 'offcanvas_add');
 
         } catch (\Exception $e) {
-            // dd([
-            //     'message' => $e->getMessage(),
-            //     'file' => $e->getFile(),
-            //     'line' => $e->getLine(),
-            // ]);
+            dd([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
             DB::rollBack();
 
             Log::error('Gagal store event: ' . $e->getMessage());

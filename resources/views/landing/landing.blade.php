@@ -77,6 +77,10 @@
 
                             <div class="service-content-inner">
 
+                                <small class="text-muted d-block">
+                                    {{ $event->type_formatted ?? '-' }}
+                                </small>
+                                
                                 <p class="fw-bold mb-4">
                                     {{ $event->name }}
                                 </p>

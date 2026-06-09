@@ -460,11 +460,15 @@
                                 name="type">
 
                                 <option value="race" selected>
-                                    Race
+                                    Roadrace
                                 </option>
 
                                 <option value="drag">
-                                    Drag
+                                    Dragrace
+                                </option>
+
+                                <option value="dragbike">
+                                    Dragbike
                                 </option>
 
                             </select>
@@ -1010,11 +1014,15 @@
                                 name="type">
 
                                 <option value="race" selected>
-                                    Race
+                                    Roadrace
                                 </option>
 
                                 <option value="drag">
-                                    Drag
+                                    Dragrace
+                                </option>
+
+                                <option value="dragbike">
+                                    Dragbike
                                 </option>
 
                             </select>
@@ -3034,7 +3042,7 @@
                         </label>
 
                         <small class="form-text text-primary">
-                            (Isikan 0 jika hanya mengikuti dragrace)
+                            (Isikan 0 jika hanya mengikuti dragrace atau dragbike)
                         </small>
 
                         <input type="number"
@@ -3299,7 +3307,7 @@
                         </label>
 
                         <small class="form-text text-primary">
-                            (Isikan 0 jika hanya mengikuti dragrace)
+                            (Isikan 0 jika hanya mengikuti dragrace atau dragbike)
                         </small>
 
                         <input type="number"

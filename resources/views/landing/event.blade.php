@@ -23,6 +23,10 @@
             <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
 
                 <div class="pb-4">
+
+                    <small class="text-dark d-block">
+                        {{ $event->type_formatted ?? '-' }}
+                    </small>
                     <h2 class="display-5">{{ $event->name }} </h2>
                     <span class="badge bg-danger mb-3">
                         Pendaftaran dengan Harga Normal hingga {{ $event->registration_end_date_formatted }} WIB

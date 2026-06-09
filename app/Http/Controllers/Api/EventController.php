@@ -74,25 +74,31 @@ class EventController extends Controller
 
             });
         }
-        // SORT
         $orderColumnIndex = $request->input('order.0.column');
-        $orderDirection   = $request->input('order.0.dir', 'desc');
 
-        $columns = $request->input('columns');
+        if ($orderColumnIndex == 0) {
 
-        $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
+            $query->latest('created_at');
 
-        $allowedColumns = [
-            'name',
-            'venue',
-            'created_at',
-        ];
+        } else {
 
-        if (!in_array($orderColumn, $allowedColumns)) {
-            $orderColumn = 'created_at';
+            $orderDirection = $request->input('order.0.dir', 'desc');
+            $columns = $request->input('columns');
+
+            $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
+
+            $allowedColumns = [
+                'name',
+                'venue',
+                'created_at',
+            ];
+
+            if (!in_array($orderColumn, $allowedColumns)) {
+                $orderColumn = 'created_at';
+            }
+
+            $query->orderBy($orderColumn, $orderDirection);
         }
-
-        $query->orderBy($orderColumn, $orderDirection);
 
         $recordsTotal = Event::count();
         $recordsFiltered = (clone $query)->count();
@@ -116,6 +122,12 @@ class EventController extends Controller
                     'link_documentation' => $event->link_documentation,
                     'link_documentation_active' => $event->link_documentation_active,
                     'type' => $event->type,
+                    'type_formatted' => match ($event->type) {
+                        'race'     => 'Roadrace',
+                        'drag'     => 'Dragrace',
+                        'dragbike' => 'Dragbike',
+                        default    => ucfirst($event->type),
+                    },
                     // 'registration_date' =>  $event->registration_end_date && $event->registration_start_date ?  Carbon::parse($event->registration_start_date)->format('Y-m-d')    . ' - ' .    Carbon::parse($event->registration_end_date)->format('Y-m-d') : null,
                     'registration_date_formatted' =>  $event->registration_end_date && $event->registration_start_date ?  Carbon::parse($event->registration_start_date)->translatedFormat('d F Y H:i')    . ' - ' .    Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i') : null,
                     'registration_end_date_formatted' => $event->registration_end_date ? Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i') : null,
@@ -195,7 +207,12 @@ class EventController extends Controller
             'provinsi' => $event->provinsi,
             'description' => $event->description,
             'type' => $event->type,
-
+            'type_formatted' => match ($event->type) {
+                'race'     => 'Roadrace',
+                'drag'     => 'Dragrace',
+                'dragbike' => 'Dragbike',
+                default    => ucfirst($event->type),
+            },
             'location' =>
                 $event->venue . ', ' .
                 $event->kota . ', ' .
@@ -781,8 +798,10 @@ class EventController extends Controller
                 'status' => $request->payment_method == 'transfer' ? 'menunggu-pembayaran' : 'unpaid',
                 'race_status' => 'pending',
                 'is_fined' => $isFined,
-                'racer_number' => $event->type == 'drag' ? $countRegist + 1 : $racer->racer_number,
-                // 'payment_method' => $request->payment_method,
+                'racer_number' => in_array($event->type, ['drag', 'dragbike'])
+                    ? $countRegist + 1
+                    : $racer->racer_number,
+                    // 'payment_method' => $request->payment_method,
 
             ]);
 
@@ -845,7 +864,9 @@ class EventController extends Controller
                     'rangka_number'         => $detail['frame_number'] ?? null,
                     'name_register'         => $request->name_register,
                     'phone_number_register' => $request->phone_number_register,
-                    'racer_number'          => $event->type == 'drag' ? $countRegist + 1 : $racer->racer_number,
+                    'racer_number' => in_array($event->type, ['drag', 'dragbike'])
+                        ? $countRegist + 1
+                        : $racer->racer_number,
                     'payment_method'        => $request->payment_method,
                     'is_fined'              => $isFined,
                 ]);

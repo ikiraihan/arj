@@ -64,7 +64,7 @@
 
                     <!-- table header -->
                     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                        {{-- <div class="d-flex align-items-center gap-2 flex-wrap">
                             <div class="dropdown">
                                 <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-light px-2 shadow" data-bs-toggle="dropdown"><i class="ti ti-sort-ascending-2 me-2"></i>Sort By</a>
                                 <div class="dropdown-menu">
@@ -78,10 +78,10 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                                 <div class="dropdown">
-                                <a href="javascript:void(0);" class="btn btn-outline-light shadow px-2" data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filter<i class="ti ti-chevron-down ms-2"></i></a>
+                                {{-- <a href="javascript:void(0);" class="btn btn-outline-light shadow px-2" data-bs-toggle="dropdown" data-bs-auto-close="outside"><i class="ti ti-filter me-2"></i>Filter<i class="ti ti-chevron-down ms-2"></i></a>
                                 <div class="filter-dropdown-menu dropdown-menu dropdown-menu-lg p-0">
                                     <div class="filter-header d-flex align-items-center justify-content-between border-bottom">
                                         <h6 class="mb-0"><i class="ti ti-filter me-1"></i>Filter</h6>
@@ -208,7 +208,7 @@
                                             <a href="{{url('companies-list')}}" class="btn btn-primary w-100">Filter</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             {{-- <div class="d-flex align-items-center shadow p-1 rounded border view-icons bg-white">
                                 <a href="{{url('companies-list')}}" class="btn btn-sm p-1 border-0 fs-14 active"><i class="ti ti-list-tree"></i></a>

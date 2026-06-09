@@ -86,6 +86,9 @@ $(document).ready(function () {
                                     <!-- BODY -->
                                     <div class="card-body p-3 d-flex flex-column">
                                         <!-- TITLE -->
+                                        <small class="text-muted d-block">
+                                            ${event.type_formatted ?? '-'}
+                                        </small>
                                         <div class="mb-2">
                                             <h5 class="mb-1">
                                                 ${event.name}

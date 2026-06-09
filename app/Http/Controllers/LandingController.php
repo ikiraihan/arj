@@ -29,6 +29,13 @@ class LandingController extends Controller
             ->get()
             ->map(function ($event) {
 
+                $event->type_formatted = match ($event->type) {
+                    'race'     => 'Roadrace',
+                    'drag'     => 'Dragrace',
+                    'dragbike' => 'Dragbike',
+                    default    => ucfirst($event->type),
+                };
+
                 $event->photo_url = $event->photo
                     ? asset('storage/' . $event->photo->path)
                     : null;
@@ -58,6 +65,14 @@ class LandingController extends Controller
             if (!$event->is_active) {
                 throw new \Exception('Event tidak tersedia atau telah dinonaktifkan.');
             }
+
+            $event->type_formatted = match ($event->type) {
+                'race'     => 'Roadrace',
+                'drag'     => 'Dragrace',
+                'dragbike' => 'Dragbike',
+                default    => ucfirst($event->type),
+            };
+
 
             $event->location =
                 $event->venue . ', ' .
