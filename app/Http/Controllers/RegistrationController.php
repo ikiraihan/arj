@@ -95,6 +95,38 @@ class RegistrationController extends Controller
 
                     return $pdf->stream($filename);
                     break;
+                case 'kwitansi-drag':
+                    $registrationClass = RegistrationClass::with(['registration.racer.user', 'eventClass'])->findOrFail($id);
+                    $registration = $registrationClass->registration;
+
+                    $price = $registrationClass->eventClass->price ?? 0;
+                    if ($registration && $registration->is_fined) {
+                        $price += $registrationClass->eventClass->price_fine ?? 0;
+                    }
+
+                    $priceString = number_format($price, 0, ',', '.');
+
+                    $terbilang = $this->konversiTerbilang($price) . ' RUPIAH';
+
+                    $view = 'pdf.kwitansi-drag';
+                    $filename = 'kwitansi_' . ($registrationClass->registration->racer->short_name ?? 'peserta') . '.pdf';
+
+                    Carbon::setLocale('id');
+                    $today = Carbon::now()->isoFormat('MMMM Y');
+                    $today = strtoupper($today);
+
+                    $pdf = Pdf::loadView($view, [
+                            'registClass' => $registrationClass,
+                            'price'  => $priceString,
+                            'terbilang'   => $terbilang,
+                            'today'=> $today
+                        ]);
+
+                    // Mengatur kertas ukuran A4 atau Letter dengan orientasi Landscape / Mendatar agar pas dengan contoh gambar
+                    $pdf->setPaper('a4', 'portrait');
+
+                    return $pdf->stream($filename);
+                    break;
 
                 default:
                     throw new \Exception('Tipe PDF tidak valid');

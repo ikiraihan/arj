@@ -814,7 +814,29 @@ $(document).ready(function () {
                                                 <i class="ti ti-clipboard-check"></i>
                                                 Ubah Data
                                             </a>
+                                            ${( row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
+                                                    <a class="dropdown-item text-success btn-open-invoice-register"
+                                                        href="javascript:void(0);"
+                                                        data-id="${row.id}"
+                                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes))}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal_invoice_race">
 
+                                                            <i class="ti ti-printer"></i>
+                                                            Cetak Kwitansi
+                                                    </a>
+
+                                                ` : ''}
+
+                                            ${( row.event?.type === 'drag' || row.event?.type === 'dragbike' ) ? `
+                                                <a class="dropdown-item text-success"
+                                                    href="/registration/${row.id}/pdf?type=kwitansi-drag"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer">
+                                                        <i class="ti ti-printer"></i>
+                                                        Cetak Kwitansi
+                                                </a>
+                                            ` : ''}
                                             <a class="dropdown-item text-danger btn-open-delete-register"
                                             href="#"
                                             data-bs-toggle="modal"

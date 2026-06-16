@@ -471,6 +471,10 @@
                                     Dragbike
                                 </option>
 
+                                <option value="motorcross">
+                                    Motorcross
+                                </option>
+
                             </select>
 
                         </div>
@@ -1023,6 +1027,10 @@
 
                                 <option value="dragbike">
                                     Dragbike
+                                </option>
+
+                                <option value="motorcross">
+                                    Motorcross
                                 </option>
 
                             </select>

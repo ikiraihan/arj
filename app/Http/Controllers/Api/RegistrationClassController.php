@@ -298,6 +298,7 @@ class RegistrationClassController extends Controller
                         'event' => $event ? [
                                 'id' => $event->id,
                                 'name' => $event->name,
+                                'type' => $event->type,
                             ] : null,
                         'event_class' => $eventClass ? [
                             'id' => $eventClass->id,

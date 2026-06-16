@@ -5,9 +5,9 @@
     <title>Dokumen Pendaftaran & Kwitansi Balap</title>
     <style>
         /* --- DOMPDF PERFECT RESET --- */
-        @page {
-            margin: 15px 20px;
-        }
+@page {
+    margin: 5px 10px;
+}
         body {
             font-family: 'Georgia', 'Times New Roman', Times, serif;
             color: #000000;
@@ -19,8 +19,8 @@
         .section-wrapper {
             width: 710px;
             border: 2px solid #000000;
-            padding: 8px 12px; /* Padding atas-bawah dikurangi dari 12px ke 8px */
-            margin-bottom: 8px; /* Jarak antar kotak dikurangi dari 15px ke 10px */
+            padding: 4px 8px;
+            margin-bottom: 6px;
             box-sizing: border-box;
             page-break-inside: avoid;
             break-inside: avoid;
@@ -31,7 +31,7 @@
             width: 100%;
             border-collapse: collapse;
             border: 2px solid #000;
-            margin-bottom: 10px; /* Diperkecil */
+            margin-bottom: 6px;
         }
         .table-header td {
             padding: 0;
@@ -41,9 +41,9 @@
         .title-document {
             border-right: 2px solid #000000;
             border-bottom: 2px solid #000000;
-            padding: 6px 10px; /* Diperkecil */
+            padding: 5px 10px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 13px;
             text-transform: uppercase;
             line-height: 1.2;
             width: 550px;
@@ -55,13 +55,13 @@
         }
         .label-no-start {
             border-bottom: 2px solid #000000;
-            padding: 2px 0; /* Diperkecil */
+            padding: 2px 0;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
         }
         .value-no-start {
-            font-size: 32px; /* Sedikit disesuaikan agar compact */
+            font-size: 24px;
             font-weight: bold;
             padding: 2px 0;
             line-height: 1;
@@ -71,9 +71,9 @@
         .title-document-scrut {
             border-right: 2px solid #000000;
             border-bottom: 2px solid #000000;
-            padding: 6px 10px;
+            padding: 5px 10px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 13px;
             text-transform: uppercase;
             line-height: 1.2;
             width: 220px;
@@ -89,13 +89,13 @@
         .table-content {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 8px; /* Dikurangi dari 12px ke 8px */
+            margin-bottom: 3px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 11px;
         }
         .table-content td {
-            padding: 1px 2px; /* Jarak baris data dipersempit dari 4px ke 2px */
+            padding: 1px 2px;
             vertical-align: top;
         }
 
@@ -103,22 +103,22 @@
         .text-pernyataan {
             text-align: center;
             font-style: italic;
-            font-size: 9px;
+            font-size: 7px;
             border-bottom: 1px solid #000000;
-            padding-bottom: 4px; /* Diperkecil */
-            margin-bottom: 8px; /* Diperkecil */
+            padding-bottom: 2px;
+            margin-bottom: 3px;
             font-weight: normal;
-            line-height: 1.3;
+            line-height: 1.2;
         }
         .table-footer {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 10px;
         }
         .peruntukan {
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 10px;
+            font-size: 9px;
             text-align: right;
             vertical-align: bottom;
         }
@@ -126,9 +126,9 @@
         /* NOMINAL RUPIAH */
         .box-nominal {
             border: 2px solid #000000;
-            font-size: 20px; /* Sedikit diperkecil */
+            font-size: 16px;
             font-weight: bold;
-            padding: 2px 12px;
+            padding: 1px 8px;
             display: inline-block;
         }
 
@@ -140,8 +140,8 @@
         }
         .table-lurus-scrut td {
             border: 1px solid #000000;
-            padding: 2px 12px;
-            font-size: 11px;
+            padding: 1px 8px;
+            font-size: 10px;
         }
 
         /* FOOTER RUNNING TEXT */
@@ -149,15 +149,23 @@
             width: 710px;
             border-collapse: collapse;
             font-family: Arial, sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
-            /* margin-top: 3px; */
+            margin-top: 2px;
+        }
+
+        /* --- SCALE CONTAINER --- */
+        .page-container {
+            width: 710px;
+            transform-origin: top left;
+            transform: scale(0.97);
         }
     </style>
 </head>
 <body>
+<div class="page-container">
 
-    <table class="page-absolute-footer" style="margin-bottom: 1;">
+    <table class="page-absolute-footer">
         <tr>
             <td style="width: 30%;"></td>
             <td style="width: 40%; text-align: center;">{{ $registClass->event->name ?? '-' }}</td>
@@ -218,7 +226,7 @@
         <table class="table-footer">
             <tr>
                 <td style="font-weight: bold; text-transform: uppercase;">
-                    Peserta,<br><br><br> {{-- Tinggi ruang tanda tangan dikurangi --}}
+                    Peserta,<br><br>
                     <u>{{ $registClass->registration->racer->full_name ?? '-' }}</u>
                 </td>
                 <td class="peruntukan">Untuk Panitia</td>
@@ -285,8 +293,8 @@
                 <td style="width: 200px; text-align: center; font-weight: bold; text-transform: uppercase; vertical-align: top;">
                     {{ $today }}<br>
                     PENERIMA,<br>
-                    <div style="margin-top: 5px; margin-bottom: 5px;">
-                        <img src="{{ public_path('assets/landing/img/logo_arj.jpeg') }}" alt="Logo" style="height: 45px; width: auto;">
+                    <div style="margin-top: 3px; margin-bottom: 3px;">
+                        <img src="{{ public_path('assets/landing/img/logo_arj.jpeg') }}" alt="Logo" style="height: 35px; width: auto;">
                     </div>
                     <div style="font-size: 11px;">Ayah Racing Jaya</div>
                 </td>
@@ -295,13 +303,13 @@
     </div>
 
 
-    <div class="section-wrapper" style="margin-bottom: 0;">
+    <div class="section-wrapper">
         <table class="table-header">
             <tr>
                 <td class="title-document-scrut">Formulir Scrutineering</td>
                 <td class="box-center-kelas">
                     <div class="label-no-start">Kelas</div>
-                    <div style="font-size: 18px; padding: 4px 4px; font-weight: bold;">
+                    <div style="font-size: 14px; padding: 2px 4px; font-weight: bold;">
                         {{ $registClass->eventClass->name ?? '-' }}
                     </div>
                 </td>
@@ -347,7 +355,7 @@
         <table class="table-footer">
             <tr>
                 <td style="width: 220px; font-weight: bold; text-transform: uppercase; vertical-align: top;">
-                    Peserta,<br><br><br><br><br>
+                    Peserta,<br><br><br>
                     <u>{{ $registClass->registration->racer->full_name ?? '-' }}</u>
                 </td>
                 <td style="text-align: center; vertical-align: top;">
@@ -360,12 +368,165 @@
                     </table>
                 </td>
                 <td style="width: 220px; text-align: right; font-weight: bold; text-transform: uppercase; vertical-align: top;">
-                    SCRUTINEERING,<br><br><br><br><br>
+                    SCRUTINEERING,<br><br><br>
                     <span style="border-top: 1px dashed #000000; display: inline-block; width: 140px;">&nbsp;</span>
                     <div style="font-size: 9px;">UNTUK PETUGAS SCRUT</div>
                 </td>
             </tr>
         </table>
+    </div>
+
+    <div class="section-wrapper">
+        <!-- HEADER -->
+        <table class="table-header">
+            <tr>
+                <td class="title-document-scrut" style="width:550px;">
+                    KARTU KONTROL
+                </td>
+
+                <td class="box-no-start">
+                    <div class="label-no-start">
+                        NO. START
+                    </div>
+
+                    <div class="value-no-start">
+                        {{ $registClass->registration->racer_number ?? '-' }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- DATA PESERTA -->
+        <table class="table-content">
+            <tr>
+                <td style="width:220px;">NAMA PEMBALAP</td>
+                <td style="width:15px;">:</td>
+                <td>
+                    {{ $registClass->registration->racer->full_name ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:220px;">NAMA PENDAFTAR</td>
+                <td style="width:15px;">:</td>
+                <td>
+                    {{ $registClass->registration->name_register ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>TEAM</td>
+                <td>:</td>
+                <td>
+                    {{ $registClass->registration->team_name ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>KENDARAAN</td>
+                <td>:</td>
+                <td>
+                    {{ $registClass->vehicle ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>NOKA / NOSIN</td>
+                <td>:</td>
+                <td>
+                    {{ $registClass->rangka_number ?? '-' }}
+                    &nbsp;&nbsp;/&nbsp;&nbsp;
+                    {{ $registClass->vehicle_number ?? '-' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>KELAS</td>
+                <td>:</td>
+                <td>
+                    {{ $registClass->eventClass->name ?? '-' }}
+                </td>
+            </tr>
+        </table>
+
+        <!-- FOOTER -->
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+
+                <!-- CATATAN -->
+                <td style="
+                    border-top:1px solid #000;
+                    padding:8px;
+                    font-size:11px;
+                    width:330px;
+                    vertical-align:top;
+                    text-transform:none;
+                    font-weight:bold;
+                ">
+                    *Kehilangan kartu kontrol akan menerima sanksi sesuai dengan
+                    peraturan perlombaan
+                </td>
+
+                <!-- RACE 1 -->
+                <td style="
+                    border:1px solid #000;
+                    width:120px;
+                    padding:0;
+                    text-align:center;
+                ">
+                    <div style="
+                        border-bottom:1px solid #000;
+                        padding:4px;
+                        font-size:14px;
+                        font-weight:bold;
+                    ">
+                        RACE 1
+                    </div>
+
+                    <div style="height:45px;"></div>
+                </td>
+
+                <!-- RACE 2 -->
+                <td style="
+                    border:1px solid #000;
+                    width:120px;
+                    padding:0;
+                    text-align:center;
+                ">
+                    <div style="
+                        border-bottom:1px solid #000;
+                        padding:4px;
+                        font-size:14px;
+                        font-weight:bold;
+                    ">
+                        RACE 2
+                    </div>
+
+                    <div style="height:45px;"></div>
+                </td>
+
+                <!-- FINAL -->
+                <td style="
+                    border:1px solid #000;
+                    width:120px;
+                    padding:0;
+                    text-align:center;
+                ">
+                    <div style="
+                        border-bottom:1px solid #000;
+                        padding:4px;
+                        font-size:14px;
+                        font-weight:bold;
+                    ">
+                        FINAL
+                    </div>
+
+                    <div style="height:45px;"></div>
+                </td>
+
+            </tr>
+        </table>
+
     </div>
 
     <table class="page-absolute-footer">
@@ -376,5 +537,6 @@
         </tr>
     </table>
 
+</div>
 </body>
 </html>

@@ -33,6 +33,7 @@ class LandingController extends Controller
                     'race'     => 'Roadrace',
                     'drag'     => 'Dragrace',
                     'dragbike' => 'Dragbike',
+                    'motorcross'  => 'Motorcross',
                     default    => ucfirst($event->type),
                 };
 
@@ -70,6 +71,7 @@ class LandingController extends Controller
                 'race'     => 'Roadrace',
                 'drag'     => 'Dragrace',
                 'dragbike' => 'Dragbike',
+                'motorcross'  => 'Motorcross',
                 default    => ucfirst($event->type),
             };
 

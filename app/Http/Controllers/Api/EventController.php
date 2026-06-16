@@ -126,6 +126,7 @@ class EventController extends Controller
                         'race'     => 'Roadrace',
                         'drag'     => 'Dragrace',
                         'dragbike' => 'Dragbike',
+                        'motorcross'  => 'Motorcross',
                         default    => ucfirst($event->type),
                     },
                     // 'registration_date' =>  $event->registration_end_date && $event->registration_start_date ?  Carbon::parse($event->registration_start_date)->format('Y-m-d')    . ' - ' .    Carbon::parse($event->registration_end_date)->format('Y-m-d') : null,
@@ -211,6 +212,7 @@ class EventController extends Controller
                 'race'     => 'Roadrace',
                 'drag'     => 'Dragrace',
                 'dragbike' => 'Dragbike',
+                'motorcross'  => 'Motorcross',
                 default    => ucfirst($event->type),
             },
             'location' =>
