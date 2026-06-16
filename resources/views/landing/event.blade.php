@@ -28,9 +28,9 @@
                         {{ $event->type_formatted ?? '-' }}
                     </small>
                     <h2 class="display-5">{{ $event->name }} </h2>
-                    <span class="badge bg-danger mb-3">
+                   <div class="badge bg-danger mb-3 text-wrap p-2">
                         Pendaftaran dengan Harga Normal hingga {{ $event->registration_end_date_formatted }} WIB
-                    </span>
+                    </div>
                 </div>
                 <!-- DETAIL EVENT -->
                 <div class="pb-4">
