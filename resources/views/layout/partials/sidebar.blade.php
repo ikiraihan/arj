@@ -85,6 +85,12 @@
                                         <span>Regulasi</span>
                                     </a>
                                 </li>
+                                <li class="{{ Request::is('racers') ? 'active' : '' }}">
+                                    <a href="{{ route('racers')}}">
+                                        <i class="ti ti-helmet"></i>
+                                        <span>Data Pembalap</span>
+                                    </a>
+                                </li>
                             @endif
 
                             {{-- Hanya untuk user --}}

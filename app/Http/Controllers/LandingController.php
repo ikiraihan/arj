@@ -24,6 +24,7 @@ class LandingController extends Controller
     public function index()
     {
         $events = Event::where('is_active', true)
+            ->where('registration_start_date', '<=', now())
             ->with('photos')
             ->latest()
             ->get()

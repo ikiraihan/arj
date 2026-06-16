@@ -54,6 +54,19 @@ class RegistrationController extends Controller
         ));
     }
 
+    public function trackPreview($id)
+    {
+        $registrationClass = RegistrationClass::findOrFail($id);
+
+        $registrationClass->update([
+            'count_print_invoice' => $registrationClass->count_print_invoice + 1
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
     public function generatePdf(Request $request, $id)
     {
         try {

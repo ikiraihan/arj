@@ -58,7 +58,8 @@ class EventController extends Controller
         ]);
 
         if ($request->type == 'grid') {
-            $query->where('is_active', true);
+            $query->where('is_active', true)
+                ->where('registration_start_date', '<=', now());
         }
 
         // SEARCH
@@ -592,7 +593,9 @@ class EventController extends Controller
         try {
             $user = User::find(Auth::id());
             $event = Event::findOrFail($request->event_id);
-            $requiredRaceNewRacer = $event->type === 'race' && $request->racer_id === 'new';
+            $requiredRaceNewRacer =
+                in_array($event->type, ['race', 'motorcross']) &&
+                $request->racer_id === 'new';
             $requiredNewRacer = $request->racer_id === 'new';
 
             $validated = $request->validate([

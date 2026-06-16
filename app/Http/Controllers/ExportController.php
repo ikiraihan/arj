@@ -16,5 +16,21 @@ class ExportController extends Controller
             'registrasi-balap-'. $eventId . '-' . now()->format('YmdHis') . '.xlsx'
         );
     }
+
+    // public function exportRace(Request $request, $eventId)
+    // {
+    //     switch ($request->type) {
+    //         case 'original':
+    //             return Excel::download(
+    //                 new RegistrationClassExport(array_merge($request->all(), ['event_id' => $eventId])),
+    //                 'registrasi-balap-original-'. $eventId . '-' . now()->format('YmdHis') . '.xlsx'
+    //             );
+    //         default:
+    //             return Excel::download(
+    //                 new RegistrationClassExport(array_merge($request->all(), ['event_id' => $eventId])),
+    //                 'registrasi-balap-'. $eventId . '-' . now()->format('YmdHis') . '.xlsx'
+    //             );
+    //     }
+    // }
 }
 

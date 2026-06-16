@@ -58,7 +58,9 @@
                         <span class="input-icon-addon text-dark"><i class="ti ti-search"></i></span>
                         <input type="text" id="search-racers" class="form-control" placeholder="Search">
                     </div>
+                    @if(auth()->user()->role == 'user')
                     <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add"><i class="ti ti-square-rounded-plus-filled me-1"></i>Tambah Pembalap</a>
+                    @endif
                 </div>
                 <div class="card-body">
 
@@ -82,7 +84,8 @@
                     </div>
                     <!-- table header -->
 
-                   <!-- Event List -->
+                    @if(auth()->user()->role == 'user')
+                   <!-- Racer List -->
                     <div class="table-responsive custom-table">
                         <table class="table table-nowrap" id="racer-list-table" data-user-id="{{ $user->id }}">
                             <thead class="table-light">
@@ -101,6 +104,27 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                    @else
+                    <div class="table-responsive custom-table">
+                        <table class="table table-nowrap" id="racer-list-table-admin">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="text-end no-sort">Action</th>
+                                    <th>Nama Pembalap</th>
+                                    <th>Nama Pendaftar</th>
+                                    <th>No. Start</th>
+                                    <th>TTL</th>
+                                    <th>Asal Kota</th>
+                                    <th>No. Telepon</th>
+                                    <th>Foto</th>
+                                    <th>KTA</th>
+                                    <th>KIS</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    @endif
 
                     <div class="row align-items-center">
                         <div class="col-md-6">

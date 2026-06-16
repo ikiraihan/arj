@@ -130,7 +130,7 @@
                                                 class="form-control">
                                         </div>
 
-                                        @if ($event->type == 'race')
+                                        @if ($event->type == 'race' || $event->type == 'motocross')
                                         {{-- No. Start --}}
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">No. Start

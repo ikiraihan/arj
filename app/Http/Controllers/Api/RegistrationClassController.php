@@ -33,6 +33,7 @@ class RegistrationClassController extends Controller
                 'event_id',
                 'class_id',
                 'invoice_number',
+                'count_print_invoice',
                 'racer_number',
                 'vehicle',
                 'vehicle_number',
@@ -252,6 +253,7 @@ class RegistrationClassController extends Controller
 
                         'id' => $registClass->id,
                         'invoice_number' => $registClass->invoice_number,
+                        'count_print_invoice' => $registClass->count_print_invoice,
                         'racer_number' => $registClass->racer_number,
                         'is_racer_number_duplicate' => $isDuplicateNumber,
                         'vehicle' => $registClass->vehicle,

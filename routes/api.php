@@ -49,7 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/registration-original/{eventId}', [RegistrationClassController::class, 'indexOriginal']);
 
     Route::get('/racer/select/{userId?}',[RacerController::class, 'select']);
-    Route::get('/racers/{userId}', [RacerController::class, 'index']);
+    Route::get('/racers/admin', [RacerController::class, 'indexAdmin']);
+    Route::get('/racers/{userId}', [RacerController::class, 'index'])->whereNumber('userId');
     Route::put('/racers/{id}', [RacerController::class, 'update']);
     Route::get('/racers/show/{id}', [RacerController::class, 'show']);
     Route::delete('/racers/{id}', [RacerController::class, 'destroy']);

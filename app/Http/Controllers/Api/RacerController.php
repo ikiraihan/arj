@@ -16,7 +16,7 @@ class RacerController extends Controller
     public function index(Request $request, $userId): JsonResponse
     {
 
-        if ((int) $userId !== (int) auth()->id()) {
+        if (auth()->user()->role == 'user' && (int) $userId !== (int) auth()->id()) {
 
             return response()->json([
                 'message' => 'Unauthorized'
@@ -103,6 +103,100 @@ class RacerController extends Controller
             'recordsTotal' => $recordsTotal,
             'recordsFiltered' => $recordsFiltered,
             'data' => $users
+        ]);
+    }
+
+    public function indexAdmin(Request $request): JsonResponse
+    {
+        $length = $request->length ?? 10;
+        $start  = $request->start ?? 0;
+
+        $query = Racer::query();
+
+        // SEARCH
+        if ($request->search_racer) {
+
+            $query->where(function ($q) use ($request) {
+
+                $search = $request->search_racer;
+
+                $q->where('full_name', 'like', "%{$search}%")
+                    ->orWhere('short_name', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%")
+                    ->orWhere('racer_number', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+
+                        $userQuery->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('phone_number', 'like', "%{$search}%");
+
+                    });
+
+            });
+        }
+
+        // SORTING
+        $orderColumnIndex = $request->input('order.0.column');
+        $orderDirection   = $request->input('order.0.dir', 'desc');
+
+        $columns = $request->input('columns');
+
+        $orderColumn = $columns[$orderColumnIndex]['name'] ?? 'created_at';
+
+        // whitelist biar aman
+        $allowedColumns = [
+            'full_name',
+            'short_name',
+            'phone_number',
+            'racer_number',
+            'created_at',
+        ];
+
+        if (!in_array($orderColumn, $allowedColumns)) {
+            $orderColumn = 'created_at';
+        }
+
+        $query->orderBy($orderColumn, $orderDirection);
+
+        $recordsFiltered = $query->count();
+        $recordsTotal    = Racer::count();
+
+        $racer = $query
+            ->skip($start)
+            ->take($length)
+            ->get()
+            ->transform(function ($item) {
+
+                $item->birth_date = $item->birth_date
+                ? Carbon::parse($item->birth_date)->format('Y-m-d')
+                : null;
+
+                $item ->birth_date_formatted = $item->birth_date ? Carbon::parse($item->birth_date)->translatedFormat('d F Y') : null;
+
+                $item->photo_url = $item->photo
+                    ? asset('storage/' . $item->photo)
+                    : null;
+
+                $item->kta_url = $item->kta
+                    ? asset('storage/' . $item->kta)
+                    : null;
+
+                $item->kis_url = $item->kis
+                    ? asset('storage/' . $item->kis)
+                    : null;
+
+                $item->user_name = $item->user ? $item->user->name : null;
+                $item->user_email = $item->user ? $item->user->email : null;
+                $item->user_phone_number = $item->user ? $item->user->phone_number : null;
+
+                return $item;
+            });
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $racer
         ]);
     }
 

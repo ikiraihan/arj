@@ -14,7 +14,7 @@ $(document).ready(function () {
         }
     });
 
-        if ($('#racer-list-table').length > 0) {
+    if ($('#racer-list-table').length > 0) {
 
         const userId = $('#racer-list-table').data('user-id');
         const table = $('#racer-list-table').DataTable({
@@ -410,6 +410,7 @@ $(document).ready(function () {
 
                 // reload datatable
                 $('#racer-list-table').DataTable().ajax.reload(null, false);
+                $('#racer-list-table-admin').DataTable().ajax.reload(null, false);
 
                 // close offcanvas
                 bootstrap.Offcanvas.getInstance(
@@ -545,5 +546,304 @@ $(document).ready(function () {
             reader.readAsDataURL(file);
         }
     });
+
+    if ($('#racer-list-table-admin').length > 0) {
+
+        const table = $('#racer-list-table-admin').DataTable({
+
+            processing: true,
+            serverSide: true,
+
+            ajax: {
+                url: `/api/racers/admin`,
+                type: 'GET',
+
+                data: function (d) {
+                    d.search_racer = $('#search-racers').val();
+                }
+            },
+
+            bFilter: false,
+            bInfo: false,
+            ordering: true,
+            autoWidth: true,
+
+            language: {
+                search: ' ',
+                sLengthMenu: '_MENU_',
+                searchPlaceholder: "Search racer",
+                info: "_START_ - _END_ of _TOTAL_ racers",
+                lengthMenu: "Show _MENU_ entries",
+                paginate: {
+                    next: '<i class="ti ti-chevron-right"></i>',
+                    previous: '<i class="ti ti-chevron-left"></i>'
+                },
+            },
+
+            initComplete: (settings, json) => {
+
+                $('.dataTables_paginate').appendTo('.datatable-paginate');
+                $('.dataTables_length').appendTo('.datatable-length');
+
+            },
+
+            columns: [
+
+                // ACTION
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+
+                    render: function (data, type, row) {
+
+                        return `
+                            <div class="d-flex justify-content-center align-items-center">
+
+                                <div class="dropdown table-action">
+
+                                    <a href="#"
+                                    class="action-icon btn btn-xs shadow btn-icon btn-outline-light"
+                                    data-bs-toggle="dropdown">
+
+                                        <i class="ti ti-dots-vertical"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-end">
+
+                                        <a class="dropdown-item text-warning btn-edit-racer"
+                                            href="javascript:void(0);"
+                                            data-id="${row.id}"
+                                            data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvas_edit">
+
+                                                <i class="ti ti-edit text-blue"></i>
+                                                Edit
+                                        </a>
+
+                                        <a class="dropdown-item text-danger btn-open-delete-racer"
+                                        href="#"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#delete_racer"
+                                        data-id="${row.id}">
+
+                                            <i class="ti ti-trash"></i>
+                                            Hapus
+                                        </a>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        `;
+                    }
+                },
+
+                // NAME + CATEGORY (like USERS style nested info)
+                {
+                    data: 'name',
+
+                    render: function (data, type, row) {
+
+                            return `
+                               <div class="d-flex flex-column">
+
+                                    <span class="fw-medium text-dark">
+                                        ${row.full_name ?? '-'}
+                                    </span>
+
+                                    <small class="text-dark">
+                                        ${row.short_name ?? '-'}
+                                    </small>
+
+                                </div>
+                            `;
+                        }
+                },
+
+                 // NAME + CATEGORY (like USERS style nested info)
+                {
+                    data: 'user_name',
+
+                    render: function (data, type, row) {
+
+                            return `
+                               <div class="d-flex flex-column">
+
+                                    <span class="fw-medium text-dark">
+                                        ${row.user_name ?? '-'}
+                                    </span>
+
+                                    <small class="text-dark">
+                                        ${row.user_email ?? '-'}
+                                    </small>
+
+                                    <small class="text-dark">
+                                        ${row.user_phone_number ?? '-'}
+                                    </small>
+
+                                </div>
+                            `;
+                        }
+                },
+
+                {
+                    data: 'racer_number',
+
+                    render: function (data, type, row) {
+                        return `<span class="fw-medium text-dark">${row.racer_number ?? '-'}</span>`;
+                    }
+                },
+
+                {
+                    data: 'ttl',
+
+                    render: function (data, type, row) {
+                        return `<span class="fw-medium text-dark">${row.birth_location ?? '-'} , ${row.birth_date_formatted ?? '-'}</span>`;
+                    }
+                },
+
+                {
+                    data: 'hometown',
+
+                    render: function (data, type, row) {
+                        return `<span class="fw-medium text-dark">${row.hometown ?? '-'}</span>`;
+                    }
+                },
+
+                {
+                    data: 'phone_number',
+
+                    render: function (data, type, row) {
+                        return `<span class="fw-medium text-dark">${row.phone_number ?? '-'}</span>`;
+                    }
+                },
+
+                // foto diri
+                {
+                    data: 'photo_url',
+
+                    orderable: false,
+                    searchable: false,
+
+                    render: function (data, type, row) {
+
+                        // BELUM ADA BUKTI
+                        if (!row.photo_url) {
+
+                            return `
+                                -
+                            `;
+                        }
+
+                        // ADA BUKTI
+                        return `
+                            <a href="${row.photo_url}"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+
+                                <i class="ti ti-photo"></i>
+
+                                Lihat Foto
+
+                            </a>
+                        `;
+                    }
+                },
+
+                {
+                    data: 'kis_url',
+
+                    orderable: false,
+                    searchable: false,
+
+                    render: function (data, type, row) {
+
+                        // BELUM ADA BUKTI
+                        if (!row.kis_url) {
+
+                            return `
+                                -
+                            `;
+                        }
+
+                        // ADA BUKTI
+                        return `
+                            <a href="${row.kis_url}"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+
+                                <i class="ti ti-photo"></i>
+
+                                Lihat Foto
+
+                            </a>
+                        `;
+                    }
+                },
+
+                {
+                    data: 'kta_url',
+
+                    orderable: false,
+                    searchable: false,
+
+                    render: function (data, type, row) {
+
+                        // BELUM ADA BUKTI
+                        if (!row.kta_url) {
+
+                            return `
+                                -
+                            `;
+                        }
+
+                        // ADA BUKTI
+                        return `
+                            <a href="${row.kta_url}"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+
+                                <i class="ti ti-photo"></i>
+
+                                Lihat Foto
+
+                            </a>
+                        `;
+                    }
+                },
+
+                // STATUS
+                // {
+                //     data: 'status',
+
+                //     render: function (data) {
+
+                //         let color = data === 'active'
+                //             ? 'success'
+                //             : data === 'draft'
+                //                 ? 'warning'
+                //                 : 'danger';
+
+                //         return `<span class="badge bg-${color}">${data}</span>`;
+                //     }
+                // },
+
+            ]
+
+        });
+
+        // SEARCH (like users)
+        $(document).on('keyup', '#search-racers', function () {
+            console.log('typing:', $(this).val()); // debug
+            table.ajax.reload();
+        });
+
+        // REFRESH (optional)
+        $('#refresh-racers').on('click', function () {
+            table.ajax.reload(null, false);
+        });
+
+    }
 
 });

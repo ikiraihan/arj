@@ -21,6 +21,7 @@ class RegistrationClass extends Model
         'vehicle',
         'vehicle_number',
         'rangka_number',
+        'count_print_invoice'
     ];
 
     // protected $casts = [

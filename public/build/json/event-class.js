@@ -814,29 +814,25 @@ $(document).ready(function () {
                                                 <i class="ti ti-clipboard-check"></i>
                                                 Ubah Data
                                             </a>
-                                            ${( row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
-                                                    <a class="dropdown-item text-success btn-open-invoice-register"
-                                                        href="javascript:void(0);"
-                                                        data-id="${row.id}"
-                                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes))}"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal_invoice_race">
 
-                                                            <i class="ti ti-printer"></i>
-                                                            Cetak Kwitansi
-                                                    </a>
-
-                                                ` : ''}
-
-                                            ${( row.event?.type === 'drag' || row.event?.type === 'dragbike' ) ? `
-                                                <a class="dropdown-item text-success"
-                                                    href="/registration/${row.id}/pdf?type=kwitansi-drag"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer">
+                                            ${(row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
+                                                <a class="dropdown-item text-success btn-print-kwitansi"
+                                                    href="/registration/${row.id}/pdf?type=kwitansi"
+                                                    data-id="${row.id}">
                                                         <i class="ti ti-printer"></i>
                                                         Cetak Kwitansi
                                                 </a>
                                             ` : ''}
+
+                                            ${(row.event?.type === 'drag' || row.event?.type === 'dragbike') ? `
+                                                <a class="dropdown-item text-success btn-print-kwitansi"
+                                                    href="/registration/${row.id}/pdf?type=kwitansi-drag"
+                                                    data-id="${row.id}">
+                                                        <i class="ti ti-printer"></i>
+                                                        Cetak Kwitansi
+                                                </a>
+                                            ` : ''}
+
                                             <a class="dropdown-item text-danger btn-open-delete-register"
                                             href="#"
                                             data-bs-toggle="modal"
@@ -861,9 +857,15 @@ $(document).ready(function () {
                         render: function (data, type, row) {
 
                             return `
+                            <div class="d-flex flex-column">
                                 <span class="fw-semibold text-dark">
                                     ${row.invoice_number ?? '-'}
                                 </span>
+
+                                <small class="text-dark">
+                                    Cetak : ${row.count_print_invoice ?? '0'}
+                                </small>
+                            </div>
                             `;
                         }
                     },
@@ -1108,6 +1110,19 @@ $(document).ready(function () {
             });
         }
     }
+
+    $(document).on('click', '.btn-print-kwitansi', function (e) {
+        e.preventDefault();
+
+        const registrationId = $(this).data('id');
+        const pdfUrl = $(this).attr('href');
+
+        $.post(`/registration/${registrationId}/track-preview`, {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        }).done(function () {
+            window.open(pdfUrl, '_blank');
+        });
+    });
 
     $(document).on('click', '#apply-filter-race', function () {
 

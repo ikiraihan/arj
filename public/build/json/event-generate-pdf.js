@@ -26,11 +26,9 @@ $(document).on('click', '.btn-open-invoice-register', function () {
         }
     });
 
-    // 4. Aksi saat tombol "Cetak PDF" di dalam modal diklik
     $('#form-print-invoice').on('submit', function (e) {
         e.preventDefault();
 
-        // Ambil ID RegistrationClass yang dipilih dari dropdown
         let registrationClassId = $('#select_invoice_class').val();
 
         if (!registrationClassId) {
@@ -38,12 +36,41 @@ $(document).on('click', '.btn-open-invoice-register', function () {
             return;
         }
 
-        // Bangun URL mengarah ke Route generatePdf Anda dengan parameter type
         let printUrl = `/registration/${registrationClassId}/pdf?type=kwitansi`;
 
-        // Buka PDF di tab baru tanpa menutup halaman utama aplikasi
-        window.open(printUrl, '_blank');
+        $.post(`/registration/${registrationClassId}/track-preview`, {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        }).done(function () {
 
-        // Tutup modal secara otomatis setelah mencetak
-        $('#modal_invoice_race').modal('hide');
+            window.open(printUrl, '_blank');
+
+            $('#modal_invoice_race').modal('hide');
+
+        }).fail(function () {
+
+            alert('Gagal mencatat preview invoice');
+
+        });
     });
+
+    // 4. Aksi saat tombol "Cetak PDF" di dalam modal diklik
+    // $('#form-print-invoice').on('submit', function (e) {
+    //     e.preventDefault();
+
+    //     // Ambil ID RegistrationClass yang dipilih dari dropdown
+    //     let registrationClassId = $('#select_invoice_class').val();
+
+    //     if (!registrationClassId) {
+    //         alert('Silakan pilih kelas terlebih dahulu!');
+    //         return;
+    //     }
+
+    //     // Bangun URL mengarah ke Route generatePdf Anda dengan parameter type
+    //     let printUrl = `/registration/${registrationClassId}/pdf?type=kwitansi`;
+
+    //     // Buka PDF di tab baru tanpa menutup halaman utama aplikasi
+    //     window.open(printUrl, '_blank');
+
+    //     // Tutup modal secara otomatis setelah mencetak
+    //     $('#modal_invoice_race').modal('hide');
+    // });
