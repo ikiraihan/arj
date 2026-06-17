@@ -92,7 +92,7 @@ $(document).ready(function () {
                                         <a class="dropdown-item btn-open-delete"
                                         href="#"
                                         data-bs-toggle="modal"
-                                        data-bs-target="delete_contact#"
+                                        data-bs-target="#delete_contact"
                                         data-id="${row.id}">
 
                                             <i class="ti ti-trash"></i>
