@@ -679,29 +679,48 @@
             return;
         }
 
-        classes.forEach(item => {
+        let html = `
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Nama Kelas</th>
+                            <th width="220">Nomor Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
 
-            container.append(`
-                <div class="border rounded p-3 mb-2">
+        classes.forEach((item, index) => {
 
-                    <div class="d-flex justify-content-between align-items-center">
+            html += `
+                <tr>
+                    <td class="text-center">
+                        ${index + 1}
+                    </td>
 
-                        <div>
-                            <div class="fw-semibold">
-                                ${item.class_name ?? '-'}
-                            </div>
-                        </div>
+                    <td class="fw-semibold">
+                        ${item.class_name ?? '-'}
+                    </td>
 
-                        <span class="badge bg-info">
+                    <td>
+                        <span class="badge bg-primary">
                             ${item.invoice_number ?? '-'}
                         </span>
-
-                    </div>
-
-                </div>
-            `);
+                    </td>
+                </tr>
+            `;
 
         });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        container.html(html);
 
     });
 

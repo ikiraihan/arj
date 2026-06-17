@@ -508,16 +508,42 @@ $(document).ready(function () {
 
                         render: function (data, type, row) {
 
+                            const classes = encodeURIComponent(
+                                JSON.stringify(row.classes ?? [])
+                            );
+
                             return `
                                 <div class="d-flex flex-column">
 
-                                    <span class="fw-bold text-dark fs-14">
-                                        Rp ${Number(row.total_price ?? 0).toLocaleString('id-ID')}
-                                    </span>
+                                    <a href="javascript:void(0);"
+                                        class="fw-bold text-dark fs-14 text-decoration-none btn-class-detail event-hover"
 
-                                    <small class="text-muted">
-                                        ${row.count_class ?? 0} Kelas
-                                    </small>
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-class-detail"
+
+                                        data-classes="${classes}"
+                                        data-is_fined="${row.is_fined ?? 0}"
+                                        data-total_price="${row.total_price ?? 0}">
+
+                                        <span class="event-title">
+                                            Rp ${Number(row.total_price ?? 0).toLocaleString('id-ID')}
+                                        </span>
+                                    </a>
+
+                                    <a href="javascript:void(0);"
+                                        class="text-dark text-decoration-none btn-class-detail event-hover"
+
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-class-detail"
+
+                                        data-classes="${classes}"
+                                        data-is_fined="${row.is_fined ?? 0}"
+                                        data-total_price="${row.total_price ?? 0}">
+
+                                        <small class="event-title">
+                                            ${row.count_class ?? 0} Kelas
+                                        </small>
+                                    </a>
 
                                 </div>
                             `;
@@ -2456,5 +2482,74 @@ $(document).ready(function () {
                 initEventReportIncomePaymentTable();
             }
         }
+    });
+
+    $(document).on('click', '.btn-class-detail', function () {
+
+        const classes = JSON.parse(
+            decodeURIComponent($(this).data('classes'))
+        );
+
+        const isFined = $(this).data('is_fined');
+        const totalPrice = $(this).data('total_price');
+
+        let html = '';
+
+        if (!classes.length) {
+
+            html = `
+                <div class="alert alert-warning mb-0">
+                    Tidak ada data kelas
+                </div>
+            `;
+
+        } else {
+
+            html += `
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Kelas</th>
+                                <th class="text-end">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            classes.forEach(item => {
+
+                const price = (
+                    isFined == 1 || isFined === true
+                )
+                    ? item.total_price_fine
+                    : item.price;
+
+                html += `
+                    <tr>
+                        <td class="fw-semibold">${item.class_name ?? '-'}</td>
+                        <td class="text-end fw-semibold">
+                            Rp ${Number(price ?? 0).toLocaleString('id-ID')}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th class="text-end">
+                                    Rp ${Number(totalPrice ?? 0).toLocaleString('id-ID')}
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+        }
+
+        $('#class-detail-content').html(html);
     });
 });

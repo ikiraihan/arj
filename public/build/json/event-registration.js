@@ -134,14 +134,12 @@ $(document).ready(function () {
                                             <!-- REGISTRATION -->
                                             <p class="mb-1 d-flex align-items-start">
                                                 <i class="ti ti-clock-hour-4 me-2 mt-1 text-warning"></i>
-
                                                 <span>
                                                     Pendaftaran dengan Harga Normal hingga<br>
                                                     <strong>
                                                         ${event.registration_end_date_formatted ?? '-'} WIB
                                                     </strong>
                                                 </span>
-
                                             </p>
                                         </div>
 
