@@ -2384,6 +2384,13 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <label class="form-label">No. Invoice</label>
+                            <input type="text"
+                                id="pendaftar_filter_invoice_number"
+                                class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Nama Pembalap</label>
                             <input type="text"
                                 id="pendaftar_filter_racer_name"

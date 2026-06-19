@@ -200,6 +200,7 @@ $(document).ready(function () {
                         d.search_pendaftar = $('#search-event-register').val();
 
                         d.pendaftar_registration_number = $('#pendaftar_filter_registration_number').val();
+                        d.pendaftar_invoice_number = $('#pendaftar_filter_invoice_number').val();
                         d.pendaftar_racer_name = $('#pendaftar_filter_racer_name').val();
                         d.pendaftar_team_name = $('#pendaftar_filter_team_name').val();
                         d.pendaftar_contact = $('#pendaftar_filter_contact').val();
@@ -724,6 +725,7 @@ $(document).ready(function () {
     $(document).on('click', '#reset-filter-pendaftar', function () {
 
         $('#pendaftar_filter_registration_number').val('');
+        $('#pendaftar_filter_invoice_number').val('');
         $('#pendaftar_filter_racer_name').val('');
         $('#pendaftar_filter_team_name').val('');
         $('#pendaftar_filter_race_status').val('');

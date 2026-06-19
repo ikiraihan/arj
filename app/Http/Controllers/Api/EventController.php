@@ -966,7 +966,14 @@ class EventController extends Controller
 
         // FILTER NO PENDAFTARAN
         $query->when($request->pendaftar_registration_number, function ($q) use ($request) {
-            $q->where('registration_number', 'like', '%' . $request->pendaftar_registration_number . '%');
+            $q->where('registration_number', $request->pendaftar_registration_number);
+        });
+
+         // FILTER NO INVOICE
+        $query->when($request->pendaftar_invoice_number, function ($q) use ($request) {
+            $q->whereHas('registrationClasses', function ($registrationClass) use ($request) {
+                $registrationClass->where('invoice_number', $request->pendaftar_invoice_number);
+            });
         });
 
         // FILTER NAMA PEMBALAP
