@@ -242,7 +242,7 @@
             <tr>
                 <td style="width: 130px;">No. Kwitansi</td>
                 <td style="width: 15px;">:</td>
-                <td>{{ $registClass->id ?? '-' }}</td>
+                <td>{{ $registClass->invoice_number ?? '-' }}</td>
             </tr>
             <tr>
                 <td colspan="3" style="font-weight: normal; font-size: 11px; padding: 2px 0; text-transform: none; font-style: italic;">Telah Terima dari</td>
