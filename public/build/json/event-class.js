@@ -2114,7 +2114,7 @@ $(document).ready(function () {
 
             success: function (res) {
 
-                $('#event-race-table').DataTable().ajax.reload(null, false);
+                $('#event-register-table').DataTable().ajax.reload(null, false);
 
                 Swal.fire({
                     icon: 'success',
@@ -2511,6 +2511,7 @@ $(document).ready(function () {
                         <thead>
                             <tr>
                                 <th>Kelas</th>
+                                <th>No. Invoice</th>
                                 <th class="text-end">Harga</th>
                             </tr>
                         </thead>
@@ -2528,6 +2529,7 @@ $(document).ready(function () {
                 html += `
                     <tr>
                         <td class="fw-semibold">${item.class_name ?? '-'}</td>
+                        <td class="fw-semibold">${item.invoice_number ?? '-'}</td>
                         <td class="text-end fw-semibold">
                             Rp ${Number(price ?? 0).toLocaleString('id-ID')}
                         </td>
@@ -2539,7 +2541,7 @@ $(document).ready(function () {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Total</th>
+                                <th colspan="2">Total</th>
                                 <th class="text-end">
                                     Rp ${Number(totalPrice ?? 0).toLocaleString('id-ID')}
                                 </th>

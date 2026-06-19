@@ -165,7 +165,7 @@
                         <table class="table table-nowrap" id="event-payment-table" data-user-id="{{ $userId }}">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="text-end no-sort">Action</th>
+                                    <th class="text-end no-sort" >Action</th>
                                     <th>Nama Pembalap</th>
                                     <th>Transfer Ke</th>
                                     <th>Metode Pembayaran</th>

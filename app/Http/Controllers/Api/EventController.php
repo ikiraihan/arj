@@ -1089,6 +1089,7 @@ class EventController extends Controller
                         return [
                             'id' => $registrationClass->id,
                             'class_id' => $registrationClass->class_id,
+                            'invoice_number' => $registrationClass->invoice_number,
                             'class_name' => $registrationClass->eventClass->name ?? null,
                             'price' => $registrationClass->eventClass->price ?? 0,
                             'price_fine' => $registrationClass->eventClass->price_fine ?? 0,

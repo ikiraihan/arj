@@ -80,6 +80,36 @@
                     searchable: false,
                     render: function (data, type, row) {
 
+                        if (
+                            row.payment_method === 'tunai' &&
+                            row.status === 'unpaid'
+                        ) {
+
+                            return `
+                               <div class="d-flex flex-column align-items-center gap-2">
+
+                                    <!-- Detail Kelas -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
+
+                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
+                                        data-is_fined="${row.is_fined ?? 0}"
+                                        data-total_price="${row.total_price ?? 0}"
+
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-class-detail"
+
+                                        data-bs-placement="top"
+                                        data-bs-title="Upload Bukti Pembayaran">
+
+                                        <i class="ti ti-receipt fs-16"></i>
+
+                                    </button>
+
+                                </div>
+                            `;
+                        }
+
                         // tampil hanya jika transfer & menunggu pembayaran
                         if (
                             row.payment_method === 'transfer' &&
@@ -87,8 +117,9 @@
                         ) {
 
                             return `
-                                <div class="d-flex justify-content-center">
+                               <div class="d-flex flex-column align-items-center gap-2">
 
+                                    <!-- Upload Bukti Pembayaran -->
                                     <button type="button"
                                         class="btn btn-sm btn-primary btn-upload-payment d-flex align-items-center justify-content-center"
 
@@ -101,9 +132,30 @@
                                         data-account-name="${row.payment_account?.account_holder_name ?? '-'}"
 
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modal_approval_payment">
+                                        data-bs-target="#modal_approval_payment"
+
+                                        data-bs-placement="top"
+                                        data-bs-title="Upload Bukti Pembayaran">
 
                                         <i class="ti ti-upload fs-16"></i>
+
+                                    </button>
+
+                                    <!-- Detail Kelas -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
+
+                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
+                                        data-is_fined="${row.is_fined ?? 0}"
+                                        data-total_price="${row.total_price ?? 0}"
+
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-class-detail"
+
+                                        data-bs-placement="top"
+                                        data-bs-title="No. Invoice">
+
+                                        <i class="ti ti-receipt fs-16"></i>
 
                                     </button>
 
@@ -119,15 +171,22 @@
                             return `
                                 <div class="d-flex justify-content-center">
 
-                                        <button type="button" class="btn btn-sm btn-primary btn-open-invoice-info d-flex align-items-center justify-content-center"
-                                            href="javascript:void(0);"
-                                            data-id="${row.id}"
-                                            data-classes="${encodeURIComponent(JSON.stringify( row.classes ?? []))}"                                            data-bs-toggle="modal"
-                                            data-bs-target="#modal_invoice_info">
+                                    <button type="button"
+                                        class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
 
-                                                <i class="ti ti-eye fs-16"></i>
+                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
+                                        data-is_fined="${row.is_fined ?? 0}"
+                                        data-total_price="${row.total_price ?? 0}"
 
-                                        </button>
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-class-detail"
+
+                                        data-bs-placement="top"
+                                        data-bs-title="No. Invoice">
+
+                                        <i class="ti ti-receipt fs-16"></i>
+
+                                    </button>
 
                                 </div>
                             `;
@@ -722,6 +781,77 @@
 
         container.html(html);
 
+    });
+
+    $(document).on('click', '.btn-class-detail', function () {
+
+        const classes = JSON.parse(
+            decodeURIComponent($(this).data('classes'))
+        );
+
+        const isFined = $(this).data('is_fined');
+        const totalPrice = $(this).data('total_price');
+
+        let html = '';
+
+        if (!classes.length) {
+
+            html = `
+                <div class="alert alert-warning mb-0">
+                    Tidak ada data kelas
+                </div>
+            `;
+
+        } else {
+
+            html += `
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Kelas</th>
+                                <th>No. Invoice</th>
+                                <th class="text-end">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            classes.forEach(item => {
+
+                const price = (
+                    isFined == 1 || isFined === true
+                )
+                    ? item.total_price_fine
+                    : item.price;
+
+                html += `
+                    <tr>
+                        <td class="fw-semibold">${item.class_name ?? '-'}</td>
+                        <td class="fw-semibold">${item.invoice_number ?? '-'}</td>
+                        <td class="text-end fw-semibold">
+                            Rp ${Number(price ?? 0).toLocaleString('id-ID')}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Total</th>
+                                <th class="text-end">
+                                    Rp ${Number(totalPrice ?? 0).toLocaleString('id-ID')}
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+        }
+
+        $('#class-detail-content').html(html);
     });
 
 });
