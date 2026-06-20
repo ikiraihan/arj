@@ -2357,6 +2357,179 @@
         </div>
     </div>
 
+    <div class="modal fade"
+     id="modal_edit_pendaftar"
+     tabindex="-1"
+     aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered modal-md">
+
+            <div class="modal-content border-0 shadow-sm rounded-3">
+
+                <div class="modal-header py-3 px-4 border-bottom">
+                    <div>
+                        <h5 class="modal-title fw-semibold mb-0">
+                            Ubah Data Pendaftar
+                        </h5>
+                    </div>
+                    <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    </button>
+                </div>
+
+                <form id="form-edit-pendaftar">
+
+                    <input type="hidden" id="registration_id">
+
+                    <div class="modal-body px-4 py-3">
+
+                        <div class="mb-3">
+                            <label class="col-lg-3 form-label">
+                                Nama Team
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-12">
+                                <input type="text"
+                                    name="team_name"
+                                    id="edit_team_name"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="col-lg-3 form-label">
+                                Kelas Event
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-12">
+                                @foreach (($eventClasses ?? []) as $item)
+
+                                    <div class="border rounded p-3 mb-3">
+
+                                        <div class="form-check ps-0 d-flex align-items-start">
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input class-checkbox me-3 mt-1"
+                                                id="event_class_{{ $item->id }}"
+                                                name="event_class_id[]"
+                                                value="{{ $item->id }}">
+
+                                            <label
+                                                class="form-check-label w-100"
+                                                for="event_class_{{ $item->id }}">
+
+                                                <div class="d-flex justify-content-between align-items-start">
+
+                                                    <div>
+
+                                                        <span class="fw-medium text-dark d-block">
+                                                            {{ $item->name }}
+                                                        </span>
+
+                                                        @if($item->notes)
+                                                            <small class="text-muted d-block mt-1">
+                                                                *{{ $item->notes }}
+                                                            </small>
+                                                        @endif
+
+                                                    </div>
+
+                                                </div>
+
+                                            </label>
+
+                                        </div>
+
+                                        {{-- FORM DETAIL CLASS --}}
+                                        <div
+                                            class="class-detail-form mt-3 ms-4"
+                                            style="display:none;">
+
+                                            <div class="row g-2">
+
+                                                <div class="col-md-4">
+
+                                                    <label class="form-label small">
+                                                        Kendaraan
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+
+                                                    <input type="text"
+                                                        name="class_detail[{{ $item->id }}][vehicle]"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="Kendaraan">
+                                                    <div class="invalid-feedback d-block"></div>
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <label class="form-label small">
+                                                        No Mesin
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+
+                                                    <input type="text"
+                                                        name="class_detail[{{ $item->id }}][engine_number]"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="4 Angka Terakhir"
+                                                        maxlength="4"
+                                                        inputmode="numeric"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
+                                                    <div class="invalid-feedback d-block"></div>
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <label class="form-label small">
+                                                        No Rangka
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+
+                                                    <input type="text"
+                                                        name="class_detail[{{ $item->id }}][frame_number]"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="4 Angka Terakhir"
+                                                        maxlength="4"
+                                                        inputmode="numeric"
+                                                        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
+                                                    <div class="invalid-feedback d-block"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                @endforeach
+
+                                <div class="invalid-feedback d-block"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer py-3 px-4 border-top">
+                        <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="btn btn-primary">
+                            {{-- <i class="ti ti-check me-1"></i> --}}
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modal_filter_pendaftar" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

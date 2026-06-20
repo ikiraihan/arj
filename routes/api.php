@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/events/{eventId}/delete-payment-proof',[EventController::class, 'deleteAllPaymentProof']);
 
     Route::post('/event/registration', [EventController::class, 'storeFormRegistration']);
+    Route::put('/event/registration/{id}/edit', [EventController::class, 'updateRegistration']);
     Route::get('/event/pendaftar/{eventId}', [EventController::class, 'indexPendaftar']);
     Route::post('/event/approval-payment/{registrationId}', [EventController::class,'approvalPayment']);
     Route::post('/event/approval-race/{registrationId}', [EventController::class,'approvalRaceStatus']);

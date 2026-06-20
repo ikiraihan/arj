@@ -62,8 +62,11 @@
 
         @yield('content')
 
-        @component('components.modal-popup-new')
-        @endcomponent
+        @include('components.modal-popup-new', [
+            'eventClasses' => $eventClasses ?? null
+        ])
+        {{-- @component('components.modal-popup-new') --}}
+        {{-- @endcomponent --}}
 
     </div>
     <!-- End Main Wrapper -->

@@ -1102,9 +1102,9 @@ class EventController extends Controller
                             'price_fine' => $registrationClass->eventClass->price_fine ?? 0,
                             'total_price_fine' => ($registrationClass->eventClass->price ?? 0) + ($registrationClass->eventClass->price_fine ?? 0),
                             // 'racer_number' => $registrationClass->racer_number,
-                            // 'vehicle' => $registrationClass->vehicle,
-                            // 'vehicle_number' => $registrationClass->vehicle_number,
-                            // 'rangka_number' => $registrationClass->rangka_number,
+                            'vehicle' => $registrationClass->vehicle,
+                            'vehicle_number' => $registrationClass->vehicle_number,
+                            'rangka_number' => $registrationClass->rangka_number,
                         ];
                     }),
                     'racer' => $racer ? [
@@ -1237,5 +1237,151 @@ class EventController extends Controller
             'message' => 'Status denda berhasil diperbarui',
             'data' => $registration
         ]);
+    }
+
+    public function updateRegistration(Request $request, $id): JsonResponse
+    {
+        try {
+
+            $registration = Registration::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'event_class_id' => 'required|array|min:1',
+                'event_class_id.*' => 'required|exists:event_classes,id',
+                'class_detail' => 'required|array',
+                'team_name' => 'required|string|max:255',
+            ], [
+                'event_class_id.required' => 'Kelas event wajib dipilih minimal 1',
+                'event_class_id.array' => 'Format kelas event tidak valid',
+                'event_class_id.min' => 'Minimal pilih satu kelas event',
+                'team_name.required' => 'Nama Team wajib diisi',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            DB::transaction(function () use ($request, $registration) {
+
+                // update team name registration
+                $registration->update([
+                    'team_name' => $request->team_name,
+                ]);
+
+                $newClassIds = collect($request->event_class_id)
+                    ->map(fn($id) => (int) $id)
+                    ->toArray();
+
+                // ambil class yang sudah ada
+                $existingClasses = RegistrationClass::where(
+                    'registration_id',
+                    $registration->id
+                )->get();
+
+                $existingClassIds = $existingClasses
+                    ->pluck('class_id')
+                    ->map(fn($id) => (int) $id)
+                    ->toArray();
+
+                /*
+                * HAPUS kelas yang tidak dipilih lagi
+                *
+                * contoh:
+                * lama = [1,2]
+                * baru = [2,3]
+                * hasil delete = [1]
+                */
+                $deleteIds = array_diff(
+                    $existingClassIds,
+                    $newClassIds
+                );
+
+                RegistrationClass::where('registration_id', $registration->id)
+                    ->whereIn('class_id', $deleteIds)
+                    ->delete();
+
+                $newOnlyClassIds = array_diff(
+                    $newClassIds,
+                    $existingClassIds
+                );
+
+                $countRegistrationClass = RegistrationClass::where('event_id', $registration->event_id)->withTrashed()->count();
+
+                /*
+                * UPDATE / INSERT
+                */
+                foreach ($newClassIds as $classId) {
+
+                    $detail = $request->class_detail[$classId] ?? [];
+
+                    if (
+                        empty($detail['vehicle'])
+                    ) {
+                        throw ValidationException::withMessages([
+                            "class_detail.$classId.vehicle" =>
+                                'Data kendaraan wajib diisi lengkap.',
+                        ]);
+                    }
+
+                     if (
+                        strlen($detail['engine_number']) != 4 ||
+                        strlen($detail['frame_number']) != 4
+                    ) {
+                        throw ValidationException::withMessages([
+                            "class_detail.$classId.engine_number" =>
+                                'Nomor mesin dan nomor rangka harus 4 digit.',
+                        ]);
+                    }
+
+
+                    $data = [
+                        'event_id'       => $registration->event_id,
+                        'team_name'      => $request->team_name,
+                        'racer_number'   => $detail['start_number'] ?? null,
+                        'vehicle'        => $detail['vehicle'],
+                        'vehicle_number' => $detail['engine_number'],
+                        'rangka_number'  => $detail['frame_number'],
+                    ];
+
+                    // hanya class baru yang mendapat invoice baru
+                    if (in_array($classId, $newOnlyClassIds)) {
+
+                        $data['invoice_number'] = ++$countRegistrationClass;
+                    }
+
+                    RegistrationClass::updateOrCreate(
+                        [
+                            'registration_id' => $registration->id,
+                            'class_id'        => $classId,
+                        ],
+                        $data
+                    );
+                }
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data race dan kendaraan berhasil diperbarui',
+            ]);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data pendaftaran kelas tidak ditemukan'
+            ], 404);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

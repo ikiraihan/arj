@@ -263,6 +263,20 @@ $(document).ready(function () {
 
                                         <div class="dropdown-menu dropdown-menu-end">
 
+                                            <a class="dropdown-item text-warning btn-open-edit-pendaftar"
+                                                href="#"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modal_edit_pendaftar"
+                                                data-id="${row.id}"
+                                                data-classes='${encodeURIComponent(JSON.stringify(row.classes ?? []))}'
+                                                data-team="${row.team_name ?? row.user?.team_name ?? '-'}"
+
+                                                >
+
+                                                <i class="ti ti-clipboard-check"></i>
+                                                Ubah Data
+                                            </a>
+
                                             ${(
                                                     (
                                                         row.payment_method === 'tunai' &&
@@ -321,7 +335,7 @@ $(document).ready(function () {
 
                                                 ` : ''}
 
-                                            <a class="dropdown-item text-warning btn-open-fine-register"
+                                            <a class="dropdown-item text-purple btn-open-fine-register"
                                                 href="#"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modal_change_fine_status"
@@ -2101,6 +2115,145 @@ $(document).ready(function () {
         $('#edit_rangka_number').val($(this).data('rangka-number'));
         $('#edit_vehicle_number').val($(this).data('vehicle-number'));
     });
+
+    $(document).on('click', '.btn-open-edit-pendaftar', function () {
+
+        const registrationId = $(this).data('id');
+        const teamName = $(this).data('team');
+        const classes = JSON.parse(
+            decodeURIComponent($(this).attr('data-classes'))
+        );
+
+        $('#registration_id').val(registrationId);
+        $('#edit_team_name').val(teamName);
+
+        // reset semua checkbox
+        $('.class-checkbox').prop('checked', false);
+        $('.class-detail-form').hide();
+
+        classes.forEach(item => {
+
+            // centang checkbox sesuai class_id
+            const checkbox = $(`#event_class_${item.class_id}`);
+
+            checkbox.prop('checked', true);
+
+            const detailForm = checkbox
+                .closest('.border')
+                .find('.class-detail-form');
+
+            detailForm.show();
+
+            // isi form detail
+            detailForm.find(
+                `input[name="class_detail[${item.class_id}][vehicle]"]`
+            ).val(item.vehicle);
+
+            detailForm.find(
+                `input[name="class_detail[${item.class_id}][engine_number]"]`
+            ).val(item.vehicle_number);
+
+            detailForm.find(
+                `input[name="class_detail[${item.class_id}][frame_number]"]`
+            ).val(item.rangka_number);
+        });
+    });
+
+    $('#form-edit-pendaftar').on('submit', function (e) {
+
+        e.preventDefault();
+
+        const registrationId = $('#registration_id').val();
+
+        let formData = new FormData(this);
+
+        formData.append('_method', 'PUT');
+
+        $.ajax({
+
+            url: `/api/event/registration/${registrationId}/edit`,
+            type: 'POST',
+            data: formData,
+
+            processData: false,
+            contentType: false,
+
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+
+            success: function (res) {
+
+                 Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: res.message,
+                    timer: 2000,
+                    showConfirmButton: false,
+                    showCloseButton: true
+                });
+
+                $('#modal_edit_pendaftar').modal('hide');
+
+                $('#event-register-table').DataTable().ajax.reload(null, false);
+
+            },
+
+            error: function (xhr) {
+
+                let message = 'Terjadi kesalahan';
+
+                if (xhr.responseJSON?.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: message,
+                    timer: 3500,
+                    showCloseButton: true
+                });
+
+            },
+
+            // complete: function () {
+
+            //     $('.btn-upload-payment').prop('disabled', false);
+
+            // }
+
+        });
+    });
+
+    $(document).on('change', '.class-checkbox', function () {
+
+        const wrapper = $(this).closest('.border');
+        const detailForm = wrapper.find('.class-detail-form');
+        const inputs = detailForm.find('input');
+
+        if ($(this).is(':checked')) {
+
+            detailForm
+                .stop(true, true)
+                .slideDown(200);
+
+            inputs.prop('required', true);
+
+        } else {
+
+            detailForm
+                .stop(true, true)
+                .slideUp(200);
+
+            inputs.prop('required', false);
+
+            // opsional: kosongkan value saat uncheck
+            // inputs.val('');
+        }
+
+    });
+
 
      $(document).on('click', '.btn-open-approval-race', function () {
         id = $(this).data('id');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\EventClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -36,8 +37,9 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         $eventId = $event->id;
+        $eventClasses = EventClass::where('event_id',$eventId)->get();
 
-        return view('admin.event.details', compact('event', 'eventId'));
+        return view('admin.event.details', compact('event', 'eventId','eventClasses'));
     }
 
     public function store(Request $request)
