@@ -58,8 +58,8 @@ class EventController extends Controller
         ]);
 
         if ($request->type == 'grid') {
-            $query->where('is_active', true)
-                ->where('registration_start_date', '<=', now());
+            $query->where('is_active', true);
+                // ->where('registration_start_date', '<=', now());
         }
 
         // SEARCH
@@ -132,6 +132,7 @@ class EventController extends Controller
                     },
                     // 'registration_date' =>  $event->registration_end_date && $event->registration_start_date ?  Carbon::parse($event->registration_start_date)->format('Y-m-d')    . ' - ' .    Carbon::parse($event->registration_end_date)->format('Y-m-d') : null,
                     'registration_date_formatted' =>  $event->registration_end_date && $event->registration_start_date ?  Carbon::parse($event->registration_start_date)->translatedFormat('d F Y H:i')    . ' - ' .    Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i') : null,
+                    'registration_start_date_formatted' => $event->registration_start_date ? Carbon::parse($event->registration_start_date)->translatedFormat('d F Y H:i') : null,
                     'registration_end_date_formatted' => $event->registration_end_date ? Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i') : null,
                     // 'event_date' =>    Carbon::parse($event->start_date)->format('Y-m-d')    . ' - ' .    Carbon::parse($event->end_date)->format('Y-m-d'),
                     'event_date_formatted' =>
@@ -146,6 +147,7 @@ class EventController extends Controller
                             : null,
                     'created_at' => $event->created_at?->format('Y-m-d H:i'),
                     'registrants' => $event->registrations_count,
+                    'is_registration_open' => $event->registration_start_date <= now(),
 
                     'registration_start_date' => $event->registration_start_date ? Carbon::parse($event->registration_start_date)->format('Y-m-d\TH:i') : null,
                     'registration_end_date' =>  $event->registration_end_date ?  Carbon::parse($event->registration_end_date)->format('Y-m-d\TH:i') : null,
@@ -828,14 +830,24 @@ class EventController extends Controller
 
                 if (
                     empty($detail['vehicle']) ||
-                    empty($detail['engine_number']) ||
-                    empty($detail['frame_number'])
+                    is_null($detail['engine_number']) ||
+                    is_null($detail['frame_number'])
                 ) {
 
                     throw ValidationException::withMessages([
                         "class_detail.$index.vehicle" => 'Data kendaraan wajib diisi lengkap.',
                     ]);
                 }
+
+                if (
+                        strlen($detail['engine_number']) != 4 ||
+                        strlen($detail['frame_number']) != 4
+                    ) {
+                        throw ValidationException::withMessages([
+                            "class_detail.$classId.engine_number" =>
+                                'Nomor mesin dan nomor rangka harus 4 digit.',
+                        ]);
+                    }
 
                 // 1. Ambil nomor invoice untuk baris kelas ini
                 $currentInvoiceNumber = $countRegistration + 1;
@@ -1092,6 +1104,7 @@ class EventController extends Controller
                     'user' => $register->user,
                     'is_fined' => $register->is_fined,
                     // 'racer' => $register->racer,
+                    'count_print_invoice' => $register->registrationClasses->max('count_print_invoice'),
                     'classes' => $register->registrationClasses->map(function ($registrationClass) {
                         return [
                             'id' => $registrationClass->id,
@@ -1327,7 +1340,7 @@ class EventController extends Controller
                         ]);
                     }
 
-                     if (
+                    if (
                         strlen($detail['engine_number']) != 4 ||
                         strlen($detail['frame_number']) != 4
                     ) {

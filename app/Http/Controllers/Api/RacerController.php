@@ -370,23 +370,30 @@ class RacerController extends Controller
         $query = Racer::query();
 
         if ($search) {
-
-            $query->where('full_name', 'like', "%{$search}%");
-
+            $query->where(function ($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                ->orWhere('short_name', 'like', "%{$search}%");
+            });
         }
 
-        if ($userId) {
+        // if ($userId) {
 
-            $query->where('user_id', '=', $userId);
+        //     $query->where('user_id', '=', $userId);
 
-        }
+        // }
 
         $racer = $query
             ->select([
                 'id',
-                DB::raw('full_name as name')
+                DB::raw("
+                    CASE
+                        WHEN short_name IS NOT NULL AND short_name != ''
+                        THEN CONCAT(full_name, ' (', short_name, ')')
+                        ELSE full_name
+                    END as name
+                ")
             ])
-            ->limit(20)
+            ->orderBy('full_name')
             ->get();
 
         return response()->json([

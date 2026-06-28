@@ -80,17 +80,25 @@
                                 <small class="text-muted d-block">
                                     {{ $event->type_formatted ?? '-' }}
                                 </small>
-                                
+
                                 <p class="fw-bold mb-4">
                                     {{ $event->name }}
                                 </p>
 
-                                <a class="btn btn-dark rounded-pill py-2 px-4"
-                                    href="{{ route('landing-event-details', $event->id) }}"
-                                    {{-- href="" --}}
-                                    >
-                                    Daftar
-                                </a>
+                                {{-- @if($event->is_registration_open) --}}
+                                    <a class="btn btn-dark rounded-pill py-2 px-4"
+                                        href="{{ route('landing-event-details', $event->id) }}">
+                                        Lihat
+                                    </a>
+                                {{-- @else
+                                    <a class="btn btn-secondary rounded-pill py-2 px-4 disabled"
+                                        href="javascript:void(0)"
+                                        aria-disabled="true"
+                                        tabindex="-1"
+                                        style="pointer-events: none; cursor: not-allowed;">
+                                        Segera Dibuka
+                                    </a>
+                                @endif --}}
 
                             </div>
 

@@ -166,6 +166,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="text-end no-sort" >Action</th>
+                                    <th>No. Invoice</th>
                                     <th>Nama Pembalap</th>
                                     <th>Transfer Ke</th>
                                     <th>Metode Pembayaran</th>

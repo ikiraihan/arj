@@ -284,7 +284,10 @@ $(document).ready(function () {
                                                     ) ||
                                                     (
                                                         row.payment_method === 'transfer' &&
-                                                        row.status === 'menunggu-approval'
+                                                        (
+                                                            row.status === 'menunggu-approval' ||
+                                                            row.status === 'menunggu-pembayaran'
+                                                        )
                                                     )
                                                 ) ? `
 

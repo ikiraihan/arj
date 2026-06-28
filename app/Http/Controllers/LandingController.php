@@ -24,7 +24,7 @@ class LandingController extends Controller
     public function index()
     {
         $events = Event::where('is_active', true)
-            ->where('registration_start_date', '<=', now())
+            // ->where('registration_start_date', '<=', now())
             ->with('photos')
             ->latest()
             ->get()
@@ -41,6 +41,8 @@ class LandingController extends Controller
                 $event->photo_url = $event->photo
                     ? asset('storage/' . $event->photo->path)
                     : null;
+
+                $event->is_registration_open = $event->registration_start_date <= now();
 
                 return $event;
             });
@@ -89,6 +91,11 @@ class LandingController extends Controller
                     Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i')
                     : null;
 
+            $event->registration_start_date_formatted =
+                $event->registration_start_date
+                    ? Carbon::parse($event->registration_start_date)->translatedFormat('d F Y H:i')
+                    : null;
+
             $event->registration_end_date_formatted =
                 $event->registration_end_date
                     ? Carbon::parse($event->registration_end_date)->translatedFormat('d F Y H:i')
@@ -129,6 +136,7 @@ class LandingController extends Controller
                 now()->gt(Carbon::parse($event->registration_end_date));
 
             $isLateRegistration = now()->gt($event->registration_end_date);
+            $event->is_registration_open = $event->registration_start_date <= now();
 
             $event->classes->transform(function ($class) use ($isLateRegistration) {
 

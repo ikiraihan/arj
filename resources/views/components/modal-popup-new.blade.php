@@ -2821,6 +2821,19 @@
 
                     <div class="modal-body">
 
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                No. Invoice
+                            </label>
+
+                            <input type="text"
+                                id="approval_registration_number"
+                                class="form-control fw-bold bg-light text-dark"
+                                readonly>
+
+                        </div>
+
                         <!-- TOTAL -->
                         <div class="mb-3">
 
@@ -2830,7 +2843,7 @@
 
                             <input type="text"
                                 id="approval_total_price"
-                                class="form-control fw-semibold bg-light"
+                                class="form-control fw-semibold bg-light text-dark"
                                 readonly>
 
                         </div>
@@ -2844,18 +2857,18 @@
 
                             <div class="border rounded p-3 bg-light">
 
-                                <div class="fw-semibold" id="approval_bank_name">
-                                    BCA
+                                <div class="fw-bold" id="approval_bank_name">
+                                    -
                                 </div>
 
-                                <div id="approval_account_number">
-                                    1234567890
+                                <div class="fw-bold text-dark" id="approval_account_number">
+                                    -
                                 </div>
 
-                                <small class="text-muted"
+                                <small class="text-dark"
                                     id="approval_account_name">
 
-                                    A/N Raihan
+                                    A/N
 
                                 </small>
 

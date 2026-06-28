@@ -57,6 +57,30 @@
                         </li>
                     </ul>
 
+                    <h4 class="text-primary mb-3">
+                        Kontak
+                    </h4>
+
+                    <ul class="list-unstyled text-event-detail mb-0">
+
+                        @forelse($event->contacts as $contact)
+
+                            <li class="d-flex align-items-start mb-3">
+                                <div class="fw-bold">
+                                    📞 {{ $contact->name }} - {{ $contact->phone_number }}
+                                </div>
+                            </li>
+
+                        @empty
+
+                            <li class="text-muted">
+                                Belum ada kontak tersedia.
+                            </li>
+
+                        @endforelse
+
+                    </ul>
+
                     <h4 class="text-primary">
                         Kelas Event
                     </h4>
@@ -114,12 +138,27 @@
                     @endif
                 </div>
 
+                @if($event->is_active == false)
+                <div class="pt-2">
+                    <a class="btn btn-dark rounded-pill py-3 px-5 disabled" href="#" style="pointer-events: none; cursor: not-allowed;">
+                        Sudah Ditutup
+                    </a>
+                </div>
+                {{--
+                @elseif($event->is_registration_open == false)
+                <div class="pt-2">
+                    <a class="btn btn-dark rounded-pill py-3 px-5 disabled" href="#" style="pointer-events: none; cursor: not-allowed;">
+                        Segera Dibuka
+                    </a>
+                </div> --}}
+                @else
                 <!-- BUTTON -->
                 <div class="pt-2">
                     <a class="btn btn-dark rounded-pill py-3 px-5" href="{{ route('registration-form', $event->id) }}">
                         Daftar Sekarang!
                     </a>
                 </div>
+                @endif
 
             </div>
 

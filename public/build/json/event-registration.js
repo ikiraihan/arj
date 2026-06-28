@@ -134,26 +134,49 @@ $(document).ready(function () {
                                             <!-- REGISTRATION -->
                                             <p class="mb-1 d-flex align-items-start">
                                                 <i class="ti ti-clock-hour-4 me-2 mt-1 text-warning"></i>
+                                                ${
+                                                event.is_registration_open
+                                                    ? `
                                                 <span>
                                                     Pendaftaran dengan Harga Normal hingga<br>
                                                     <strong>
                                                         ${event.registration_end_date_formatted ?? '-'} WIB
                                                     </strong>
                                                 </span>
+                                                `
+                                                    :
+                                                `
+                                                <span>
+                                                    Pendaftaran akan dibuka<br>
+                                                    <strong>
+                                                        ${event.registration_start_date_formatted ?? '-'} WIB
+                                                    </strong>
+                                                </span>
+                                                `
+                                                }
                                             </p>
                                         </div>
 
                                         <!-- BUTTON -->
                                         <div class="mt-auto">
-
-                                            <a href="/events/${event.id}/registration"
-                                                class="btn btn-primary w-100">
-
-                                                <i class="ti ti-ticket me-1"></i>
-                                                Daftar Event
-
-                                            </a>
-
+                                            ${
+                                                event.is_registration_open
+                                                    ? `
+                                                        <a href="/events/${event.id}/registration"
+                                                            class="btn btn-primary w-100">
+                                                            <i class="ti ti-ticket me-1"></i>
+                                                            Daftar Event
+                                                        </a>
+                                                    `
+                                                    : `
+                                                        <button type="button"
+                                                            class="btn btn-primary w-100"
+                                                            disabled>
+                                                            <i class="ti ti-clock me-1"></i>
+                                                            Segera Dibuka
+                                                        </button>
+                                                    `
+                                            }
                                         </div>
 
                                     </div>
@@ -384,9 +407,7 @@ $(document).ready(function () {
                     $.each(errors, function (field, messages) {
 
                         let fieldName = field.replace(/\.(\w+)$/g, '][$1]');
-
                         fieldName = fieldName.replace(/^([^.]+)\.(\d+)/, '$1[$2');
-
                         fieldName += ']';
 
                         let input = form.find(`[name="${fieldName}"]`);
@@ -406,36 +427,28 @@ $(document).ready(function () {
                                 ${messages[0]}
                             </div>
                         `);
-
                     });
 
-                } else {
-
-                    if (xhr.status === 422) {
-
-                        const errors = xhr.responseJSON.errors;
-
-                        const firstMessage = Object.values(errors)[0][0];
-
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Validasi Gagal',
-                            text: firstMessage,
-                            showCloseButton: true
-                        });
-
-                        return;
-                    }
+                    // Ambil pesan error pertama
+                    const firstMessage = Object.values(errors)[0][0];
 
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: 'Terjadi kesalahan server',
-                        timer: 3500,
+                        icon: 'warning',
+                        title: firstMessage,
+                        text: 'Silakan periksa kembali data yang diisi.',
                         showCloseButton: true
                     });
 
+                    return;
                 }
+
+                // Error selain 422
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi kesalahan',
+                    text: xhr.responseJSON?.message ?? 'Terjadi kesalahan server',
+                    showCloseButton: true
+                });
 
             },
 

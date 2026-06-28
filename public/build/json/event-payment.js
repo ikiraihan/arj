@@ -92,6 +92,8 @@
                                     <button type="button"
                                         class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
 
+                                        data-registration_number="${row.registration_number ?? 0}"
+                                        data-racer="${row.racer?.full_name ?? '-'}"
                                         data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
                                         data-is_fined="${row.is_fined ?? 0}"
                                         data-total_price="${row.total_price ?? 0}"
@@ -127,6 +129,7 @@
                                         data-racer="${row.racer?.full_name ?? '-'}"
                                         data-total="${row.total_price ?? 0}"
 
+                                        data-registration_number="${row.registration_number ?? 0}"
                                         data-bank="${row.payment_account?.bank_name ?? '-'}"
                                         data-account="${row.payment_account?.account_number ?? '-'}"
                                         data-account-name="${row.payment_account?.account_holder_name ?? '-'}"
@@ -145,9 +148,11 @@
                                     <button type="button"
                                         class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
 
+                                        data-racer="${row.racer?.full_name ?? '-'}"
                                         data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
                                         data-is_fined="${row.is_fined ?? 0}"
                                         data-total_price="${row.total_price ?? 0}"
+
 
                                         data-bs-toggle="modal"
                                         data-bs-target="#modal-class-detail"
@@ -174,6 +179,7 @@
                                     <button type="button"
                                         class="btn btn-sm btn-success btn-class-detail d-flex align-items-center justify-content-center"
 
+                                        data-racer="${row.racer?.full_name ?? '-'}"
                                         data-classes="${encodeURIComponent(JSON.stringify(row.classes ?? []))}"
                                         data-is_fined="${row.is_fined ?? 0}"
                                         data-total_price="${row.total_price ?? 0}"
@@ -196,6 +202,23 @@
                         return `
                             <div class="d-flex justify-content-center">
                                 <span class="text-muted">-</span>
+                            </div>
+                        `;
+                    }
+                },
+
+                {
+                    data: 'registration_number',
+
+                    render: function (data, type, row) {
+
+                        return `
+                            <div class="d-flex flex-column">
+
+                                <h6 class="fs-14 fw-bold mb-0">
+                                    ${row.registration_number ?? '-'}
+                                </h6>
+
                             </div>
                         `;
                     }
@@ -484,6 +507,8 @@
         $('#approval_registration_id').val($(this).data('id'));
 
         $('#approval_racer_name').val($(this).data('racer'));
+
+        $('#approval_registration_number').val($(this).data('registration_number'));
 
         $('#approval_total_price').val(
             'Rp ' + Number($(this).data('total')).toLocaleString('id-ID')
@@ -789,6 +814,7 @@
             decodeURIComponent($(this).data('classes'))
         );
 
+        const racer = $(this).data('racer');
         const isFined = $(this).data('is_fined');
         const totalPrice = $(this).data('total_price');
 
@@ -809,8 +835,8 @@
                     <table class="table table-bordered align-middle mb-0">
                         <thead>
                             <tr>
+                                <th>Nama</th>
                                 <th>Kelas</th>
-                                <th>No. Invoice</th>
                                 <th class="text-end">Harga</th>
                             </tr>
                         </thead>
@@ -827,8 +853,8 @@
 
                 html += `
                     <tr>
+                    <td class="fw-semibold">${racer ?? '-'}</td>
                         <td class="fw-semibold">${item.class_name ?? '-'}</td>
-                        <td class="fw-semibold">${item.invoice_number ?? '-'}</td>
                         <td class="text-end fw-semibold">
                             Rp ${Number(price ?? 0).toLocaleString('id-ID')}
                         </td>

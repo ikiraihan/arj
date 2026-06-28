@@ -379,7 +379,6 @@
                                                                 placeholder="4 Angka Terakhir"
                                                                 maxlength="4"
                                                                 inputmode="numeric"
-                                                                pattern="[0-9]{4}"
                                                                 oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
                                                             <div class="invalid-feedback d-block"></div>
                                                         </div>
@@ -397,7 +396,6 @@
                                                                 placeholder="4 Angka Terakhir"
                                                                 maxlength="4"
                                                                 inputmode="numeric"
-                                                                pattern="[0-9]{4}"
                                                                 oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)">
                                                             <div class="invalid-feedback d-block"></div>
                                                         </div>

@@ -118,6 +118,7 @@ class PaymentController extends Controller
                     'racer' => $register->racer,
                     'payment_account' => $register->event?->paymentAccount,
                     'contact_persons' => $register->event?->contactPersons,
+                    'is_fined' => $register->is_fined,
                     'classes' => $register->registrationClasses->map(function ($registrationClass) {
                         return [
                             'id' => $registrationClass->id,
