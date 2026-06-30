@@ -53,7 +53,7 @@
                                         </select>
                                         <div class="invalid-feedback d-block"></div>
                                         <small class="text-dark d-block mt-2">
-                                            *Jika nama pembalap belum tersedia pada daftar, silahkan pilih
+                                            *Cari nama pembalap yang diinginkan pada kolom diatas. Jika nama pembalap belum tersedia pada daftar, silahkan pilih
                                             <strong class="text-dark fw-bold">“+ Tambah Pembalap Baru”</strong>
                                             untuk menambahkan data pembalap baru.
                                         </small>
