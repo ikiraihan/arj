@@ -53,7 +53,7 @@
                                         </select>
                                         <div class="invalid-feedback d-block"></div>
                                         <small class="text-dark d-block mt-2">
-                                            *Cari nama pembalap yang diinginkan pada kolom diatas. Jika nama pembalap belum tersedia pada daftar, silahkan pilih
+                                            *Cari nama pembalap yang diinginkan pada kolom diatas. Jika nama pembalap belum tersedia, silahkan pilih
                                             <strong class="text-dark fw-bold">“+ Tambah Pembalap Baru”</strong>
                                             untuk menambahkan data pembalap baru.
                                         </small>
@@ -431,7 +431,7 @@
                                             <small class="text-muted d-block mt-2">
                                                 *Jika memilih pembayaran dengan metode transfer, silahkan lakukan pembayaran ke rekening berikut:
                                                 <strong class="text-dark fw-bold">{{ $rekening->bank_name }} - {{ $rekening->account_number }} A/N {{ $rekening->account_holder_name }}</strong>.
-                                                lalu lakukan konfirmasi pembayaran yang terdapat pada menu <strong class="text-dark fw-bold">Registrasi Saya</strong>.
+                                                lalu lakukan konfirmasi pembayaran yang terdapat pada menu <strong class="text-dark fw-bold">Pembayaran Pending</strong>.
                                             </small>
                                         @endif
                                     </div>
