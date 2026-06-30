@@ -116,12 +116,12 @@
                                     </a>
                                 </li>
 
-                                <li class="{{ Request::is('racers') ? 'active' : '' }}">
+                                {{-- <li class="{{ Request::is('racers') ? 'active' : '' }}">
                                     <a href="{{ route('racers', auth()->id()) }}">
                                         <i class="ti ti-helmet"></i>
                                         <span>Data Pembalap</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             @endif
 
                         </ul>

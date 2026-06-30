@@ -56,11 +56,15 @@ class RegistrationController extends Controller
 
     public function trackPreview($id)
     {
-        $registrationClass = RegistrationClass::findOrFail($id);
+        $registration = Registration::findOrFail($id);
 
-        $registrationClass->update([
-            'count_print_invoice' => $registrationClass->count_print_invoice + 1
-        ]);
+        $registrationClasses = $registration->registrationClasses;
+
+        foreach($registrationClasses as $registrationClass){
+            $registrationClass->update([
+                'count_print_invoice' => $registrationClass->count_print_invoice + 1
+            ]);
+        }
 
         return response()->json([
             'success' => true
@@ -68,6 +72,131 @@ class RegistrationController extends Controller
     }
 
     public function generatePdf(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'type' => 'required|string'
+            ]);
+
+            switch ($request->type) {
+
+                case 'kwitansi':
+
+                    $registrationClasses = RegistrationClass::with([
+                        'registration.racer.user',
+                        'eventClass'
+                    ])
+                    ->where('registration_id', $id)
+                    ->get();
+
+                    if ($registrationClasses->isEmpty()) {
+                        throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
+                    }
+
+
+                    Carbon::setLocale('id');
+                    $today = strtoupper(Carbon::now()->isoFormat('MMMM Y'));
+
+                    foreach ($registrationClasses as $registrationClass) {
+
+                        $registrationNumber = $registrationClass->registration?->registration_number;
+                        $price = $registrationClass->eventClass->price ?? 0;
+
+                        if ($registrationClass->registration->is_fined) {
+                            $price += $registrationClass->eventClass->price_fine ?? 0;
+                        }
+
+                        $registrationClass->price = number_format($price, 0, ',', '.');
+                        $registrationClass->terbilang = $this->konversiTerbilang($price) . ' RUPIAH';
+                    }
+
+                    $filename = 'kwitansi_' .
+                        ($registrationClasses->first()->registration->racer->short_name ?? 'peserta') .
+                        '.pdf';
+
+                    $pdf = Pdf::loadView('pdf.kwitansi', [
+                        'registrationClasses' => $registrationClasses,
+                        'registration_number' => $registrationNumber,
+                        'today' => $today
+                    ]);
+
+                    $pdf->setPaper('a4', 'portrait');
+
+                    return $pdf->stream($filename);
+
+                case 'kwitansi-drag':
+
+                    // sama seperti di atas, hanya view berbeda
+                    $registrationClasses = RegistrationClass::with([
+                        'registration.racer.user',
+                        'eventClass'
+                    ])
+                    ->where('registration_id', $id)
+                    ->get();
+
+                    if ($registrationClasses->isEmpty()) {
+                        throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
+                    }
+
+                    Carbon::setLocale('id');
+                    $today = strtoupper(Carbon::now()->isoFormat('MMMM Y'));
+
+                    foreach ($registrationClasses as $registrationClass) {
+
+                        $registrationNumber = $registrationClass->registration?->registration_number;
+                        $price = $registrationClass->eventClass->price ?? 0;
+
+                        if ($registrationClass->registration->is_fined) {
+                            $price += $registrationClass->eventClass->price_fine ?? 0;
+                        }
+
+                        $registrationClass->price = number_format($price, 0, ',', '.');
+                        $registrationClass->terbilang = $this->konversiTerbilang($price) . ' RUPIAH';
+                    }
+
+                    $filename = 'kwitansi_' .
+                        ($registrationClasses->first()->registration->racer->short_name ?? 'peserta') .
+                        '.pdf';
+
+                    $pdf = Pdf::loadView('pdf.kwitansi-drag', [
+                        'registrationClasses' => $registrationClasses,
+                        'registration_number' => $registrationNumber,
+                        'today' => $today
+                    ]);
+
+                    $pdf->setPaper('a4', 'portrait');
+
+                    return $pdf->stream($filename);
+
+                default:
+                    throw new \Exception('Tipe PDF tidak valid');
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function generatePdfPerClass(Request $request, $id)
     {
         try {
             $request->validate([

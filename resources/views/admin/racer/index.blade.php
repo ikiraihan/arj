@@ -58,7 +58,7 @@
                         <span class="input-icon-addon text-dark"><i class="ti ti-search"></i></span>
                         <input type="text" id="search-racers" class="form-control" placeholder="Search">
                     </div>
-                    @if(auth()->user()->role == 'user')
+                    @if(auth()->user()->role == 'superadmin')
                     <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_add"><i class="ti ti-square-rounded-plus-filled me-1"></i>Tambah Pembalap</a>
                     @endif
                 </div>

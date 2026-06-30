@@ -2386,7 +2386,17 @@
                     <div class="modal-body px-4 py-3">
 
                         <div class="mb-3">
-                            <label class="col-lg-3 form-label">
+                            <label class="col-lg-6 form-label">
+                                Nama Pembalap
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select id="edit_racer_id" name="racer_id" class="form-control select2-racer" data-user-id="{{ auth()->id() }}">
+                            </select>
+                            <div class="invalid-feedback d-block"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-lg-6 form-label">
                                 Nama Team
                                 <span class="text-danger">*</span>
                             </label>
@@ -2397,6 +2407,22 @@
                                     class="form-control">
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="col-lg-6 form-label">
+                                Metode Pembayaran
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-lg-12">
+                                <select id="edit_payment_method" name="payment_method" class="form-control select2" data-toggle="select2">
+                                    <option value="transfer">Transfer</option>
+                                    <option value="tunai">Tunai</option>
+                                </select>
+                                <div class="invalid-feedback d-block"></div>
+                            </div>
+
+                        </div>
+
 
                         <div class="mb-3">
 

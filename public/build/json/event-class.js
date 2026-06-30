@@ -212,6 +212,12 @@ $(document).ready(function () {
 
                         d.pendaftar_start_date = $('#pendaftar_filter_start_date').val();
                         d.pendaftar_end_date = $('#pendaftar_filter_end_date').val();
+                    },
+                    dataSrc: function (json) {
+
+                        $('#total-event-register').text(`Jumlah Data : ${json.recordsFiltered}`);
+
+                        return json.data;
                     }
                 },
 
@@ -270,7 +276,9 @@ $(document).ready(function () {
                                                 data-id="${row.id}"
                                                 data-classes='${encodeURIComponent(JSON.stringify(row.classes ?? []))}'
                                                 data-team="${row.team_name ?? row.user?.team_name ?? '-'}"
-
+                                                data-racer-id="${row.racer ?? row.racer?.id ?? '-'}"
+                                                data-racer-name="${row.racer?.name}"
+                                                data-payment-method="${row.payment_method}"
                                                 >
 
                                                 <i class="ti ti-clipboard-check"></i>
@@ -278,17 +286,7 @@ $(document).ready(function () {
                                             </a>
 
                                             ${(
-                                                    (
-                                                        row.payment_method === 'tunai' &&
-                                                        row.status === 'unpaid'
-                                                    ) ||
-                                                    (
-                                                        row.payment_method === 'transfer' &&
-                                                        (
-                                                            row.status === 'menunggu-approval' ||
-                                                            row.status === 'menunggu-pembayaran'
-                                                        )
-                                                    )
+                                                 row.status != 'paid'
                                                 ) ? `
 
                                                     <a class="dropdown-item text-success btn-approval-payment"
@@ -311,32 +309,15 @@ $(document).ready(function () {
 
                                                 ` : ''}
 
-                                                ${(
-                                                    (
-                                                        row.payment_method === 'tunai' &&
-                                                        row.status === 'unpaid'
-                                                    ) ||
-                                                    (
-                                                        row.payment_method === 'transfer' &&
-                                                        (
-                                                            row.status === 'menunggu-approval' ||
-                                                            row.status === 'menunggu-pembayaran' ||
-                                                            row.status === 'rejected'
-                                                        )
-                                                    ) && row.race_status !== 'rejected'
-                                                ) ? `
+                                            <a class="dropdown-item text-info btn-open-approval-race"
+                                                href="javascript:void(0);"
+                                                data-id="${row.id}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modal_approval_race_status">
 
-                                                    <a class="dropdown-item text-info btn-open-approval-race"
-                                                        href="javascript:void(0);"
-                                                        data-id="${row.id}"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal_approval_race_status">
-
-                                                            <i class="ti ti-clipboard-check"></i>
-                                                            Ubah Status Balap
-                                                    </a>
-
-                                                ` : ''}
+                                                    <i class="ti ti-clipboard-check"></i>
+                                                    Ubah Status Balap
+                                            </a>
 
                                             <a class="dropdown-item text-purple btn-open-fine-register"
                                                 href="#"
@@ -351,18 +332,36 @@ $(document).ready(function () {
 
                                             ${( row.status === 'paid' ) ? `
 
-                                                    <a class="dropdown-item text-success btn-open-invoice-register"
-                                                        href="javascript:void(0);"
-                                                        data-id="${row.id}"
-                                                        data-classes="${encodeURIComponent(JSON.stringify(row.classes))}"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal_invoice_race">
+                                                    // <a class="dropdown-item text-success btn-open-invoice-register"
+                                                    //     href="javascript:void(0);"
+                                                    //     data-id="${row.id}"
+                                                    //     data-classes="${encodeURIComponent(JSON.stringify(row.classes))}"
+                                                    //     data-bs-toggle="modal"
+                                                    //     data-bs-target="#modal_invoice_race">
 
-                                                            <i class="ti ti-printer"></i>
-                                                            Cetak Kwitansi
-                                                    </a>
+                                                    //         <i class="ti ti-printer"></i>
+                                                    //         Cetak Kwitansi
+                                                    // </a>
 
                                                 ` : ''}
+
+                                            ${(row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
+                                                <a class="dropdown-item text-success btn-print-kwitansi"
+                                                    href="/registration/${row.id}/pdf?type=kwitansi"
+                                                    data-id="${row.id}">
+                                                        <i class="ti ti-printer"></i>
+                                                        Cetak Kwitansi
+                                                </a>
+                                            ` : ''}
+
+                                            ${(row.event?.type === 'drag' || row.event?.type === 'dragbike') ? `
+                                                <a class="dropdown-item text-success btn-print-kwitansi"
+                                                    href="/registration/${row.id}/pdf?type=kwitansi-drag"
+                                                    data-id="${row.id}">
+                                                        <i class="ti ti-printer"></i>
+                                                        Cetak Kwitansi
+                                                </a>
+                                            ` : ''}
 
                                             <a class="dropdown-item text-danger btn-open-delete-register"
                                             href="#"
@@ -392,6 +391,10 @@ $(document).ready(function () {
                                     <h6 class="fs-14 fw-medium mb-0">
                                         ${row.registration_number ?? '-'}
                                     </h6>
+
+                                    <small class="text-dark">
+                                        Cetak : ${row.count_print_invoice ?? '0'}
+                                    </small>
 
                                 </div>
                             `;
@@ -794,6 +797,12 @@ $(document).ready(function () {
                         d.race_has_photo = $('#race_filter_has_photo').val();
                         d.race_has_kis = $('#race_filter_has_kis').val();
                         d.race_has_kta = $('#race_filter_has_kta').val();
+                    },
+                    dataSrc: function (json) {
+
+                        $('#total-event-race').text(`Jumlah Data : ${json.recordsFiltered}`);
+
+                        return json.data;
                     }
                 },
 
@@ -896,24 +905,24 @@ $(document).ready(function () {
                         }
                     },
                     // NO KWITANSI
-                    {
-                        data: 'invoice_number',
+                    // {
+                    //     data: 'invoice_number',
 
-                        render: function (data, type, row) {
+                    //     render: function (data, type, row) {
 
-                            return `
-                            <div class="d-flex flex-column">
-                                <span class="fw-semibold text-dark">
-                                    ${row.invoice_number ?? '-'}
-                                </span>
+                    //         return `
+                    //         <div class="d-flex flex-column">
+                    //             <span class="fw-semibold text-dark">
+                    //                 ${row.invoice_number ?? '-'}
+                    //             </span>
 
-                                <small class="text-dark">
-                                    Cetak : ${row.count_print_invoice ?? '0'}
-                                </small>
-                            </div>
-                            `;
-                        }
-                    },
+                    //             <small class="text-dark">
+                    //                 Cetak : ${row.count_print_invoice ?? '0'}
+                    //             </small>
+                    //         </div>
+                    //         `;
+                    //     }
+                    // },
 
                     {
                         data: 'racer.full_name', // Menentukan pencarian & sorting default berdasarkan nama lengkap
@@ -2126,9 +2135,20 @@ $(document).ready(function () {
         const classes = JSON.parse(
             decodeURIComponent($(this).attr('data-classes'))
         );
+        const racerId = $(this).data('racer-id');
+        const racerName = $(this).data('racer-name');
+        const paymentMethod = $(this).data('payment-method');
 
         $('#registration_id').val(registrationId);
         $('#edit_team_name').val(teamName);
+        $('#edit_payment_method').val(paymentMethod).trigger('change');
+
+        $racerSelect.empty();
+
+        if (racerId && racerName) {
+            const option = new Option(racerName, racerId, true, true);
+            $racerSelect.append(option).trigger('change');
+        }
 
         // reset semua checkbox
         $('.class-checkbox').prop('checked', false);
@@ -2160,6 +2180,42 @@ $(document).ready(function () {
                 `input[name="class_detail[${item.class_id}][frame_number]"]`
             ).val(item.rangka_number);
         });
+    });
+
+    const $racerSelect = $('#edit_racer_id');
+
+    $racerSelect.select2({
+        dropdownParent: $('#modal_edit_pendaftar'),
+        placeholder: 'Pilih Pembalap',
+        allowClear: true,
+        ajax: {
+            transport: function (params, success, failure) {
+
+                const userId = $racerSelect.data('user-id');
+
+                return $.ajax({
+                    url: `/api/racer/select/${userId}`,
+                    type: 'GET',
+                    data: params.data,
+                    success,
+                    error: failure
+                });
+            },
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term
+                };
+            },
+            processResults: function (response) {
+                return {
+                    results: response.data.map(item => ({
+                        id: item.id,
+                        text: item.name
+                    }))
+                };
+            }
+        }
     });
 
     $('#form-edit-pendaftar').on('submit', function (e) {
@@ -2669,7 +2725,6 @@ $(document).ready(function () {
                         <thead>
                             <tr>
                                 <th>Kelas</th>
-                                <th>No. Invoice</th>
                                 <th class="text-end">Harga</th>
                             </tr>
                         </thead>
@@ -2687,7 +2742,6 @@ $(document).ready(function () {
                 html += `
                     <tr>
                         <td class="fw-semibold">${item.class_name ?? '-'}</td>
-                        <td class="fw-semibold">${item.invoice_number ?? '-'}</td>
                         <td class="text-end fw-semibold">
                             Rp ${Number(price ?? 0).toLocaleString('id-ID')}
                         </td>
@@ -2699,7 +2753,7 @@ $(document).ready(function () {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2">Total</th>
+                                <th colspan="1">Total</th>
                                 <th class="text-end">
                                     Rp ${Number(totalPrice ?? 0).toLocaleString('id-ID')}
                                 </th>
@@ -2712,4 +2766,5 @@ $(document).ready(function () {
 
         $('#class-detail-content').html(html);
     });
+
 });

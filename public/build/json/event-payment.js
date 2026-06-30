@@ -82,7 +82,9 @@
 
                         if (
                             row.payment_method === 'tunai' &&
-                            row.status === 'unpaid'
+                            (
+                                row.status === 'unpaid' || row.status === 'menunggu-pembayaran'
+                            )
                         ) {
 
                             return `
@@ -115,7 +117,9 @@
                         // tampil hanya jika transfer & menunggu pembayaran
                         if (
                             row.payment_method === 'transfer' &&
-                            row.status === 'menunggu-pembayaran'
+                            (
+                                row.status === 'unpaid' || row.status === 'menunggu-pembayaran'
+                            )
                         ) {
 
                             return `

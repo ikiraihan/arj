@@ -220,15 +220,22 @@
                                  <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
 
                                     {{-- LEFT --}}
-                                    <div class="input-icon input-icon-start position-relative">
-                                        <span class="input-icon-addon text-dark">
-                                            <i class="ti ti-search"></i>
-                                        </span>
+                                    <div class="d-flex align-items-center gap-2">
 
-                                        <input type="text"
-                                            id="search-event-register"
-                                            class="form-control"
-                                            placeholder="Search">
+                                        <div class="input-icon input-icon-start position-relative">
+                                            <span class="input-icon-addon text-dark">
+                                                <i class="ti ti-search"></i>
+                                            </span>
+
+                                            <input type="text"
+                                                id="search-event-register"
+                                                class="form-control"
+                                                placeholder="Search">
+                                        </div>
+
+                                        <span class="text-dark fw-semibold" id="total-event-register">
+                                            Jumlah Data : 0
+                                        </span>
 
                                     </div>
 
@@ -273,7 +280,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th class="text-end no-sort">Action</th>
-                                                    <th>No. Pendaftaran</th>
+                                                    <th>No. Invoice</th>
                                                     <th>Nama Pembalap</th>
                                                     <th>Tim</th>
                                                     <th>Kontak</th>
@@ -299,16 +306,21 @@
                             <div class="card">
                                  <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
 
-                                    {{-- LEFT --}}
-                                    <div class="input-icon input-icon-start position-relative">
-                                        <span class="input-icon-addon text-dark">
-                                            <i class="ti ti-search"></i>
-                                        </span>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="input-icon input-icon-start position-relative">
+                                            <span class="input-icon-addon text-dark">
+                                                <i class="ti ti-search"></i>
+                                            </span>
 
-                                        <input type="text"
-                                            id="search-event-race"
-                                            class="form-control"
-                                            placeholder="Search">
+                                            <input type="text"
+                                                id="search-event-race"
+                                                class="form-control"
+                                                placeholder="Search">
+                                        </div>
+
+                                        <span class="text-dark fw-semibold" id="total-event-race">
+                                            Jumlah Data : 0
+                                        </span>
                                     </div>
 
                                     {{-- RIGHT --}}
@@ -351,7 +363,7 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>Action</th>
-                                                    <th>No. Kwitansi</th>
+                                                    {{-- <th>No. Kwitansi</th> --}}
                                                     <th>Nama Pembalap</th>
                                                     <th>NIK</th>
                                                     <th>No. Start</th>

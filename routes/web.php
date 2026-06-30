@@ -43,7 +43,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/events/list', [EventController::class, 'indexList'])->name('events-list');
     Route::post('/events/store', [EventController::class, 'store'])->name('events.store');
     Route::get('/events/{id}', [EventController::class, 'detail'])->name('event-details');
-    
+
 
     Route::get('/regulations', [RegulationController::class, 'index'])->name('regulations');
     Route::post('/regulations/store', [RegulationController::class, 'store'])->name('regulations.store');
@@ -63,11 +63,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/event/payment', [PaymentController::class, 'index'])->name('events-payment');
 
-        Route::post('/racers/store', [RacerController::class, 'store'])->name('racers.store');
     });
 
     Route::middleware(['auth', 'role:user,superadmin'])->group(function () {
         Route::get('/racers/{userId?}', [RacerController::class, 'index'])->name('racers');
+        Route::post('/racers/store', [RacerController::class, 'store'])->name('racers.store');
     });
 // Route::get('/event', function () {
 //     return view('landing.event');

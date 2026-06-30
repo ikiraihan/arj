@@ -802,7 +802,7 @@ class EventController extends Controller
                 'phone_number_register' => $request->phone_number_register,
                 'name_register' => $request->name_register,
                 'payment_method' => $request->payment_method,
-                'status' => $request->payment_method == 'transfer' ? 'menunggu-pembayaran' : 'unpaid',
+                'status' => $request->payment_method == 'transfer' ? 'menunggu-pembayaran' : 'menunggu-pembayaran',
                 'race_status' => 'pending',
                 'is_fined' => $isFined,
                 'racer_number' => in_array($event->type, ['drag', 'dragbike'])
@@ -938,6 +938,7 @@ class EventController extends Controller
 
         $query = Registration::where('event_id', $eventId)->select([
             'id',
+            'event_id',
             'racer_id',
             'registration_number',
             'user_id',
@@ -953,7 +954,8 @@ class EventController extends Controller
         ])->with([
             'registrationClasses.eventClass',
             'user',
-            'racer'
+            'racer',
+            'event'
         ]);
         // ->withCount('registrations')
 
@@ -1084,6 +1086,7 @@ class EventController extends Controller
                 });
 
                 $racer = $register?->racer;
+                $event = $register?->event;
 
                 return [
                     'id' => $register->id,
@@ -1125,6 +1128,7 @@ class EventController extends Controller
                         'nik' => $racer->nik,
                         'full_name' => $racer->full_name,
                         'short_name' => $racer->short_name,
+                        'name' => $racer->full_name ." (". $racer->short_name.")",
                         'phone_number' => $racer->phone_number,
                         'birth_location' => $racer->birth_location,
                         'racer_number' => $racer->racer_number,
@@ -1153,6 +1157,11 @@ class EventController extends Controller
                         'user_name' => $racer->user?->name,
                         'user_phone_number' => $racer->user?->phone_number,
                     ] : null,
+                    'event' => $event ? [
+                        'id' => $event->id,
+                        'name' => $event->name,
+                        'type' => $event->type,
+                    ] : null,
                     // 'classes' => $register->registrationClasses,
                 ];
             });
@@ -1177,7 +1186,7 @@ class EventController extends Controller
         $registration = Registration::findOrFail($registrationId);
 
         if($request->status == 'unpaid'){
-            $status = $registration->payment_method == 'transfer' ? 'menunggu-pembayaran' : 'unpaid';
+            $status = $registration->payment_method == 'transfer' ? 'menunggu-pembayaran' : 'menunggu-pembayaran';
         }else{
             $status = $request->status;
         }
@@ -1263,6 +1272,8 @@ class EventController extends Controller
                 'event_class_id.*' => 'required|exists:event_classes,id',
                 'class_detail' => 'required|array',
                 'team_name' => 'required|string|max:255',
+                'payment_method' => 'required|in:tunai,transfer',
+                'racer_id' => 'required|exists:racers,id',
             ], [
                 'event_class_id.required' => 'Kelas event wajib dipilih minimal 1',
                 'event_class_id.array' => 'Format kelas event tidak valid',
@@ -1283,6 +1294,8 @@ class EventController extends Controller
                 // update team name registration
                 $registration->update([
                     'team_name' => $request->team_name,
+                    'payment_method' => $request->payment_method,
+                    'racer_id' => $request->racer_id
                 ]);
 
                 $newClassIds = collect($request->event_class_id)

@@ -64,6 +64,8 @@ class RacerController extends Controller
                 ? $request->file('kta')->store('racers/kta', 'public')
                 : null;
 
+            // $role = auth()->user()->role;
+
             Racer::create([
                 'user_id' => auth()->id(),
                 'nik' => $request->nik,
