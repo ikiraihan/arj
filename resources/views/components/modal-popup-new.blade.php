@@ -2576,37 +2576,45 @@
                     <div class="row">
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">No. Pendaftaran</label>
-                            <input type="text"
-                                id="pendaftar_filter_registration_number"
-                                class="form-control">
+                            <label class="form-label">No. Invoice</label>
+                            <select
+                                id="pendaftar_filter_registration_numbers"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label class="form-label">No. Invoice</label>
                             <input type="text"
                                 id="pendaftar_filter_invoice_number"
                                 class="form-control">
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Nama Pembalap</label>
-                            <input type="text"
-                                id="pendaftar_filter_racer_name"
-                                class="form-control">
+                            <select
+                                id="pendaftar_filter_racer_ids"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Tim</label>
-                            <input type="text"
-                                id="pendaftar_filter_team_name"
-                                class="form-control">
+                            <select
+                                id="pendaftar_filter_team_names"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Status Balap</label>
-                            <select id="pendaftar_filter_race_status" class="form-select">
-                                <option value="">Semua</option>
+                            <select
+                                id="pendaftar_filter_race_status"
+                                class="form-select"
+                                multiple>
                                 <option value="pending">Pending</option>
                                 <option value="approved">Approved</option>
                                 <option value="rejected">Rejected</option>
@@ -2615,22 +2623,25 @@
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Status Pembayaran</label>
-                            <select id="pendaftar_filter_payment_status" class="form-select">
-                                <option value="">Semua</option>
+                            <select
+                                id="pendaftar_filter_payment_status"
+                                class="form-select"
+                                multiple>
                                 <option value="pending">Pending</option>
                                 <option value="paid">Lunas</option>
                                 <option value="unpaid">Belum Bayar</option>
                                 <option value="menunggu-pembayaran">Menunggu Pembayaran</option>
                                 <option value="menunggu-approval">Menunggu Approval</option>
                                 <option value="rejected">Ditolak</option>
-
                             </select>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Metode Pembayaran</label>
-                            <select id="pendaftar_filter_payment_method" class="form-select">
-                                <option value="">Semua</option>
+                            <select
+                                id="pendaftar_filter_payment_method"
+                                class="form-select"
+                                multiple>
                                 <option value="transfer">Transfer</option>
                                 <option value="tunai">Tunai</option>
                             </select>
@@ -2690,31 +2701,34 @@
 
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label class="form-label">No. Kwitansi</label>
                             <input type="text"
                                 id="race_filter_receipt_number"
                                 class="form-control">
-                        </div>
+                        </div> --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Nama Pembalap</label>
-                            <input type="text"
-                                id="race_filter_racer_name"
-                                class="form-control">
+                            <select
+                                id="race_filter_racer_ids"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
-                        <div class="col-md-6 mb-3">
+
+                        {{-- <div class="col-md-6 mb-3">
                             <label class="form-label">NIK</label>
                             <input type="text"
                                 id="race_filter_nik"
                                 class="form-control">
-                        </div>
+                        </div> --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">No. Start</label>
                             <input type="text"
                                 id="race_filter_racer_number"
                                 class="form-control">
                         </div>
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label class="form-label">Status No. Start</label>
                             <select id="race_filter_racer_number_duplicate"
                                 class="form-select">
@@ -2724,12 +2738,22 @@
                                 <option value="unique">Tidak Duplikat</option>
 
                             </select>
+                        </div> --}}
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kelas</label>
+                            <select
+                                id="race_filter_class_ids"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Team</label>
-                            <input type="text"
-                                id="race_filter_team_name"
-                                class="form-control">
+                            <select
+                                id="race_filter_team_names"
+                                class="form-select text-dark"
+                                multiple>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Kota</label>
@@ -2737,13 +2761,7 @@
                                 id="race_filter_city"
                                 class="form-control">
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Kelas</label>
-                            <input type="text"
-                                id="race_filter_class_name"
-                                class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label class="form-label">Kendaraan</label>
                             <input type="text"
                                 id="race_filter_vehicle"
@@ -2760,7 +2778,7 @@
                             <input type="text"
                                 id="race_filter_engine_number"
                                 class="form-control">
-                        </div>
+                        </div> --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Foto Diri</label>
                             <select id="race_filter_has_photo"

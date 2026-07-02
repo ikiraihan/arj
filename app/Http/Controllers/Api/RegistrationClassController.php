@@ -76,13 +76,23 @@ class RegistrationClassController extends Controller
             });
 
             // NAMA PEMBALAP
-            $query->when($request->race_racer_name, function ($q) use ($request) {
-                $q->whereHas('registration.racer', function ($racer) use ($request) {
-                    $racer->where('full_name', 'like', '%' . $request->race_racer_name . '%')
-                        ->orWhere('short_name', 'like', '%' . $request->race_racer_name . '%');
-                });
-            });
-
+            $query->when(
+                $request->filled('race_racer_ids'),
+                function ($q) use ($request) {
+                    $q->whereHas('registration', function ($query) use ($request) {
+                        $query->whereIn('racer_id', $request->race_racer_ids);
+                    });
+                }
+            );
+            // FILTER TIM
+            $query->when(
+                $request->filled('race_team_names'),
+                function ($q) use ($request) {
+                    $q->whereHas('registration', function ($registration) use ($request) {
+                        $registration->whereIn('team_name', $request->race_team_names);
+                    });
+                }
+            );
             // NIK
             $query->when($request->race_nik, function ($q) use ($request) {
                 $q->whereHas('registration.racer', function ($racer) use ($request) {
@@ -101,13 +111,6 @@ class RegistrationClassController extends Controller
                 )
             );
 
-            // TEAM
-            $query->when($request->race_team_name, function ($q) use ($request) {
-                $q->whereHas('registration', function ($registration) use ($request) {
-                    $registration->where('team_name', 'like', '%' . $request->race_team_name . '%');
-                });
-            });
-
             // KOTA
             $query->when($request->race_city, function ($q) use ($request) {
                 $q->whereHas('registration.racer', function ($racer) use ($request) {
@@ -116,11 +119,17 @@ class RegistrationClassController extends Controller
             });
 
             // KELAS
-            $query->when($request->race_class_name, function ($q) use ($request) {
-                $q->whereHas('eventClass', function ($class) use ($request) {
-                    $class->where('name', 'like', '%' . $request->race_class_name . '%');
-                });
-            });
+            $query->when(
+                $request->filled('race_class_ids'),
+                function ($q) use ($request) {
+                    $q->whereIn('class_id', $request->race_class_ids);
+                }
+            );
+            // $query->when($request->race_class_name, function ($q) use ($request) {
+            //     $q->whereHas('eventClass', function ($class) use ($request) {
+            //         $class->where('name', 'like', '%' . $request->race_class_name . '%');
+            //     });
+            // });
 
             // KENDARAAN
             $query->when($request->race_vehicle, function ($q) use ($request) {

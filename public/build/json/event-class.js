@@ -199,19 +199,19 @@ $(document).ready(function () {
 
                         d.search_pendaftar = $('#search-event-register').val();
 
-                        d.pendaftar_registration_number = $('#pendaftar_filter_registration_number').val();
                         d.pendaftar_invoice_number = $('#pendaftar_filter_invoice_number').val();
-                        d.pendaftar_racer_name = $('#pendaftar_filter_racer_name').val();
-                        d.pendaftar_team_name = $('#pendaftar_filter_team_name').val();
                         d.pendaftar_contact = $('#pendaftar_filter_contact').val();
-
-                        d.pendaftar_race_status = $('#pendaftar_filter_race_status').val();
-
-                        d.pendaftar_payment_method = $('#pendaftar_filter_payment_method').val();
-                        d.pendaftar_payment_status = $('#pendaftar_filter_payment_status').val();
 
                         d.pendaftar_start_date = $('#pendaftar_filter_start_date').val();
                         d.pendaftar_end_date = $('#pendaftar_filter_end_date').val();
+
+                        // MULTIPLE SELECT FILTERS
+                        d.pendaftar_racer_ids = $('#pendaftar_filter_racer_ids').val() || [];
+                        d.pendaftar_registration_numbers = $('#pendaftar_filter_registration_numbers').val()|| [];
+                        d.pendaftar_team_names = $('#pendaftar_filter_team_names').val()|| [];
+                        d.pendaftar_race_status = $('#pendaftar_filter_race_status').val()|| [];
+                        d.pendaftar_payment_method = $('#pendaftar_filter_payment_method').val()|| [];
+                        d.pendaftar_payment_status = $('#pendaftar_filter_payment_status').val()|| [];
                     },
                     dataSrc: function (json) {
 
@@ -329,21 +329,6 @@ $(document).ready(function () {
                                                 <i class="ti ti-alert-circle"></i>
                                                 Ubah Status Denda
                                             </a>
-
-                                            ${( row.status === 'paid' ) ? `
-
-                                                    // <a class="dropdown-item text-success btn-open-invoice-register"
-                                                    //     href="javascript:void(0);"
-                                                    //     data-id="${row.id}"
-                                                    //     data-classes="${encodeURIComponent(JSON.stringify(row.classes))}"
-                                                    //     data-bs-toggle="modal"
-                                                    //     data-bs-target="#modal_invoice_race">
-
-                                                    //         <i class="ti ti-printer"></i>
-                                                    //         Cetak Kwitansi
-                                                    // </a>
-
-                                                ` : ''}
 
                                             ${(row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
                                                 <a class="dropdown-item text-success btn-print-kwitansi"
@@ -744,13 +729,14 @@ $(document).ready(function () {
 
     $(document).on('click', '#reset-filter-pendaftar', function () {
 
-        $('#pendaftar_filter_registration_number').val('');
+        $('#pendaftar_filter_racer_ids').val(null).trigger('change');
+        $('#pendaftar_filter_registration_numbers').val(null).trigger('change');
+        $('#pendaftar_filter_team_names').val(null).trigger('change');
+        $('#pendaftar_filter_race_status').val(null).trigger('change');
+        $('#pendaftar_filter_payment_status').val(null).trigger('change');
+        $('#pendaftar_filter_payment_method').val(null).trigger('change');
+
         $('#pendaftar_filter_invoice_number').val('');
-        $('#pendaftar_filter_racer_name').val('');
-        $('#pendaftar_filter_team_name').val('');
-        $('#pendaftar_filter_race_status').val('');
-        $('#pendaftar_filter_payment_status').val('');
-        $('#pendaftar_filter_payment_method').val('');
         $('#pendaftar_filter_start_date').val('');
         $('#pendaftar_filter_end_date').val('');
 
@@ -788,15 +774,18 @@ $(document).ready(function () {
                         d.race_nik = $('#race_filter_nik').val();
                         d.race_racer_number = $('#race_filter_racer_number').val();
                         d.race_racer_number_duplicate = $('#race_filter_racer_number_duplicate').val();
-                        d.race_team_name = $('#race_filter_team_name').val();
                         d.race_city = $('#race_filter_city').val();
-                        d.race_class_name = $('#race_filter_class_name').val();
+                        d.race_class_ids = $('#race_filter_class_ids').val() || [];
                         d.race_vehicle = $('#race_filter_vehicle').val();
                         d.race_chassis_number = $('#race_filter_chassis_number').val();
                         d.race_engine_number = $('#race_filter_engine_number').val();
                         d.race_has_photo = $('#race_filter_has_photo').val();
                         d.race_has_kis = $('#race_filter_has_kis').val();
                         d.race_has_kta = $('#race_filter_has_kta').val();
+
+                        d.race_racer_ids = $('#race_filter_racer_ids').val() || [];
+                        d.race_team_names = $('#race_filter_team_names').val() || [];
+
                     },
                     dataSrc: function (json) {
 
@@ -1198,6 +1187,12 @@ $(document).ready(function () {
             .find('select')
             .val('');
 
+        $('#modal_filter_race')
+        .find('select')
+        .val(null)
+        .trigger('change');
+
+
         $('#event-race-table')
             .DataTable()
             .ajax
@@ -1212,14 +1207,15 @@ $(document).ready(function () {
 
             search: $('#search-event-race').val(),
 
+            race_racer_ids: $('#race_filter_racer_ids').val(null).trigger('change'),
+            race_team_names: $('#race_filter_team_names').val(null).trigger('change'),
+
             race_receipt_number: $('#race_filter_receipt_number').val(),
-            race_racer_name: $('#race_filter_racer_name').val(),
             race_nik: $('#race_filter_nik').val(),
             race_racer_number: $('#race_filter_racer_number').val(),
             race_racer_number_duplicate: $('#race_filter_racer_number_duplicate').val(),
-            race_team_name: $('#race_filter_team_name').val(),
             race_city: $('#race_filter_city').val(),
-            race_class_name: $('#race_filter_class_name').val(),
+            race_class_ids: $('#race_filter_class_ids').val() || [],
             race_vehicle: $('#race_filter_vehicle').val(),
             race_chassis_number: $('#race_filter_chassis_number').val(),
             race_engine_number: $('#race_filter_engine_number').val(),
@@ -2767,4 +2763,155 @@ $(document).ready(function () {
         $('#class-detail-content').html(html);
     });
 
+    const eventId = $('#event-register-table').data('event-id');
+
+    $('#pendaftar_filter_racer_ids').select2({
+        width: '100%',
+        placeholder: 'Pilih Pembalap',
+        multiple: true,
+        ajax: {
+            url: '/api/select/racers/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#pendaftar_filter_registration_numbers').select2({
+        width: '100%',
+        placeholder: 'Pilih Nomor Invoice',
+        multiple: true,
+        ajax: {
+            url: '/api/select/registration_numbers/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#pendaftar_filter_team_names').select2({
+        width: '100%',
+        placeholder: 'Pilih Nama Tim',
+        multiple: true,
+        ajax: {
+            url: '/api/select/team_names/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#pendaftar_filter_race_status').select2({
+        width: '100%',
+        placeholder: 'Pilih Status Balap',
+        allowClear: true
+    });
+
+    $('#pendaftar_filter_payment_status').select2({
+        width: '100%',
+        placeholder: 'Pilih Status Pembayaran',
+        allowClear: true
+    });
+
+    $('#pendaftar_filter_payment_method').select2({
+        width: '100%',
+        placeholder: 'Pilih Metode Pembayaran',
+        allowClear: true
+    });
+
+    $('#race_filter_racer_ids').select2({
+        width: '100%',
+        placeholder: 'Pilih Pembalap',
+        multiple: true,
+        ajax: {
+            url: '/api/select/racers/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#race_filter_team_names').select2({
+        width: '100%',
+        placeholder: 'Pilih Nama Tim',
+        multiple: true,
+        ajax: {
+            url: '/api/select/team_names/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#race_filter_class_ids').select2({
+        width: '100%',
+        placeholder: 'Pilih Kelas Balap',
+        multiple: true,
+        ajax: {
+            url: '/api/select/event_classes/' + eventId,
+            dataType: 'json',
+            delay: 300,
+            data: function(params) {
+                return {
+                    keyword: params.term
+                };
+            },
+            processResults: function(response) {
+                return {
+                    results: response.data
+                };
+            },
+            cache: true
+        }
+    });
 });

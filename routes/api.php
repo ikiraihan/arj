@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RacerController;
 use App\Http\Controllers\Api\RegistrationClassController;
 use App\Http\Controllers\Api\RegulationController;
+use App\Http\Controllers\API\SelectController;
 use App\Models\RegistrationClass;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -60,5 +61,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/regulations/{id}', [RegulationController::class, 'update']);
     Route::get('/regulations/show/{id}', [RegulationController::class, 'show']);
     Route::delete('/regulations/{id}', [RegulationController::class, 'destroy']);
+
+    Route::get('/select/racers/{eventId?}', [SelectController::class, 'getRacers']);
+    Route::get('/select/registration_numbers/{eventId?}', [SelectController::class, 'getRegistrationNumbers']);
+    Route::get('/select/team_names/{eventId?}', [SelectController::class, 'getTeamNames']);
+    Route::get('/select/event_classes/{eventId?}', [SelectController::class, 'getEventClasses']);
 
 });

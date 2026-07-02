@@ -348,11 +348,11 @@
 @endif
 
 @if (Route::is(['event-details']))
-    <script src="{{URL::asset('build/json/event-details.js')}}"></script>
+    <script src="{{URL::asset('build/json/event-details.js')}}?v={{ env('APP_VERSION') }}"></script>
 @endif
 
 @if (Route::is(['event-details']))
-    <script src="{{URL::asset('build/json/event-class.js')}}"></script>
+<script src="{{ asset('build/json/event-class.js') }}?v={{ env('APP_VERSION') }}"></script>
 @endif
 
 @if (Route::is(['event-details','events-payment']))
@@ -360,11 +360,11 @@
 @endif
 
 @if (Route::is(['events','registration-form']))
-    <script src="{{URL::asset('build/json/event-registration.js')}}"></script>
+    <script src="{{URL::asset('build/json/event-registration.js')}}?v={{ env('APP_VERSION') }}"></script>
 @endif
 
 @if (Route::is(['events-payment']))
-    <script src="{{URL::asset('build/json/event-payment.js')}}"></script>
+    <script src="{{URL::asset('build/json/event-payment.js')}}?v={{ env('APP_VERSION') }}"></script>
 @endif
 
 @if (Route::is(['faq']))
