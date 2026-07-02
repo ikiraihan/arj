@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RacerController;
 use App\Http\Controllers\Api\RegistrationClassController;
 use App\Http\Controllers\Api\RegulationController;
-use App\Http\Controllers\API\SelectController;
+use App\Http\Controllers\Api\SelectController;
 use App\Models\RegistrationClass;
 
 Route::middleware('auth:sanctum')->group(function () {
