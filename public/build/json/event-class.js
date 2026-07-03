@@ -276,7 +276,7 @@ $(document).ready(function () {
                                                 data-id="${row.id}"
                                                 data-classes='${encodeURIComponent(JSON.stringify(row.classes ?? []))}'
                                                 data-team="${row.team_name ?? row.user?.team_name ?? '-'}"
-                                                data-racer-id="${row.racer ?? row.racer?.id ?? '-'}"
+                                                data-racer-id="${row.racer?.id ?? '-'}"
                                                 data-racer-name="${row.racer?.name}"
                                                 data-payment-method="${row.payment_method}"
                                                 >
@@ -2188,6 +2188,7 @@ $(document).ready(function () {
             transport: function (params, success, failure) {
 
                 const userId = $racerSelect.data('user-id');
+
 
                 return $.ajax({
                     url: `/api/racer/select/${userId}`,
