@@ -183,7 +183,7 @@
                 <tr>
                     <td>Nama Pembalap</td>
                     <td style="width: 15px;">:</td>
-                    <td style="width: 300px;">{{ $registClass->registration->racer->full_name ?? '-' }}</td>
+                    <td style="width: 300px;">{{ $registClass->registration->racer->short_name ?? '-' }}</td>
                     <td style="width: 50px; text-align: right; padding-right: 10px;">NIK</td>
                     <td style="width: 15px;">:</td>
                     <td>{{ $registClass->registration->racer->nik ?? '-' }}</td>
@@ -222,7 +222,7 @@
                 <tr>
                     <td style="font-weight: bold; text-transform: uppercase;">
                         Peserta,<br><br><br> {{-- Tinggi ruang tanda tangan dikurangi --}}
-                        <u>{{ $registClass->registration->racer->full_name ?? '-' }}</u>
+                        <u>{{ $registClass->registration->racer->short_name ?? '-' }}</u>
                     </td>
                     <td class="peruntukan">Untuk Panitia</td>
                 </tr>
@@ -252,7 +252,7 @@
                 </tr>
                 <tr>
                     <td>Nama Pembalap</td><td>:</td>
-                    <td>{{ $registClass->registration->racer->full_name ?? '-' }}</td>
+                    <td>{{ $registClass->registration->racer->short_name ?? '-' }}</td>
                 </tr>
                             <tr>
                     <td>Nama Pendaftar</td><td>:</td>
@@ -319,7 +319,7 @@
                 <tr>
                     <td >Nama Pembalap</td>
                     <td style="width: 15px;">:</td>
-                    <td colspan="4">{{ $registClass->registration->racer->full_name ?? '-' }}</td>
+                    <td colspan="4">{{ $registClass->registration->racer->short_name ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td>Nama Pendaftar</td><td>:</td>
@@ -351,7 +351,7 @@
                 <tr>
                     <td style="width: 220px; font-weight: bold; text-transform: uppercase; vertical-align: top;">
                         Peserta,<br><br><br><br><br>
-                        <u>{{ $registClass->registration->racer->full_name ?? '-' }}</u>
+                        <u>{{ $registClass->registration->racer->short_name ?? '-' }}</u>
                     </td>
                     <td style="text-align: center; vertical-align: top;">
                         <table class="table-lurus-scrut" align="center">
