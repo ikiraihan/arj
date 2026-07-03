@@ -48,11 +48,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/regulations', [RegulationController::class, 'index'])->name('regulations');
     Route::post('/regulations/store', [RegulationController::class, 'store'])->name('regulations.store');
 
-    Route::get('/race/{event}/export', [ExportController::class, 'exportRace'])->name('export-race');
+    // Route::get('/race/{event}/export', [ExportController::class, 'exportRace'])->name('export-race');
 
     Route::get('/registration/{id}/pdf', [RegistrationController::class, 'generatePdf']);
     Route::post('/registration/{id}/track-preview', [RegistrationController::class, 'trackPreview']);
 
+
+    });
+
+    Route::middleware(['auth', 'role:superadmin,export'])->group(function () {
+
+        Route::get('/export', [ExportController::class, 'index'])->name('index.export');
+        Route::get('/race/{event}/export', [ExportController::class, 'exportRace'])->name('export-race');
 
     });
 

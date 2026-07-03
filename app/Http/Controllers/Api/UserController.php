@@ -94,7 +94,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'     => 'nullable|string|max:255',
             'email'    => 'required|email|unique:users,email,' . $id,
-            'role'     => 'required|in:superadmin,admin,user',
+            'role'     => 'required|in:superadmin,admin,user,export',
             'phone'    => 'nullable|string|max:20',
             'password' => 'nullable|min:6|confirmed',
         ], [

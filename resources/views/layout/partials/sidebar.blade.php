@@ -93,6 +93,15 @@
                                 </li>
                             @endif
 
+                            @if(in_array(auth()->user()->role, ['superadmin', 'export']))
+                                <li class="{{ Request::is('export') ? 'active' : '' }}">
+                                    <a href="{{ route('index.export')}}">
+                                        <i class="ti ti-download"></i>
+                                        <span>Export Laporan</span>
+                                    </a>
+                                </li>
+                            @endif
+
                             {{-- Hanya untuk user --}}
                             @if(auth()->user()->role == 'user')
                                 <li class="{{ Request::is('events') ? 'active' : '' }}">

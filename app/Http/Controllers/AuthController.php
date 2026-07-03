@@ -42,6 +42,10 @@ class AuthController extends Controller
 
             $redirectTo = Auth::user()->role === 'user' ? 'events' : 'events-list';
 
+            if(Auth::user()->role === 'export') {
+                $redirectTo = 'index.export';
+            }
+
             return redirect()->route($redirectTo)
                 ->with('success', 'Login berhasil');
         }

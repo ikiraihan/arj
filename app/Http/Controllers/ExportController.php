@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Exports\RegistrationClassExport;
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
+    public function index()
+    {
+        $events = Event::all();
+        return view('admin.export.index', compact('events'));
+    }
     public function exportRace(Request $request, $eventId)
     {
         return Excel::download(

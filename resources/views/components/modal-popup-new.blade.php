@@ -89,6 +89,10 @@
                                     {{ old('role') == 'admin' ? 'selected' : '' }}>
                                     Admin
                                 </option> --}}
+                                <option value="export"
+                                    {{ old('role') == 'export' ? 'selected' : '' }}>
+                                    Export
+                                </option>
 
                                 <option value="user"
                                     {{ old('role') == 'user' ? 'selected' : '' }}>
@@ -241,6 +245,7 @@
                                 <option value="">Pilih Role</option>
                                 <option value="superadmin">Super Admin</option>
                                 {{-- <option value="admin">Admin</option> --}}
+                                <option value="export">Export</option>
                                 <option value="user">User</option>
                             </select>
                         </div>
