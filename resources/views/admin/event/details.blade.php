@@ -453,38 +453,27 @@
                                 <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
 
                                     <!-- LEFT -->
-                                    <div class="d-flex align-items-center gap-2">
-                                        {{-- <div class="input-icon input-icon-start position-relative" style="width: 300px;">
-                                            <span class="input-icon-addon text-dark">
-                                                <i class="ti ti-search"></i>
-                                            </span>
-
-                                            <input type="text"
-                                                id="search-event-race-original"
-                                                class="form-control"
-                                                placeholder="Search">
-                                        </div> --}}
-                                        <!-- Jenis Laporan -->
-                                        <select id="report-type"
-                                            class="form-select"
-                                            style="width: 240px;">
+                                    <div class="d-flex flex-column flex-md-row gap-2 w-100">
+                                        <select id="report-type" class="form-select">
                                             <option value="class">Pendapatan Per Kelas</option>
                                             <option value="payment-method">Pendapatan Per Metode Pembayaran</option>
                                         </select>
 
-                                        <!-- Status Pembayaran -->
-                                        <select id="filter-payment-status"
-                                            class="form-select"
-                                            style="width: 180px;">
+                                        <select id="filter-payment-status" class="form-select">
                                             <option value="">Semua Status</option>
                                             <option value="paid">Paid</option>
                                             <option value="unpaid">Unpaid</option>
                                         </select>
 
+                                        <select id="filter-payment-method" class="form-select">
+                                            <option value="">Semua Metode</option>
+                                            <option value="tunai">Tunai</option>
+                                            <option value="transfer">Transfer</option>
+                                        </select>
                                     </div>
 
                                     <!-- RIGHT -->
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-lg-auto justify-content-lg-end">
                                         <button
                                             type="button"
                                             id="export-report-income"
@@ -492,9 +481,10 @@
                                             <i class="ti ti-file-export me-1"></i>
                                             Export
                                         </button>
+
                                         <a href="javascript:void(0);"
                                             id="refresh-report-income"
-                                            class="btn btn-icon btn-outline-light shadow">
+                                            class="btn btn-outline-light">
                                             <i class="ti ti-refresh"></i>
                                         </a>
                                     </div>

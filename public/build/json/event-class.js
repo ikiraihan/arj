@@ -415,7 +415,7 @@ $(document).ready(function () {
                                     data-description="${row.racer?.description ?? '-'}"
 
                                     data-birth_location="${row.racer?.birth_location ?? '-'}"
-                                    data-birth_date="${birthDateFormatted}"
+                                    data-birth_date="${row.racer?.birth_date}"
                                     data-hometown="${row.racer?.hometown ?? '-'}"
                                     data-photo="${row.racer?.photo ?? '-'}"
                                     data-kta="${row.racer?.kta ?? '-'}"
@@ -858,24 +858,6 @@ $(document).ready(function () {
                                                 Ubah Data
                                             </a>
 
-                                            ${(row.event?.type === 'race' || row.event?.type === 'motorcross') ? `
-                                                <a class="dropdown-item text-success btn-print-kwitansi"
-                                                    href="/registration/${row.id}/pdf?type=kwitansi"
-                                                    data-id="${row.id}">
-                                                        <i class="ti ti-printer"></i>
-                                                        Cetak Kwitansi
-                                                </a>
-                                            ` : ''}
-
-                                            ${(row.event?.type === 'drag' || row.event?.type === 'dragbike') ? `
-                                                <a class="dropdown-item text-success btn-print-kwitansi"
-                                                    href="/registration/${row.id}/pdf?type=kwitansi-drag"
-                                                    data-id="${row.id}">
-                                                        <i class="ti ti-printer"></i>
-                                                        Cetak Kwitansi
-                                                </a>
-                                            ` : ''}
-
                                             <a class="dropdown-item text-danger btn-open-delete-register"
                                             href="#"
                                             data-bs-toggle="modal"
@@ -942,7 +924,7 @@ $(document).ready(function () {
                                     data-description="${row.racer?.description ?? '-'}"
 
                                     data-birth_location="${row.racer?.birth_location ?? '-'}"
-                                    data-birth_date="${birthDateFormatted}"
+                                    data-birth_date="${row.racer?.birth_date}"
                                     data-hometown="${row.racer?.hometown ?? '-'}"
                                     data-photo="${row.racer?.photo ?? '-'}"
                                     data-kta="${row.racer?.kta ?? '-'}"
@@ -997,7 +979,7 @@ $(document).ready(function () {
                                     <span class="badge bg-danger text-white d-inline-flex align-items-center gap-1"
                                         style="font-size: 13px;"
                                         title="Nomor ini juga digunakan oleh pembalap lain!">
-                                        <i class="ti ti-alert-triangle"></i> ${racerNumber} (Duplikat)
+                                        <i class="ti ti-alert-triangle"></i> ${racerNumber}
                                     </span>
                                 `;
                             }
@@ -1321,7 +1303,7 @@ $(document).ready(function () {
                                     data-description="${row.racer?.description ?? '-'}"
 
                                     data-birth_location="${row.racer?.birth_location ?? '-'}"
-                                    data-birth_date="${birthDateFormatted}"
+                                    data-birth_date="${row.racer?.birth_date}"
                                     data-hometown="${row.racer?.hometown ?? '-'}"
                                     data-photo="${row.racer?.photo ?? '-'}"
                                     data-kta="${row.racer?.kta ?? '-'}"
@@ -1370,23 +1352,9 @@ $(document).ready(function () {
                                 return `<span class="text-muted">-</span>`;
                             }
 
-                            // Jika nomor duplikat (flag true dari backend)
-                            if (row.is_racer_number_duplicate) {
-                                return `
-                                    <span class="badge bg-danger text-white d-inline-flex align-items-center gap-1"
-                                        style="font-size: 13px;"
-                                        title="Nomor ini juga digunakan oleh pembalap lain!">
-                                        <i class="ti ti-alert-triangle"></i> ${racerNumber} (Duplikat)
-                                    </span>
-                                `;
-                            }
-
-                            // Jika nomor aman / unik
                             return `
-                                <span class="badge bg-success text-white d-inline-flex align-items-center gap-1"
-                                    style="font-size: 13px;"
-                                    title="Nomor start aman & unik">
-                                    <i class="ti ti-check"></i> ${racerNumber}
+                                <span class="fw-medium text-dark">
+                                    ${racerNumber ?? '-'}
                                 </span>
                             `;
                         }
@@ -1520,6 +1488,7 @@ $(document).ready(function () {
                     data: function (d) {
                         d.search_event = $('#search-event-race-original').val();
                         d.payment_status = $('#filter-payment-status').val();
+                        d.payment_method = $('#filter-payment-method').val();
                     },
                     dataSrc: function (json) {
 
@@ -1673,8 +1642,8 @@ $(document).ready(function () {
                 type: 'GET',
 
                 data: function (d) {
-                    d.payment_status =
-                        $('#filter-payment-status').val();
+                    d.payment_status = $('#filter-payment-status').val();
+                    d.payment_method = $('#filter-payment-method').val();
                 },
 
                 dataSrc: function (json) {
@@ -1699,11 +1668,24 @@ $(document).ready(function () {
                     render: (d,t,r,m) => m.row + 1
                 },
                 {
-                    data: 'payment_method'
+                    data: 'payment_method',
+                        render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${data ?? '-'}
+                                </span>
+                            `;
+                        }
                 },
                 {
                     data: 'total_income',
-                    render: data => formatRupiah(data)
+                    render: function (data) {
+                            return `
+                                <span class="fw-medium text-dark">
+                                    ${formatRupiah(data) ?? '-'}
+                                </span>
+                            `;
+                        }
                 }
             ]
 
@@ -1723,6 +1705,24 @@ $(document).ready(function () {
     }
 
     $(document).on('change', '#filter-payment-status', function () {
+
+        if ($('#report-income-class-wrapper').is(':visible')) {
+
+            $('#event-report-income-class')
+                .DataTable()
+                .ajax
+                .reload();
+
+        } else {
+
+            $('#event-report-income-payment')
+                .DataTable()
+                .ajax
+                .reload();
+        }
+    });
+
+    $(document).on('change', '#filter-payment-method', function () {
 
         if ($('#report-income-class-wrapper').is(':visible')) {
 
@@ -2684,6 +2684,11 @@ $(document).ready(function () {
             $('#report-income-class-wrapper').show();
             $('#report-income-payment-wrapper').hide();
 
+            $('#event-report-income-class')
+                .DataTable()
+                .ajax
+                .reload();
+
         } else {
 
             $('#report-income-class-wrapper').hide();
@@ -2691,6 +2696,11 @@ $(document).ready(function () {
 
             if (!$.fn.DataTable.isDataTable('#event-report-income-payment')) {
                 initEventReportIncomePaymentTable();
+            } else {
+                $('#event-report-income-payment')
+                    .DataTable()
+                    .ajax
+                    .reload();
             }
         }
     });

@@ -209,6 +209,7 @@ class RegistrationClassController extends Controller
                     ->where('registration_classes.event_id', $eventId)
                     ->where('registrations.race_status', 'approved')
                     ->whereNotNull('registrations.racer_number') // Diubah ke registrations
+                    ->where('registrations.deleted_at', null) // Tambahkan kondisi untuk mengecualikan data yang dihapus
                     ->groupBy('registrations.racer_number')      // Diubah ke registrations
                     ->havingRaw('COUNT(DISTINCT registrations.racer_id) > 1')
                     ->pluck('registrations.racer_number')        // Diubah ke registrations
@@ -580,6 +581,10 @@ class RegistrationClassController extends Controller
                         $q->whereIn('status', $statuses);
                     }
                 }
+
+                if ($request->filled('payment_method')) {
+                    $q->where('payment_method', $request->payment_method);
+                }
             })
             ->with([
                 'eventClass:id,name,price',
@@ -659,6 +664,10 @@ class RegistrationClassController extends Controller
                     if (!empty($statuses)) {
                         $q->whereIn('status', $statuses);
                     }
+                }
+
+                if ($request->filled('payment_method')) {
+                    $q->where('payment_method', $request->payment_method);
                 }
             })
             ->with([
