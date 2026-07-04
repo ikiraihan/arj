@@ -17,315 +17,304 @@ class RegistrationClassController extends Controller
         /**
      * Get all events
      */
-        public function index(Request $request, $eventId): JsonResponse
-        {
-            $length = $request->length ?? 10;
-            $start  = $request->start ?? 0;
+    public function index(Request $request, $eventId): JsonResponse
+    {
+        $length = $request->length ?? 10;
+        $start  = $request->start ?? 0;
 
-            $query = RegistrationClass::where('event_id', $eventId)
-            ->whereHas('registration', function ($q) {
-                $q->withoutTrashed()
-                ->where('race_status', 'approved');
-            })
-            ->select([
-                'id',
-                'registration_id',
-                'event_id',
-                'class_id',
-                'invoice_number',
-                'count_print_invoice',
-                'racer_number',
-                'vehicle',
-                'vehicle_number',
-                'rangka_number',
-                'created_at',
-                // 'name_register',
-                // 'phone_number_register',
-            ])
-            ->with([
-                'registration',
-                'registration.racer',
-                'event',
-                'eventClass'
-            ]);
+        $query = RegistrationClass::where('registration_classes.event_id', $eventId)
+        ->whereHas('registration', function ($q) {
+            $q->withoutTrashed()
+            ->where('race_status', 'approved');
+        })
+        ->select([
+            'registration_classes.id',
+            'registration_classes.registration_id',
+            'registration_classes.event_id',
+            'registration_classes.class_id',
+            'registration_classes.invoice_number',
+            'registration_classes.count_print_invoice',
+            'registration_classes.racer_number',
+            'registration_classes.vehicle',
+            'registration_classes.vehicle_number',
+            'registration_classes.rangka_number',
+            'registration_classes.created_at',
+        ])
+        ->with([
+            'registration',
+            'registration.racer',
+            'event',
+            'eventClass'
+        ]);
 
-            // SEARCH
-            if ($request->search_race) {
-
-                $search = $request->search_race;
-
-                $query->where(function ($q) use ($search) {
-
-                    $q->where('invoice_number', 'like', "%{$search}%")
-                    ->orWhere('racer_number', 'like', "%{$search}%")
-                    ->orWhere('vehicle', 'like', "%{$search}%")
-                    ->orWhereHas('registration', function ($registration) use ($search) {
-                        $registration->where('team_name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('registration.racer', function ($racer) use ($search) {
-                        $racer->where('full_name', 'like', "%{$search}%")
+        // SEARCH
+        if ($request->search_race) {
+            $search = $request->search_race;
+            $query->where(function ($q) use ($search) {
+                $q->where('registration_classes.invoice_number', 'like', "%{$search}%")
+                ->orWhere('registration_classes.racer_number', 'like', "%{$search}%")
+                ->orWhere('registration_classes.vehicle', 'like', "%{$search}%")
+                ->orWhereHas('registration', function ($registration) use ($search) {
+                    $registration->where('team_name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('registration.racer', function ($racer) use ($search) {
+                    $racer->where('full_name', 'like', "%{$search}%")
                             ->orWhere('nik', 'like', "%{$search}%");
-                    });
-
-                });
-            }
-
-            // NO KWITANSI
-            $query->when($request->race_receipt_number, function ($q) use ($request) {
-                $q->where('invoice_number', 'like', '%' . $request->race_receipt_number . '%');
-            });
-
-            // NAMA PEMBALAP
-            $query->when(
-                $request->filled('race_racer_ids'),
-                function ($q) use ($request) {
-                    $q->whereHas('registration', function ($query) use ($request) {
-                        $query->whereIn('racer_id', $request->race_racer_ids);
-                    });
-                }
-            );
-            // FILTER TIM
-            $query->when(
-                $request->filled('race_team_names'),
-                function ($q) use ($request) {
-                    $q->whereHas('registration', function ($registration) use ($request) {
-                        $registration->whereIn('team_name', $request->race_team_names);
-                    });
-                }
-            );
-            // NIK
-            $query->when($request->race_nik, function ($q) use ($request) {
-                $q->whereHas('registration.racer', function ($racer) use ($request) {
-                    $racer->where('nik', 'like', '%' . $request->race_nik . '%');
                 });
             });
-
-            // NO START
-            $query->when($request->race_racer_number, fn ($q) =>
-                $q->whereHas('registration', fn ($registration) =>
-                    $registration->where(
-                        'racer_number',
-                        'like',
-                        '%' . $request->race_racer_number . '%'
-                    )
-                )
-            );
-
-            // KOTA
-            $query->when($request->race_city, function ($q) use ($request) {
-                $q->whereHas('registration.racer', function ($racer) use ($request) {
-                    $racer->where('hometown', 'like', '%' . $request->race_city . '%');
-                });
-            });
-
-            // KELAS
-            $query->when(
-                $request->filled('race_class_ids'),
-                function ($q) use ($request) {
-                    $q->whereIn('class_id', $request->race_class_ids);
-                }
-            );
-            // $query->when($request->race_class_name, function ($q) use ($request) {
-            //     $q->whereHas('eventClass', function ($class) use ($request) {
-            //         $class->where('name', 'like', '%' . $request->race_class_name . '%');
-            //     });
-            // });
-
-            // KENDARAAN
-            $query->when($request->race_vehicle, function ($q) use ($request) {
-                $q->where('vehicle', 'like', '%' . $request->race_vehicle . '%');
-            });
-
-            // NO RANGKA
-            $query->when($request->race_chassis_number, function ($q) use ($request) {
-                $q->where('rangka_number', 'like', '%' . $request->race_chassis_number . '%');
-            });
-
-            // NO MESIN
-            $query->when($request->race_engine_number, function ($q) use ($request) {
-                $q->where('vehicle_number', 'like', '%' . $request->race_engine_number . '%');
-            });
-
-            // FOTO
-            $query->when($request->race_has_photo !== null && $request->race_has_photo !== '', function ($q) use ($request) {
-
-                if ($request->race_has_photo == '1') {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('photo'));
-                } else {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNull('photo'));
-                }
-            });
-
-            // KIS
-            $query->when($request->race_has_kis !== null && $request->race_has_kis !== '', function ($q) use ($request) {
-
-                if ($request->race_has_kis == '1') {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('kis'));
-                } else {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNull('kis'));
-                }
-            });
-
-            // KTA
-            $query->when($request->race_has_kta !== null && $request->race_has_kta !== '', function ($q) use ($request) {
-
-                if ($request->race_has_kta == '1') {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('kta'));
-                } else {
-                    $q->whereHas('registration.racer', fn($r) => $r->whereNull('kta'));
-                }
-            });
-            // SORT
-            $orderColumnIndex = $request->input('order.0.column');
-            $orderDirection   = $request->input('order.0.dir', 'desc');
-
-            $columns = $request->input('columns');
-
-            $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
-
-            $allowedColumns = [
-                'name',
-                'venue',
-                'created_at',
-            ];
-
-            if (!in_array($orderColumn, $allowedColumns)) {
-                $orderColumn = 'created_at';
-            }
-
-            $query->orderBy($orderColumn, $orderDirection);
-
-            $recordsTotal = RegistrationClass::count();
-            $recordsFiltered = (clone $query)->count();
-
-            $eventId = $query->clone()->first()?->event_id;
-
-            $duplicateNumbers = [];
-
-            if ($eventId) {
-                // 2. Cari racer_number dari tabel registrations yang dipakai oleh lebih dari 1 racer_id berbeda pada event ini
-                $duplicateNumbers = \DB::table('registration_classes')
-                    ->join('registrations', 'registration_classes.registration_id', '=', 'registrations.id')
-                    ->where('registration_classes.event_id', $eventId)
-                    ->where('registrations.race_status', 'approved')
-                    ->whereNotNull('registrations.racer_number') // Diubah ke registrations
-                    ->where('registrations.deleted_at', null) // Tambahkan kondisi untuk mengecualikan data yang dihapus
-                    ->groupBy('registrations.racer_number')      // Diubah ke registrations
-                    ->havingRaw('COUNT(DISTINCT registrations.racer_id) > 1')
-                    ->pluck('registrations.racer_number')        // Diubah ke registrations
-                    ->toArray();
-            }
-
-            $duplicateNumberQuery = DB::table('registration_classes')
-            ->join('registrations', 'registration_classes.registration_id', '=', 'registrations.id')
-            ->where('registration_classes.event_id', $eventId)
-            ->where('registrations.race_status', 'approved')
-            ->whereNotNull('registration_classes.racer_number')
-            ->groupBy('registration_classes.racer_number')
-            ->havingRaw('COUNT(DISTINCT registrations.racer_id) > 1')
-            ->select('registration_classes.racer_number');
-
-            $query->when(
-                $request->race_racer_number_duplicate === 'duplicate',
-                function ($q) use ($duplicateNumberQuery) {
-
-                    $q->whereIn(
-                        'racer_number',
-                        $duplicateNumberQuery
-                    );
-                }
-            );
-
-            $query->when(
-                $request->race_racer_number_duplicate === 'unique',
-                function ($q) use ($duplicateNumberQuery) {
-
-                    $q->whereNotIn(
-                        'racer_number',
-                        $duplicateNumberQuery
-                    );
-                }
-            );
-
-            $registrationClasses = $query
-                ->skip($start)
-                ->take($length)
-                ->get()
-                ->map(function ($registClass) use ($duplicateNumbers) {
-
-                    $registration = $registClass->registration;
-                    $racer = $registration?->racer;
-                    $event = $registClass->event;
-                    $eventClass = $registClass->eventClass;
-                    $isDuplicateNumber = in_array($registration->racer_number, $duplicateNumbers);
-
-                    return [
-
-                        'id' => $registClass->id,
-                        'invoice_number' => $registClass->invoice_number,
-                        'count_print_invoice' => $registClass->count_print_invoice,
-                        'racer_number' => $registClass->racer_number,
-                        'is_racer_number_duplicate' => $isDuplicateNumber,
-                        'vehicle' => $registClass->vehicle,
-                        'vehicle_number' => $registClass->vehicle_number,
-                        'rangka_number' => $registClass->rangka_number,
-                        'created_at' => $registClass->created_at?->format('Y-m-d H:i'),
-                        'name_register' => $registration->name_register,
-                        'phone_number_register' => $registration->phone_number_register,
-
-                        'racer' => $racer ? [
-                            'id' => $racer->id,
-                            'nik' => $racer->nik,
-                            'full_name' => $racer->full_name,
-                            'short_name' => $racer->short_name,
-                            'phone_number' => $racer->phone_number,
-                            'birth_location' => $racer->birth_location,
-                            'racer_number' => $racer->racer_number,
-                            'birth_date' => $racer->birth_date
-                                ? Carbon::parse($racer->birth_date)->translatedFormat('d F Y')
-                                : null,
-                            'hometown' => $racer->hometown,
-                            'photo' => $racer->photo
-                                ? asset('storage/' . $racer->photo)
-                                : null,
-                            'kta' => $racer->kta
-                                ? asset('storage/' . $racer->kta)
-                                : null,
-                            'kis' => $racer->kis
-                                ? asset('storage/' . $racer->kis)
-                                : null,
-                            'is_photo' => $racer->photo
-                                ? true
-                                : false,
-                            'is_kta' => $racer->kta
-                                ? true
-                                : false,
-                            'is_kis' => $racer->kis
-                                ? true
-                                : false,
-                            'user_name' => $racer->user?->name,
-                            'user_phone_number' => $racer->user?->phone_number,
-                        ] : null,
-                        'registration' => $registration,
-                        'event' => $event ? [
-                                'id' => $event->id,
-                                'name' => $event->name,
-                                'type' => $event->type,
-                            ] : null,
-                        'event_class' => $eventClass ? [
-                            'id' => $eventClass->id,
-                            'name' => $eventClass->name,
-                        ] : null,
-                    ];
-                });
-            // dd($registrationClasses); // debug
-            return response()->json([
-                'draw' => intval($request->draw),
-                'recordsTotal' => $recordsTotal,
-                'recordsFiltered' => $recordsFiltered,
-                'data' => $registrationClasses
-            ]);
         }
+
+        // NO KWITANSI
+        $query->when($request->race_receipt_number, function ($q) use ($request) {
+            $q->where('registration_classes.invoice_number', 'like', '%' . $request->race_receipt_number . '%');
+        });
+
+        // NAMA PEMBALAP
+        $query->when(
+            $request->filled('race_racer_ids'),
+            function ($q) use ($request) {
+                $q->whereHas('registration', function ($query) use ($request) {
+                    $query->whereIn('racer_id', $request->race_racer_ids);
+                });
+            }
+        );
+        // FILTER TIM
+        $query->when(
+            $request->filled('race_team_names'),
+            function ($q) use ($request) {
+                $q->whereHas('registration', function ($registration) use ($request) {
+                    $registration->whereIn('team_name', $request->race_team_names);
+                });
+            }
+        );
+        // NIK
+        $query->when($request->race_nik, function ($q) use ($request) {
+            $q->whereHas('registration.racer', function ($racer) use ($request) {
+                $racer->where('nik', 'like', '%' . $request->race_nik . '%');
+            });
+        });
+
+        // NO START
+        $query->when($request->race_racer_number, fn ($q) =>
+            $q->whereHas('registration', fn ($registration) =>
+                $registration->where(
+                    'registrations.racer_number',
+                    'like',
+                    '%' . $request->race_racer_number . '%'
+                )
+            )
+        );
+
+        // KOTA
+        $query->when($request->race_city, function ($q) use ($request) {
+            $q->whereHas('registration.racer', function ($racer) use ($request) {
+                $racer->where('hometown', 'like', '%' . $request->race_city . '%');
+            });
+        });
+
+        // KELAS
+        $query->when(
+            $request->filled('race_class_ids'),
+            function ($q) use ($request) {
+                $q->whereIn('registration_classes.class_id', $request->race_class_ids);
+            }
+        );
+
+        // KENDARAAN
+        $query->when($request->race_vehicle, function ($q) use ($request) {
+            $q->where('registration_classes.vehicle', 'like', '%' . $request->race_vehicle . '%');
+        });
+
+        // NO RANGKA
+        $query->when($request->race_chassis_number, function ($q) use ($request) {
+            $q->where('registration_classes.rangka_number', 'like', '%' . $request->race_chassis_number . '%');
+        });
+
+        // NO MESIN
+        $query->when($request->race_engine_number, function ($q) use ($request) {
+            $q->where('registration_classes.vehicle_number', 'like', '%' . $request->race_engine_number . '%');
+        });
+
+        // FOTO
+        $query->when($request->race_has_photo !== null && $request->race_has_photo !== '', function ($q) use ($request) {
+
+            if ($request->race_has_photo == '1') {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('photo'));
+            } else {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNull('photo'));
+            }
+        });
+
+        // KIS
+        $query->when($request->race_has_kis !== null && $request->race_has_kis !== '', function ($q) use ($request) {
+
+            if ($request->race_has_kis == '1') {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('kis'));
+            } else {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNull('kis'));
+            }
+        });
+
+        // KTA
+        $query->when($request->race_has_kta !== null && $request->race_has_kta !== '', function ($q) use ($request) {
+
+            if ($request->race_has_kta == '1') {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNotNull('kta'));
+            } else {
+                $q->whereHas('registration.racer', fn($r) => $r->whereNull('kta'));
+            }
+        });
+
+        // SORT
+        $orderColumnIndex = $request->input('order.0.column');
+        $orderDirection   = $request->input('order.0.dir', 'desc');
+
+        // index HARUS sesuai urutan array columns di JS (mulai dari 0, index 0 = kolom ACTION diabaikan)
+        $columnsMap = [
+            1  => 'racers.full_name',
+            2  => 'racers.nik',
+            3  => 'registrations.racer_number',
+            4  => 'registrations.team_name',
+            5  => 'racers.hometown',
+            6  => 'event_classes.name',
+            7  => 'registration_classes.vehicle',
+            8  => 'registration_classes.rangka_number',
+            9  => 'registration_classes.vehicle_number',
+            10 => 'racers.photo',
+            11 => 'racers.kis',
+            12 => 'racers.kta',
+        ];
+
+        $orderColumn = $columnsMap[$orderColumnIndex] ?? 'registration_classes.created_at';
+
+        $query->leftJoin('registrations', 'registration_classes.registration_id', '=', 'registrations.id')
+            ->leftJoin('racers', 'registrations.racer_id', '=', 'racers.id')
+            ->leftJoin('event_classes', 'registration_classes.class_id', '=', 'event_classes.id')
+            ->orderBy($orderColumn, $orderDirection);
+
+        $recordsTotal = RegistrationClass::count();
+        $recordsFiltered = (clone $query)->count();
+
+        $eventId = $query->clone()->first()?->event_id;
+
+        $duplicateNumbers = [];
+
+        if ($eventId) {
+            // 2. Cari racer_number dari tabel registrations yang dipakai oleh lebih dari 1 racer_id berbeda pada event ini
+            $duplicateNumbers = \DB::table('registration_classes')
+                ->join('registrations', 'registration_classes.registration_id', '=', 'registrations.id')
+                ->where('registration_classes.event_id', $eventId)
+                ->where('registrations.race_status', 'approved')
+                ->whereNotNull('registrations.racer_number') // Diubah ke registrations
+                ->where('registrations.deleted_at', null) // Tambahkan kondisi untuk mengecualikan data yang dihapus
+                ->groupBy('registrations.racer_number')      // Diubah ke registrations
+                ->havingRaw('COUNT(DISTINCT registrations.racer_id) > 1')
+                ->pluck('registrations.racer_number')        // Diubah ke registrations
+                ->toArray();
+        }
+
+        $duplicateNumberQuery = DB::table('registration_classes')
+        ->join('registrations', 'registration_classes.registration_id', '=', 'registrations.id')
+        ->where('registration_classes.event_id', $eventId)
+        ->where('registrations.race_status', 'approved')
+        ->whereNotNull('registration_classes.racer_number')
+        ->groupBy('registration_classes.racer_number')
+        ->havingRaw('COUNT(DISTINCT registrations.racer_id) > 1')
+        ->select('registration_classes.racer_number');
+
+        $query->when(
+            $request->race_racer_number_duplicate === 'duplicate',
+            function ($q) use ($duplicateNumberQuery) {
+                $q->whereIn('registration_classes.racer_number', $duplicateNumberQuery);
+            }
+        );
+
+        $query->when(
+            $request->race_racer_number_duplicate === 'unique',
+            function ($q) use ($duplicateNumberQuery) {
+                $q->whereNotIn('registration_classes.racer_number', $duplicateNumberQuery);
+            }
+        );
+
+        $registrationClasses = $query
+            ->skip($start)
+            ->take($length)
+            ->get()
+            ->map(function ($registClass) use ($duplicateNumbers) {
+
+                $registration = $registClass->registration;
+                $racer = $registration?->racer;
+                $event = $registClass->event;
+                $eventClass = $registClass->eventClass;
+                $isDuplicateNumber = in_array($registration->racer_number, $duplicateNumbers);
+
+                return [
+
+                    'id' => $registClass->id,
+                    'invoice_number' => $registClass->invoice_number,
+                    'count_print_invoice' => $registClass->count_print_invoice,
+                    'racer_number' => $registClass->racer_number,
+                    'is_racer_number_duplicate' => $isDuplicateNumber,
+                    'vehicle' => $registClass->vehicle,
+                    'vehicle_number' => $registClass->vehicle_number,
+                    'rangka_number' => $registClass->rangka_number,
+                    'created_at' => $registClass->created_at?->format('Y-m-d H:i'),
+                    'name_register' => $registration->name_register,
+                    'phone_number_register' => $registration->phone_number_register,
+
+                    'racer' => $racer ? [
+                        'id' => $racer->id,
+                        'nik' => $racer->nik,
+                        'full_name' => $racer->full_name,
+                        'short_name' => $racer->short_name,
+                        'phone_number' => $racer->phone_number,
+                        'birth_location' => $racer->birth_location,
+                        'racer_number' => $racer->racer_number,
+                        'birth_date' => $racer->birth_date
+                            ? Carbon::parse($racer->birth_date)->translatedFormat('d F Y')
+                            : null,
+                        'hometown' => $racer->hometown,
+                        'photo' => $racer->photo
+                            ? asset('storage/' . $racer->photo)
+                            : null,
+                        'kta' => $racer->kta
+                            ? asset('storage/' . $racer->kta)
+                            : null,
+                        'kis' => $racer->kis
+                            ? asset('storage/' . $racer->kis)
+                            : null,
+                        'is_photo' => $racer->photo
+                            ? true
+                            : false,
+                        'is_kta' => $racer->kta
+                            ? true
+                            : false,
+                        'is_kis' => $racer->kis
+                            ? true
+                            : false,
+                        'user_name' => $racer->user?->name,
+                        'user_phone_number' => $racer->user?->phone_number,
+                    ] : null,
+                    'registration' => $registration,
+                    'event' => $event ? [
+                            'id' => $event->id,
+                            'name' => $event->name,
+                            'type' => $event->type,
+                        ] : null,
+                    'event_class' => $eventClass ? [
+                        'id' => $eventClass->id,
+                        'name' => $eventClass->name,
+                    ] : null,
+                ];
+            });
+        // dd($registrationClasses); // debug
+        return response()->json([
+            'draw' => intval($request->draw),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $registrationClasses
+        ]);
+    }
 
     public function indexOriginal(Request $request, $eventId): JsonResponse
     {

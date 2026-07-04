@@ -1053,25 +1053,43 @@ class EventController extends Controller
         $query->when($request->pendaftar_end_date, function ($q) use ($request) {
             $q->whereDate('created_at', '<=', $request->pendaftar_end_date);
         });
+
         // SORT
         $orderColumnIndex = $request->input('order.0.column');
         $orderDirection   = $request->input('order.0.dir', 'desc');
 
-        $columns = $request->input('columns');
-
+        $columns = $request->input('columns', []);
         $orderColumn = $columns[$orderColumnIndex]['data'] ?? 'created_at';
 
-        $allowedColumns = [
-            'name',
-            'venue',
-            'created_at',
+        // Mapping kolom DataTables -> kolom database
+        $columnMap = [
+            'registration_number' => 'registrations.registration_number',
+            'team_name'           => 'registrations.team_name',
+            'race_status'         => 'registrations.race_status',
+            'payment_method'      => 'registrations.payment_method',
+            'status'              => 'registrations.status',
+            'is_fined'            => 'registrations.is_fined',
+            'created_at'          => 'registrations.created_at',
+
+            // Relasi racer
+            'racer.full_name'     => 'racers.full_name',
+            'racer.phone_number'  => 'racers.phone_number',
         ];
 
-        if (!in_array($orderColumn, $allowedColumns)) {
-            $orderColumn = 'created_at';
+        // Join racers hanya jika diperlukan
+        if (isset($columnMap[$orderColumn]) && str_starts_with($columnMap[$orderColumn], 'racers.')) {
+
+            $query->leftJoin('racers', 'racers.id', '=', 'registrations.racer_id');
+
+            // Hindari kolom registrations hilang akibat join
+            $query->select('registrations.*');
         }
 
-        $query->orderBy($orderColumn, $orderDirection);
+        // Lakukan sorting
+        $query->orderBy(
+            $columnMap[$orderColumn] ?? 'registrations.created_at',
+            $orderDirection
+        );
 
         $recordsTotal = Registration::where('event_id', $eventId)->count();
         $recordsFiltered = (clone $query)->count();
