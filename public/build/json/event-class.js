@@ -960,6 +960,44 @@ $(document).ready(function () {
                         }
                     },
 
+                    {
+                        data: 'payment_method',
+
+                        render: function (data, type, row) {
+
+                            let badgeClass = 'bg-secondary';
+                            let label = '-';
+                            let icon = 'ti ti-wallet';
+
+                            // TRANSFER
+                            if (row.payment_method === 'transfer') {
+                                badgeClass = 'badge-soft-secondary border border-secondary';
+                                label = 'Transfer';
+                                icon = 'ti ti-building-bank';
+                            }
+
+                            // CASH
+                            else if (
+                                row.payment_method === 'cash' ||
+                                row.payment_method === 'tunai'
+                            ) {
+                                badgeClass = 'badge-soft-success border border-success';
+                                label = 'Tunai';
+                                icon = 'ti ti-cash';
+                            }
+
+                            return `
+                                <span class="badge ${badgeClass} fw-medium d-inline-flex align-items-center gap-1">
+
+                                    <i class="${icon}"></i>
+
+                                    ${label}
+
+                                </span>
+                            `;
+                        }
+                    },
+
                     // NO START
                     {
                         data: 'registration.racer_number',

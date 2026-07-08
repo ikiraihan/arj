@@ -366,6 +366,7 @@
                                                     {{-- <th>No. Kwitansi</th> --}}
                                                     <th>Nama Pembalap</th>
                                                     <th>NIK</th>
+                                                    <th>Metode Pembayaran</th>
                                                     <th>No. Start</th>
                                                     <th>Team</th>
                                                     <th>Kota</th>

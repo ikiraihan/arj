@@ -261,6 +261,7 @@ class RegistrationClassController extends Controller
                     'created_at' => $registClass->created_at?->format('Y-m-d H:i'),
                     'name_register' => $registration->name_register,
                     'phone_number_register' => $registration->phone_number_register,
+                    'payment_method' => $registration->payment_method,
 
                     'racer' => $racer ? [
                         'id' => $racer->id,
