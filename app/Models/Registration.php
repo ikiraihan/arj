@@ -28,6 +28,7 @@ class Registration extends Model
         'racer_number',
         'name_register',
         'phone_number_register',
+        'race_status_approved_at',
     ];
 
     protected $casts = [

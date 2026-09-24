@@ -1225,6 +1225,8 @@ class EventController extends Controller
             'race_status' => in_array($status,['paid']) ? 'approved' : $registration->race_status,
         ]);
 
+        $this->updateRaceStatusApprovedAt($registration);
+
         return response()->json([
             'success' => true,
             'message' => 'Approval Berhasil dilakukan',
@@ -1257,18 +1259,18 @@ class EventController extends Controller
 
         $registration = Registration::findOrFail($registrationId);
 
-        // update registration
         $registration->update([
             'race_status' => $request->race_status,
-            'status' => $request->race_status == 'rejected' ? 'rejected' : $registration->status,
+            'status' => $request->race_status == 'rejected'
+                ? 'rejected'
+                : $registration->status,
         ]);
+
+        $this->updateRaceStatusApprovedAt($registration);
 
         return response()->json([
             'success' => true,
             'message' => 'Approval Berhasil dilakukan',
-            // 'data' => [
-            //     'payment_proof_url' => asset('storage/' . $path)
-            // ]
         ]);
     }
 
@@ -1435,6 +1437,21 @@ class EventController extends Controller
                 'message' => $e->getMessage(),
                 'error' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    private function updateRaceStatusApprovedAt(Registration $registration): void
+    {
+        if ($registration->race_status === 'approved'&&
+            is_null($registration->race_status_approved_at)
+        ) {
+            $registration->update([
+                'race_status_approved_at' => now(),
+            ]);
+        } elseif ($registration->race_status === 'rejected') {
+            $registration->update([
+                'race_status_approved_at' => null,
+            ]);
         }
     }
 }
