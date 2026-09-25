@@ -188,7 +188,7 @@
                                         </div>
 
                                         {{-- KIS --}}
-                                        <div class="col-md-4 mb-3">
+                                        {{-- <div class="col-md-4 mb-3">
 
                                             <label class="form-label">
                                                 KIS
@@ -203,14 +203,13 @@
 
                                             <div class="invalid-feedback"></div>
 
-                                            <!-- PREVIEW -->
                                             <div id="preview-racer-kis"
                                                 class="single-preview-container mt-2"></div>
 
-                                        </div>
+                                        </div> --}}
 
                                         {{-- KTA --}}
-                                        <div class="col-md-4 mb-3">
+                                        {{-- <div class="col-md-4 mb-3">
 
                                             <label class="form-label">
                                                 KTA
@@ -224,14 +223,13 @@
 
                                             <div class="invalid-feedback"></div>
 
-                                            <!-- PREVIEW -->
                                             <div id="preview-racer-kta"
                                                 class="single-preview-container mt-2"></div>
 
-                                        </div>
+                                        </div> --}}
 
                                         <small class="text-dark d-block mt-2">
-                                            *Foto diri, KIS dan KTA wajib diisi dengan maksimal besar file
+                                            *Foto diri dapat diisi dengan maksimal besar file
                                             <strong class="text-dar fw-bold"> 10MB</strong>
                                         </small>
                                     </div>

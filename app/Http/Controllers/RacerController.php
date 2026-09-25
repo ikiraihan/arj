@@ -34,7 +34,7 @@ class RacerController extends Controller
             'hometown' => 'required|string|max:255',
 
             'photo' => 'required|image|max:10240',
-            'kis' => 'required|image|max:10240',
+            'kis' => 'nullable|image|max:10240',
             'kta' => 'nullable|image|max:10240',
         ],[
 

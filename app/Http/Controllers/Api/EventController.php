@@ -623,13 +623,13 @@ class EventController extends Controller
                     'max:10240',
                 ],
 
-                'racer_kis' => [
-                    Rule::requiredIf($requiredNewRacer),
-                    'nullable',
-                    'file',
-                    'mimes:jpg,jpeg,png',
-                    'max:10240',
-                ],
+                // 'racer_kis' => [
+                //     Rule::requiredIf($requiredNewRacer),
+                //     'nullable',
+                //     'file',
+                //     'mimes:jpg,jpeg,png',
+                //     'max:10240',
+                // ],
                 'racer_birth_location' => 'required_if:racer_id,new|nullable|string|max:255',
                 'racer_birth_date' => 'required_if:racer_id,new|nullable|date',
                 'racer_hometown' => 'required_if:racer_id,new|nullable|string|max:255',
@@ -684,8 +684,8 @@ class EventController extends Controller
                 'racer_hometown.max' => 'Asal kota pembalap maksimal 255 karakter',
 
                 'racer_photo.required_if' => 'Foto Diri wajib diisi jika menambah pembalap baru',
-                'racer_kta.required_if' => 'KTA wajib diisi jika menambah pembalap baru',
-                'racer_kis.required_if' => 'KIS wajib diisi jika menambah pembalap baru',
+                // 'racer_kta.required_if' => 'KTA wajib diisi jika menambah pembalap baru',
+                // 'racer_kis.required_if' => 'KIS wajib diisi jika menambah pembalap baru',
 
                 'phone_number.required' => 'Nomor telepon wajib diisi',
                 'phone_number.string' => 'Nomor telepon harus berupa teks',
@@ -751,22 +751,22 @@ class EventController extends Controller
                 }
 
                 // KTA
-                if ($request->hasFile('racer_kta')) {
+                // if ($request->hasFile('racer_kta')) {
 
-                    $racer->kta = $request
-                        ->file('racer_kta')
-                        ->store('racers/kta', 'public');
+                //     $racer->kta = $request
+                //         ->file('racer_kta')
+                //         ->store('racers/kta', 'public');
 
-                }
+                // }
 
-                // KIS
-                if ($request->hasFile('racer_kis')) {
+                // // KIS
+                // if ($request->hasFile('racer_kis')) {
 
-                    $racer->kis = $request
-                        ->file('racer_kis')
-                        ->store('racers/kis', 'public');
+                //     $racer->kis = $request
+                //         ->file('racer_kis')
+                //         ->store('racers/kis', 'public');
 
-                }
+                // }
 
                 $racer->save();
 
